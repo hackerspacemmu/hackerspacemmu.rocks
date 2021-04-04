@@ -1,0 +1,47 @@
+body {
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+}
+
+/** HEADER **/
+#header-nav {
+  opacity: 0.85;
+}
+
+#header-nav img {
+  border-radius: 8px;
+}
+
+#nav-bar {
+
+}
+
+#nav-list {
+
+}
+
+/* END HEADER */
+
+/* FOOTER */
+
+/* END FOOTER */
+
+
+
+/********** Large devices only **********/
+@media (min-width: 1200px)  {
+
+}
+
+/********** Medium and small devices only **********/
+@media (min-width: 768px) and (max-width: 1199px) {
+
+}
+
+/********** Extra small devices only **********/
+@media (max-width: 767px) {
+
+
+}
+
+
