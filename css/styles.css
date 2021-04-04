@@ -34,14 +34,14 @@ body {
 .jumbotron h1 {
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
-  font-size: 5vw;
-  font-weight: 300;
-  letter-spacing: 3px;
   padding: 10px 25px 10px 25px;
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 5vw;
+  font-weight: 300;
+  letter-spacing: 3px;
 }
 
 .jumbotron h1 span {
@@ -50,26 +50,156 @@ body {
 
 /* END JUMBOTRON */
 
-/* MISSION */
+/* MAIN CONTENT */
+#about p {
+  padding-bottom: 10px;
+  font-style: italic;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
 #mission {
-  height: 250px;
-  margin-bottom: 15px;
-  position: relative;
-  overflow: visible;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 #mission img {
   position: relative;
+  padding-top: 50px;
   width: 100%;
-  height: 200px;
+  height: 250px;
   object-fit: cover;
+}
+
+#mission h4 {
+  font-size: 22px;
+  padding-top: 25px;
 }
 
 #mission p {
   padding-top: 20px;
   padding-left: 20px;
+  font-style: italic;
+  text-align: justify;
+  text-justify: inter-word;
 }
-/* END MISSION */
+
+#displayBoard div {
+  background-color: #7B7B7B;
+  color: white;
+  box-sizing: border-box;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+#displayBoard .displayBoardLargeFont {
+  font-size: 25px;
+}
+
+#events {
+  position: relative;
+}
+
+#events img{
+  opacity: 0.5;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+#events h3 {
+  color: white;
+  padding: 10px 25px 10px 25px;
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5vw;
+  font-weight: 500;
+  letter-spacing: 8px;
+}
+@media (max-width: 575px) {
+  #events h3 {
+    /* Fix location of <h3>Event</h3>
+       Without this, the h3 will moves down 
+       at below max-width: 576px
+    */
+    top: 9.8%; 
+  }
+}
+
+#events h4 {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+#events .box {
+  width: 90%;
+  margin: 10px 0px;
+  padding-left:10px;
+  padding-right:10px;
+  position: relative;
+  overflow: hidden;
+}
+
+#events #image1, #image2, #image3, #image4  {
+  background: url('../images/HackathonOld.jpg') no-repeat;
+  background-position: center;
+  height: 250px;
+  border-radius: 3px;
+}
+
+#events #image1 span, #image2 span, #image3 span, #image4 span {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+  opacity: .7;
+}
+
+#contact {
+  margin-top: 50px;
+  position: relative;
+}
+
+#contact img{
+  opacity: 0.5;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+#contact h3 {
+  color: white;
+  padding: 10px 25px 10px 25px;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5vw;
+  font-weight: 500;
+  letter-spacing: 8px;
+}
+
+#contact .container {
+  margin-top: 30px;
+}
+
+#contact #HackerspaceBasicInfo p {
+  font-weight: 800;
+}
+
+#contact #HackerspaceBasicInfo span {
+  font-style: italic;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* END MAIN CONTENT */
 
 
 /* FOOTER */
@@ -114,6 +244,23 @@ body {
 /********** Extra small devices only **********/
 @media (max-width: 767px) {
 
+  /* MAIN CONTENT */
+  #displayBoard {
+    padding-top: 30px;
+    padding-bottom: 0px;
+  }
+
+  #displayBoard div {
+    padding-top: 10px;
+    padding-bottom: 10px;  
+  }
+
+  /* END MAIN CONTENT */
+
+  .panel-footer section {
+    margin-bottom: 30px;
+    text-align: center;
+  }
 
 }
 
