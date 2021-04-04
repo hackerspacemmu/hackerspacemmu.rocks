@@ -4,32 +4,105 @@ body {
 }
 
 /** HEADER **/
-#header-nav {
-  opacity: 0.85;
-}
-
 #header-nav img {
   border-radius: 8px;
 }
 
-#nav-bar {
-
+#nav-list {
+  letter-spacing: 3px; 
 }
 
-#nav-list {
-  letter-spacing: 3px;
+#nav-list a:hover {
+  background-color: #ddd;
+  color: black;
 }
 
 /* END HEADER */
 
-/* FOOTER */
+/* JUMBOTRON */
+.jumbotron{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 
+.jumbotron img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.jumbotron h1 {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 5vw;
+  font-weight: 300;
+  letter-spacing: 3px;
+  padding: 10px 25px 10px 25px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.jumbotron h1 span {
+  color: #00C2FF;
+}
+
+/* END JUMBOTRON */
+
+/* MISSION */
+#mission {
+  height: 250px;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: visible;
+}
+
+#mission img {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+#mission p {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+/* END MISSION */
+
+
+/* FOOTER */
+.panel-footer {
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 35px;
+  padding-bottom: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: #222;
+  color: white;
+  border-top: 0;
+}
+
+.panel-footer section {
+  padding-bottom: 30px;
+}
 /* END FOOTER */
 
 
 
 /********** Large devices only **********/
 @media (min-width: 1200px)  {
+
+  /* JUMBOTRON */
+  .jumbotron img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+  }
+
+  /* END JUMBOTRON */
 
 }
 
