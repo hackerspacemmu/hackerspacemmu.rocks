@@ -11,13 +11,13 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+  <title>Hackerspace MMU</title>
+
   <!-- Optional customization link-->
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="/open-iconic/font/css/open-iconic-bootstrap.css">
-
-  <title>Hackerspace MMU</title>
 
 </head>
 
@@ -54,7 +54,7 @@
   <div id="top" class="jumbotron jumbotron-fluid position-relative">
     <img src="images/Hackathon2019_resized.jpg" alt="Hackerspace Picture">
     <div>
-      <h1>HACKER<span>SPACE</span></h1>
+      <h1>HACKER<span id="h1_SPACE">SPACE </span><span class="d-none d-md-inline-block">MMU</span></h1>
     </div>
   </div>
 
@@ -87,22 +87,24 @@
     </div><!-- End of #mission -->
   </div>
 
-  <div id="displayBoard" class="row text-center">
-    <div class="col-md-3 col-sm-12">
-      <span class="displayBoardLargeFont">50+</span><br>
-      Active Members
-    </div>
-    <div class="col-md-3 col-sm-12">
-      <span class="displayBoardLargeFont">200+</span><br>
-      Projects Updates
-    </div>
-    <div class="col-md-3 col-sm-12">
-      <span class="displayBoardLargeFont">50+</span><br>
-      Project Completed
-    </div>
-    <div class="col-md-3 col-sm-12">
-      <span class="displayBoardLargeFont">200+</span><br>
-      Meetups
+  <div id="displayBoard" class="container-fluid">
+    <div class="row text-center">
+      <div class="col-md-3 col-sm-12">
+        <span class="displayBoardLargeFont">50+</span><br>
+        Active Members
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <span class="displayBoardLargeFont">200+</span><br>
+        Projects Updates
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <span class="displayBoardLargeFont">50+</span><br>
+        Project Completed
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <span class="displayBoardLargeFont">200+</span><br>
+        Meetups
+      </div>
     </div>
   </div><!-- End of #displayBoard -->
 
@@ -149,15 +151,18 @@
       <div class="row">
         <div id="HackerspaceBasicInfo" class="col-md-6 col-sm-12">
           <p class="oi oi-location" title="location"> Multimedia Univerisyt Cyberjaya</p><br>
-          <p class="oi oi-star" title="star"> GitHub: hackerspacemmu</p><br>
+          <p class="oi oi-star" title="star"> GitHub: github.com/hackerspacemmu</p><br>
           <p class="oi oi-inbox" title="inbox"> Email: hackerspacemmu@gmail.com</p><br>
-          <br>
-          <span>
-            We're not exactly made up of all pros haha. We have many beginners as well. Although we mostly self-learn,
+          <p id="invitation_message">
+            <br>
+            We're not exactly made up of all pros :D we have many beginners as well. Although we mostly self-learn,
             but we do ask one another for some guidance esp when starting on something. Sometimes being pointed in the
             right direction helps a lot. Quite a lot of people starting out with basics - like following a tutorial on
-            the web, etc. But we always declare a project and work towards it. That's how we all learn.</span>
-          <br>
+            the web, etc. But we always declare a project and work towards it. That's how we all learn. Feel free to
+            join us to be part of our community. We truly welcome any MMU students or staff who enjoy learning things
+            together.
+            <br>
+          </p>
         </div>
         <div class="col-md-6 col-sm-12">
           <div class="form-group">
@@ -186,7 +191,7 @@
           <br>
           <a href="https://wiki.hackerspaces.org/Malaysia">Hackerspace Malaysia</a>
           <br>
-          <a href="https://wiki.hackerspaces.org/Singapre">Hackerspace Singapore</a>
+          <a href="https://wiki.hackerspaces.org/Singapore">Hackerspace Singapore</a>
         </section>
         <section class="col-md-4 col-sm-6 col-sx-12 justify-content-center">
           <p>Extra Contact</p>
