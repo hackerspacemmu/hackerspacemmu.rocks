@@ -8,6 +8,10 @@ body {
   border-radius: 8px;
 }
 
+#header-nav .navbar-brand span {
+  padding-left: 7px;
+}
+
 #nav-list {
   letter-spacing: 3px; 
 }
@@ -258,6 +262,13 @@ body {
 /********** Extra small devices only **********/
 @media (max-width: 767px) {
 
+  /* HEADER */
+  #header-nav .navbar-brand span {
+    padding-left: 0px;
+  }
+
+  /* END HEADER */
+
   /* MAIN CONTENT */
   #displayBoard > div {
     padding-top: 30px;
@@ -268,6 +279,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;  
   }
+
 
   /* END MAIN CONTENT */
 
