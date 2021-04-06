@@ -206,6 +206,17 @@ body {
 
 
 /* FOOTER */
+.back-to-top {
+  display: flex;
+  align-items: center;
+  float: left;
+  padding: 12px 20px;
+}
+
+.back-to-top i {
+  margin-right: 3px;
+}
+
 .panel-footer {
   width: 100%;
   margin-top: 30px;
@@ -261,6 +272,12 @@ body {
   /* END MAIN CONTENT */
 
   /* FOOTER */
+  
+  .footer-button {
+    display: flex;
+    justify-content: center;
+  }
+
   .panel-footer section {
     margin-bottom: 30px;
     text-align: center;
