@@ -140,7 +140,7 @@ body {
   padding-bottom: 80px;
 }
 
-#events .box {
+#events .box { /*box is not bootstrap class*/
   width: 90%;
   margin: 10px 0px;
   padding-left:10px;
@@ -210,17 +210,6 @@ body {
 
 
 /* FOOTER */
-.back-to-top {
-  display: flex;
-  align-items: center;
-  float: left;
-  padding: 12px 20px;
-}
-
-.back-to-top i {
-  margin-right: 3px;
-}
-
 .panel-footer {
   width: 100%;
   margin-top: 30px;
@@ -231,6 +220,17 @@ body {
   background-color: #222;
   color: white;
   border-top: 0;
+}
+
+.panel-footer #footer-button {
+  display: flex;
+  align-items: center;
+  float: left;
+  padding: 12px 20px;
+}
+
+.panel-footer #footer-button i {
+  margin-right: 3px;
 }
 
 .panel-footer section {
@@ -280,12 +280,10 @@ body {
     padding-bottom: 10px;  
   }
 
-
   /* END MAIN CONTENT */
 
   /* FOOTER */
-  
-  .footer-button {
+  .panel-footer #footer-button {
     display: flex;
     justify-content: center;
   }
