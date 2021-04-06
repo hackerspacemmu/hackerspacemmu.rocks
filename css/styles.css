@@ -4,6 +4,15 @@ body {
 }
 
 /** HEADER **/
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo span {
+  padding-left: 7px;
+}
+
 #header-nav img {
   border-radius: 8px;
 }
