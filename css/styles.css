@@ -1,4 +1,4 @@
-body {
+html, body {
   max-width: 100%;
   overflow-x: hidden;
   font-size: 16px;
@@ -344,6 +344,10 @@ body {
   /* MAIN CONTENT */
   #mission h4 {
     padding-top: 50px;
+  }
+
+  #mission p {
+    padding-left: 0px;
   }
 
   #displayBoard > div {
