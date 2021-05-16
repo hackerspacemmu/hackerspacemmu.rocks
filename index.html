@@ -125,27 +125,27 @@
       <div class="row">
         <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
           <div id="image1">
-            <span>Event 1</span>
+            <span>Weekly Meetups</span>
           </div>
         </div>
         <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
           <div id="image2">
-            <span>Event 2</span>
+            <span>Virtual Meetups</span>
           </div>
         </div>
         <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
           <div id="image3">
-            <span>Event 3</span>
+            <span>Project Presentation</span>
           </div>
         </div>
         <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
           <div id="image4">
-            <span>Event 4</span>
+            <span>Game Session</span>
           </div>
         </div>
       </div>
     </div>
-  </div><!-- End of #events -->
+  </div> <!-- End of #events -->
 
   <div id="contact">
     <img src="images/Hackathon2019_resized.jpg" alt="Hackerspace Picture">
@@ -154,7 +154,7 @@
     </div>
     <div class="container">
       <div class="row">
-        <div id="invitation_message" class="col-12">
+        <div id="invitationMessage" class="col-12">
           <p>
             We're not exactly made up of all pros :D we have many beginners as well. Although we mostly self-learn,
             but we do ask one another for some guidance esp when starting on something. Sometimes being pointed in the
@@ -164,23 +164,33 @@
             together.
           </p>
         </div>
+
         <div id="HackerspaceBasicInfo" class="col-md-6 col-sm-12">
           <p class="oi oi-location" title="location"> Multimedia University Cyberjaya</p><br>
           <p class="oi oi-star" title="star"> GitHub: github.com/hackerspacemmu</p><br>
           <p class="oi oi-inbox" title="inbox"> Email: hackerspacemmu@gmail.com</p><br>
         </div>
-        <div class="col-md-6 col-sm-12">
-          <div class="form-group">
-            <label for="inputEmail1">Student Email</label>
-            <input type="email" class="form-control" id="inputEmail1" aria-describedby="emailHelp"
-              placeholder="Enter your student / staff email">
-            <small id="emailHelp" class="form-text text-muted"> Applicable only for MMU</small>
+
+        <form class="col-md-6 col-sm-12" id="email-validation" action="http://goo.gl/cZw38" target="_blank" novalidate>
+          <label for="validationMMUEmail" class="form-label">Student Email</label>
+          <input type="email" class="form-control" id="validationMMUEmail" aria-describedby="emailHelp"
+            placeholder="Please enter MMU email" required>
+          <div class="valid-feedback">
+            Valid Email!
           </div>
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Get Application Form</button>
-        </div>
+          <div class="invalid-feedback">
+            Invalid Email!
+          </div>
+          <div id="submitBtn">
+            <small id="emailHelp" class="form-text text-muted"> Applicable only for MMU</small>
+            <button class="btn btn-outline-success my-2 my-sm-0" id="formButton" type="submit">Get Application
+              Form</button>
+          </div>
+        </form>
+        
       </div>
     </div>
-  </div>
+  </div> <!-- end of #contact -->
 
   <footer class="panel-footer">
     <div class="container-fluid">
