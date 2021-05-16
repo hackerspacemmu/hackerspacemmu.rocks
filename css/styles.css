@@ -1,4 +1,6 @@
 body {
+  max-width: 100%;
+  overflow-x: hidden;
   font-size: 16px;
   font-family: 'Lato', sans-serif;
 }
@@ -36,7 +38,7 @@ body {
 }
 
 .jumbotron h1 {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(10, 10, 10, 0.9);
   color: white;
   padding: 10px 25px;
   position: absolute;
@@ -121,22 +123,23 @@ body {
   color: white;
   padding: 10px 25px 10px 25px;
   position: absolute;
-  top: 10%;
+  top: 14%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 5vw;
   font-weight: 500;
   letter-spacing: 8px;
 }
+/* 
+  To fix location of <h3>Event</h3>
+  Without this, the h3 will move 
+  way too down or up 
+*/
 @media (max-width: 575px) {
-  #events h3 {
-    /* 
-    To fix location of <h3>Event</h3>
-    Without this, the h3 will moves down 
-    too much at below max-width: 576px
-    */
-    top: 9.8%; 
-  }
+  #events h3 { top: 9.8%; }
+}
+@media (min-width: 992px) {
+  #events h3 { top: 19%; }
 }
 
 #events h4 {
@@ -187,12 +190,29 @@ body {
   color: white;
   padding: 10px 25px 10px 25px;
   position: absolute;
-  top: 20%;
+  top: 21%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 5vw;
   font-weight: 500;
   letter-spacing: 8px;
+}
+/* 
+  To fix location of <h3>Contact</h3>
+  Without this, the h3 will move
+  way too down or up 
+*/
+@media (min-width: 576px) and (max-width: 768px) {
+  #contact h3 { top: 17%; }
+}
+@media (min-width: 400px) and (max-width: 575px) {
+  #contact h3 { top: 16%; }
+}
+@media (min-width: 301px) and (max-width: 399px) {
+  #contact h3 { top: 15%; }
+}
+@media (max-width: 300px) {
+  #contact h3 { top: 14%; }
 }
 
 #contact .container {
@@ -209,10 +229,17 @@ body {
  
 #contact #HackerspaceBasicInfo {
   padding-top: 15px;
+  padding-bottom: 30px;
 }
 
 #contact #HackerspaceBasicInfo .oi {
   font-weight: 800;
+}
+
+#contact form {
+  padding: 20px 10px 25px 10px;
+  border-radius: 15px;
+  border: 2px solid #28a745;
 }
 
 #contact form #feedback {

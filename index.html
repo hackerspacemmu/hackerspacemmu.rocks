@@ -7,14 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+  <!-- Animated On Scroll -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
     integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
     crossorigin="anonymous" />
-
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
   <title>Hackerspace MMU</title>
 
@@ -35,11 +38,11 @@
             alt="Hackerspace Logo">
           <span class="align-middle">HACKERSPACE</span>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse flex-row-reverse" , id="navbarNav">
+        <div class="collapse navbar-collapse flex-row-reverse" , id="navbarSupportedContent">
           <ul id="nav-list" class="navbar-nav">
             <li class="nav-item active">
               <a class="nav-link" href="#about">ABOUT<span class="sr-only">(current)</span></a>
@@ -76,10 +79,10 @@
     </div><!-- End of #about -->
 
     <div id="mission" class="row">
-      <div class="col-md-6 col-sm-12">
+      <div class="col-md-6 col-sm-12" data-aos="fade">
         <img src="images/Hackathon2019_resized.jpg" alt="Hackerspace Picture">
       </div>
-      <div class="col-md-6 col-sm-12">
+      <div class="col-md-6 col-sm-12" data-aos="fade">
         <h4 class="text-center">MISSION</h4>
         <p>
           <br>
@@ -95,19 +98,19 @@
   <div id="displayBoard" class="container-fluid">
     <div class="row text-center">
       <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont">50+</span><br>
+        <span class="displayBoardLargeFont" data-aos="fade-up">50+</span><br>
         Active Members
       </div>
       <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont">200+</span><br>
+        <span class="displayBoardLargeFont" data-aos="fade-up">200+</span><br>
         Projects Updates
       </div>
       <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont">50+</span><br>
+        <span class="displayBoardLargeFont" data-aos="fade-up">50+</span><br>
         Project Completed
       </div>
       <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont">200+</span><br>
+        <span class="displayBoardLargeFont" data-aos="fade-up">200+</span><br>
         Meetups
       </div>
     </div>
@@ -116,29 +119,29 @@
   <div id="events">
     <img src="images/Hackathon2019_resized.jpg" alt="Hackerspace Picture">
     <div>
-      <h3>EVENTS</h3>
+      <h3 class="centered" data-aos="fade">EVENTS</h3>
     </div>
     <div class="container">
       <div class="text-center">
-        <h4>Hackerspace Regular Events</h4>
+        <h4 data-aos="fade">Hackerspace Regular Events</h4>
       </div>
       <div class="row">
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
           <div id="image1">
             <span>Weekly Meetups</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
           <div id="image2">
             <span>Virtual Meetups</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
           <div id="image3">
             <span>Project Presentation</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
           <div id="image4">
             <span>Game Session</span>
           </div>
@@ -150,44 +153,46 @@
   <div id="contact">
     <img src="images/Hackathon2019_resized.jpg" alt="Hackerspace Picture">
     <div>
-      <h3>CONTACT</h3>
+      <h3 data-aos="fade">CONTACT</h3>
     </div>
     <div class="container">
       <div class="row">
         <div id="invitationMessage" class="col-12">
-          <p>
+          <p data-aos="fade">
             We're not exactly made up of all pros :D we have many beginners as well. Although we mostly self-learn,
             but we do ask one another for some guidance esp when starting on something. Sometimes being pointed in the
             right direction helps a lot. Quite a lot of people starting out with basics - like following a tutorial on
-            the web, etc. But we always declare a project and work towards it. That's how we all learn. Feel free to
+            the web, etc.
+          </p>
+          <p data-aos="fade">
+            But we always declare a project and work towards it. That's how we all learn. Feel free to
             join us to be part of our community. We truly welcome any MMU students or staff who enjoy learning things
             together.
           </p>
         </div>
 
-        <div id="HackerspaceBasicInfo" class="col-md-6 col-sm-12">
+        <div id="HackerspaceBasicInfo" class="col-md-6 col-sm-12" data-aos="fade">
           <p class="oi oi-location" title="location"> Multimedia University Cyberjaya</p><br>
           <p class="oi oi-star" title="star"> GitHub: github.com/hackerspacemmu</p><br>
           <p class="oi oi-inbox" title="inbox"> Email: hackerspacemmu@gmail.com</p><br>
         </div>
 
-        <form class="col-md-6 col-sm-12" id="email-validation" action="http://goo.gl/cZw38" target="_blank" novalidate>
-          <label for="validationMMUEmail" class="form-label">Student Email</label>
-          <input type="email" class="form-control" id="validationMMUEmail" aria-describedby="emailHelp"
-            placeholder="Please enter MMU email" required>
+        <form class="col-md-6 col-sm-12" id="email-validation" action="http://goo.gl/cZw38" target="_blank" data-aos="zoom-out" novalidate>
+          <label for="validationMMUEmail" class="form-label">Apply Now! (Only for MMU)</label>
+          <input type="email" class="form-control" id="validationMMUEmail" placeholder="Please enter MMU email"
+            required>
           <div class="valid-feedback">
-            Valid Email!
+            Awesome! 
           </div>
           <div class="invalid-feedback">
-            Invalid Email!
+            Please enter correct MMU email
           </div>
           <div id="submitBtn">
-            <small id="emailHelp" class="form-text text-muted"> Applicable only for MMU</small>
             <button class="btn btn-outline-success my-2 my-sm-0" id="formButton" type="submit">Get Application
               Form</button>
           </div>
         </form>
-        
+
       </div>
     </div>
   </div> <!-- end of #contact -->
@@ -233,6 +238,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
     crossorigin="anonymous"></script>
+
+  <!-- Animated On Scroll -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 400,
+    });
+  </script>
 </body>
 
 </html>
