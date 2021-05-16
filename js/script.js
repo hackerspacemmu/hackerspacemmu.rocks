@@ -30,7 +30,7 @@ function emailValidation(event) {
     }
 
     // Check if the input match email pattern && match domain pattern (explained below)
-    if (emailInputElement.value.match(targetPattern) && (idx + 10 == domainLen)){   
+    if (emailInputElement.value.match(targetPattern) && idx > -1 && (idx + 10 == domainLen)){   
         console.log("is-invalid")
         emailInputElement.classList.remove("is-invalid")
         emailInputElement.classList.add("is-valid")
