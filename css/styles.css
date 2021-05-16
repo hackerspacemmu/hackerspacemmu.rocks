@@ -297,7 +297,7 @@ body {
     /*
     To adjust height so that user 
     still can see some content in #about us 
-    in one screen
+    in one screen at this width range
     */
     height: 280px; 
   }

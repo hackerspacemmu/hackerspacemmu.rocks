@@ -2,7 +2,9 @@
  * Email Validation
  */ 
 
+//standard pattern for email
 const targetPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+//targeted mmu domain
 const targetDomain = /mmu.edu.my/
 
 const formBtn =
@@ -27,7 +29,7 @@ function emailValidation(event) {
         event.stopPropagation()
     }
 
-    // Check if the input match email pattern && match domain pattern
+    // Check if the input match email pattern && match domain pattern (explained below)
     if (emailInputElement.value.match(targetPattern) && (idx + 10 == domainLen)){   
         console.log("is-invalid")
         emailInputElement.classList.remove("is-invalid")
@@ -41,3 +43,22 @@ function emailValidation(event) {
         event.stopPropagation()
     }
 }
+
+/**
+ * Domain Pattern Explanation
+ * what does "(idx + 10 == domainLen)" means?
+ *  
+ * idx is the index of mmu.edu.my after @
+ *    example 1: hello@student.mmu.edu.my
+ *       idx will be counted starting from "s" as 0, 
+ *       when it encouters mmu.edu.my, the idx is 8
+ * 
+ * domainLen is the length of the domain after @
+ *    example 1: hello@yahoo.com
+ *       domainLen will be 9
+ *    example 2: hello@student.mmu.edu.my
+ *       domainLen will be 18
+ * 
+ * To check whether the mmu.edu.my is at the very "last"
+ * idx + 10 equals to domainLen
+ */ 
