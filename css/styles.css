@@ -96,7 +96,6 @@ body {
 }
 
 #displayBoard > div div {
-  width: 100%;
   background-color: #222;
   color: white;
   padding: 30px 0px;
@@ -145,8 +144,7 @@ body {
   padding-bottom: 80px;
 }
 
-#events .box { /*box is not bootstrap class*/
-  width: 90%;
+#events .eventBox { /*box is not bootstrap class*/
   margin: 10px 0px;
   padding-left:10px;
   padding-right:10px;
