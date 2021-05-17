@@ -1,8 +1,10 @@
 html, body {
-  max-width: 100%;
-  overflow-x: hidden;
+  /*Standardize font for website consistency*/
   font-size: 16px;
   font-family: 'Lato', sans-serif;
+  /*Disable horizontal scroll because of the AOS*/
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /** HEADER **/
@@ -25,7 +27,7 @@ html, body {
 
 /* END HEADER */
 
-/* JUMBOTRON */
+/* JUMBOTRON & ABOVE THE FOLD */
 .jumbotron{
   padding-top: 0px;
   padding-bottom: 0px;
@@ -56,11 +58,8 @@ html, body {
   color: #00C2FF;
 }
 
-/* END JUMBOTRON */
-
-/* MAIN CONTENT */
 #about h3 {
-  margin-top: 20px;
+  margin-top: 50px;
   margin-bottom: 10px;
 }
 
@@ -71,6 +70,9 @@ html, body {
   text-justify: inter-word;
 }
 
+/* END JUMBOTRON & ABOVE THE FOLD */
+
+/* MAIN CONTENT */
 #mission {
   padding-top: 25px;
   padding-bottom: 25px;
@@ -79,13 +81,15 @@ html, body {
 #mission img {
   position: relative;
   padding-top: 50px;
+  margin-bottom: 25px;
   width: 100%;
-  height: 250px;
+  max-width: 500px;
+  height: 280px;
   object-fit: cover;
 }
 
 #mission h4 {
-  font-size: 22px;
+  font-size: 2.8vw;
   padding-top: 25px;
 }
 
@@ -122,10 +126,10 @@ html, body {
 #events h3 {
   color: #222;
   padding: 10px 25px 10px 25px;
-  position: absolute;
+  /*position: absolute;*/
   top: 14%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /*left: 50%;
+  transform: translate(-50%, -50%);*/
   font-size: 5vw;
   font-weight: 600;
   letter-spacing: 8px;
@@ -207,10 +211,7 @@ html, body {
 #contact h3 {
   color: #222;
   padding: 10px 25px 10px 25px;
-  position: absolute;
   top: 21%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 5vw;
   font-weight: 600;
   letter-spacing: 8px;
@@ -304,19 +305,19 @@ html, body {
 
 /********** Large devices only **********/
 @media (min-width: 1200px)  {
-
+  html, body {
+    font-size: 22px;
+  }
 }
 
 /********** Medium and small devices only **********/
 @media (min-width: 768px) and (max-width: 1199px) {
+  html, body {
+    font-size: 18px;
+  }
 
   /* JUMBOTRON */
   .jumbotron img {
-    /*
-    To adjust height so that user 
-    still can see some content in #about us 
-    in one screen at this width range
-    */
     height: 280px; 
   }
 
@@ -343,7 +344,7 @@ html, body {
 
   /* MAIN CONTENT */
   #mission h4 {
-    padding-top: 50px;
+    padding-top: 30px;
   }
 
   #mission p {
@@ -373,8 +374,14 @@ html, body {
     text-align: center;
   }
 
+  .panel-footer section hr {
+    width: 70%;
+    height: 2px;
+    background-color: white;
+    opacity: 0.8;
+  }
+
   /* END FOOTER */
-  
 }
 
 

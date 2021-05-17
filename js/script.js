@@ -17,9 +17,9 @@ function emailValidation(event) {
     var domainLen = domainString.length
     var idx = domainString.search(targetDomain)
     
-    console.log(emailInputElement.value)
-    console.log(targetPattern)
-    console.log(idx, domainLen)
+    // console.log(emailInputElement.value)
+    // console.log(targetPattern)
+    // console.log(idx, domainLen)
 
     // Check if the input is empty
     if (emailInputElement.value == "") {
@@ -48,17 +48,21 @@ function emailValidation(event) {
  * Domain Pattern Explanation
  * what does "(idx + 10 == domainLen)" means?
  *  
+ * First
  * idx is the index of mmu.edu.my after @
  *    example 1: hello@student.mmu.edu.my
  *       idx will be counted starting from "s" as 0, 
+ *       "t" will be 1, "u" will be 2 and go on until
  *       when it encouters mmu.edu.my, the idx is 8
  * 
+ * Second
  * domainLen is the length of the domain after @
  *    example 1: hello@yahoo.com
  *       domainLen will be 9
  *    example 2: hello@student.mmu.edu.my
  *       domainLen will be 18
  * 
+ * Last
  * To check whether the mmu.edu.my is at the very "last"
  * idx + 10 equals to domainLen
  */ 

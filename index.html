@@ -69,12 +69,13 @@
   <div class="container">
     <div id="about">
       <h3 class="text-center">ABOUT US</h3>
-      <p class="text-center">Hacking things together<br>not (necessarily) hacking into things!</p>
+      <p class="text-center">Hacking things together<br>Not (necessarily) hacking into things!</p>
       <p>
         A hackerspace is a location where people with common interests, usually in computers, technology, science or
         digital art can meet, socialise and/or collaborate.
         A hackerspace can be viewed as open community labs incorporating elements of machine shops, workshops and/or
         studios where hackers can come together to share resources and knowledge to build and make things.
+        We mostly building things, not so much breaking security.
       </p>
     </div><!-- End of #about -->
 
@@ -86,14 +87,13 @@
         <h4 class="text-center">MISSION</h4>
         <p>
           <br>
-          A hackerspace is a location where people with common interests, usually in computers, technology, science or
-          digital art can meet, socialise and/or collaborate.
-          A hackerspace can be viewed as open community labs incorporating elements of machine shops, workshops and/or
-          studios where hackers can come together to share resources and knowledge to build and make things
+          Hackerspace MMU aims to enable and encourage like-minded members of the MMU community to share ideas and
+          explore them through collaborative or individual projects in the interest of learning and beyond.
         </p>
       </div>
     </div><!-- End of #mission -->
   </div>
+  <!--End of container-->
 
   <div id="displayBoard" class="container-fluid">
     <div class="row text-center">
@@ -117,9 +117,9 @@
   </div><!-- End of #displayBoard -->
 
   <div id="events">
-    <img src="images/HackathonOld.jpg" alt="Hackerspace Picture">
+    <img src="images/HackathonOld.jpg" alt="Hackerspace Picture" class="position-relative">
     <div>
-      <h3 class="centered" data-aos="fade">EVENTS</h3>
+      <h3 class="position-absolute start-50 translate-middle" data-aos="fade">EVENTS</h3>
     </div>
     <div class="container">
       <div class="text-center">
@@ -161,23 +161,25 @@
   </div> <!-- End of #events -->
 
   <div id="contact">
-    <img src="images/MamakSession2018.jpg" alt="Hackerspace Picture">
+    <img src="images/MamakSession2018.jpg" alt="Hackerspace Picture" class="position-relative">
     <div>
-      <h3 data-aos="fade">CONTACT</h3>
+      <h3 class="position-absolute start-50 translate-middle" data-aos="fade">CONTACT</h3>
     </div>
     <div class="container">
       <div class="row">
         <div id="invitationMessage" class="col-12">
           <p data-aos="fade">
             We're not exactly made up of all pros :D we have many beginners as well. Although we mostly self-learn,
-            but we do ask one another for some guidance esp when starting on something. Sometimes being pointed in the
-            right direction helps a lot. Quite a lot of people starting out with basics - like following a tutorial on
-            the web, etc.
+            but we do ask one another for some guidance esp when starting on something.
           </p>
           <p data-aos="fade">
-            But we always declare a project and work towards it. That's how we all learn. Feel free to
-            join us to be part of our community. We truly welcome any MMU students or staff who enjoy learning things
-            together.
+            Sometimes being pointed in the right direction helps a lot. Quite a lot of people starting out with basics -
+            like following a tutorial on the web, etc.
+          </p>
+          <p data-aos="fade">
+            In Hackerspace, we always declare a project and work towards it. That's how we all learn. You are welcome to
+            join us to be part of our community. However, membership is exclusive to MMU students or staff only. But feel
+            free to contact us though email if you have any inquiries.
           </p>
         </div>
 
@@ -219,24 +221,27 @@
               <span>Back to top</span>
             </a>
           </div>
+          <hr class="d-md-none position-absolute start-50 translate-middle">
         </section>
         <section class="col-md-4 col-sm-6 col-sx-12 justify-content-center">
           <p>More About Hackerspaces</p>
-          <a href="https://en.wikipedia.org/wiki/Hackerspace">Hackerspace Wikipedia</a>
+          <a href="https://en.wikipedia.org/wiki/Hackerspace">Search Wikipedia</a>
           <br>
           <a href="https://wiki.hackerspaces.org/Malaysia">Hackerspace Malaysia</a>
           <br>
           <a href="https://wiki.hackerspaces.org/Singapore">Hackerspace Singapore</a>
+          <br>
+          <hr class="d-sm-none position-absolute start-50 translate-middle">
         </section>
         <section class="col-md-4 col-sm-6 col-sx-12 justify-content-center">
-          <p>Extra Contact</p>
+          <p>Multimedia University</p>
           <a href="https://www.mmu.edu.my/cyberjaya/">MMU Cyberjaya</a>
           <br>
           <a
             href="https://www.mmu.edu.my/cyberjaya/undergraduate/information-technology/bachelor-of-computer-science-hons/">
             MMU FCI
           </a>
-
+          <hr class="d-sm-none position-absolute start-50 translate-middle">
         </section>
       </div>
       <div class="text-center">&copy; Copyright Hackerspace MMU</div>
@@ -255,7 +260,7 @@
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init({
-      duration: 400,
+      duration: 800,
     });
   </script>
 </body>
