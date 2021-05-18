@@ -12,21 +12,19 @@
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
   <!-- Animated On Scroll -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-    crossorigin="anonymous" />
+  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
 
   <title>Hackerspace MMU</title>
 
-  <!-- Optional customization link-->
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="/open-iconic/font/css/open-iconic-bootstrap.css">
+  <!-- Customization CSS -->
+  <link href="css/styles.css" rel="stylesheet">
 
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
+  <!-- Icon -->
+  <link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
 </head>
 
 <body>
@@ -36,7 +34,7 @@
         <a href="index.html" class="align-middle navbar-brand">
           <img src="images/HackerspaceLogo.jpg" width="60" height="40" class="d-none d-md-inline-block"
             alt="Hackerspace Logo">
-          <span class="align-middle">HACKERSPACE</span>
+          <span class="align-middle">Hackerspace</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,13 +43,13 @@
         <div class="collapse navbar-collapse flex-row-reverse" , id="navbarSupportedContent">
           <ul id="nav-list" class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="#about">ABOUT<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="#about">ABOUT</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#events">EVENTS</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#contact">CONTACT</a>
+              <a class="nav-link" href="#Join">JOIN</a>
             </li>
           </ul><!-- #nav-list -->
         </div><!-- .collapse .navbar-collapse -->
@@ -68,7 +66,7 @@
 
   <div class="container">
     <div id="about">
-      <h3 class="text-center">ABOUT US</h3>
+      <h2 class="text-center">ABOUT US</h2>
       <p class="text-center">Hacking things together<br>Not (necessarily) hacking into things!</p>
       <p>
         A hackerspace is a location where people with common interests, usually in computers, technology, science or
@@ -80,11 +78,11 @@
     </div><!-- End of #about -->
 
     <div id="mission" class="row">
-      <div class="col-md-6 col-sm-12" data-aos="fade">
+      <div class="col-md-6 col-sm-12" data-aos="fade-up" data-aos-duration="2000">
         <img src="images/PhysicalSession_presentation.jpg" alt="Hackerspace Picture">
       </div>
       <div class="col-md-6 col-sm-12" data-aos="fade">
-        <h4 class="text-center">MISSION</h4>
+        <h3 class="text-center Title-font">MISSION</h3>
         <p>
           <br>
           Hackerspace MMU aims to enable and encourage like-minded members of the MMU community to share ideas and
@@ -95,63 +93,52 @@
   </div>
   <!--End of container-->
 
-  <div id="displayBoard" class="container-fluid">
-    <div class="row text-center">
-      <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont" data-aos="fade-up">73+</span><br>
-        Active Members
-      </div>
-      <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont" data-aos="fade-up">274+</span><br>
-        Projects Updates
-      </div>
-      <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont" data-aos="fade-up">31+</span><br>
-        Projects Completed
-      </div>
-      <div class="col-md-3 col-sm-12">
-        <span class="displayBoardLargeFont" data-aos="fade-up">262+</span><br>
-        Meetups
-      </div>
-    </div>
-  </div><!-- End of #displayBoard -->
+  <div id="quote">
+    <p class="container" data-aos="fade" data-aos-duration="1000">
+      <span>
+        “The only way to do great work is to love what you do.”
+      </span>
+      <br>
+      -Steve Jobs
+    </p>
+  </div>
 
   <div id="events">
     <img src="images/HackathonOld.jpg" alt="Hackerspace Picture" class="position-relative">
     <div>
-      <h3 class="position-absolute start-50 translate-middle" data-aos="fade">EVENTS</h3>
+      <h2 class="position-absolute start-50 translate-middle" data-aos="fade">EVENTS</h2>
     </div>
     <div class="container">
       <div class="text-center">
-        <h4 data-aos="fade">Hackerspace Regular Events</h4>
+        <h3 data-aos="fade">Hackerspace Regular Events</h3>
       </div>
       <div class="row">
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade-up">
           <div id="image1">
             <span>Weekly Meetups</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-6 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
+        <div class="eventBox mx-auto col-lg-6 col-md-4 col-sm-6 col-sx-12" data-aos="fade-up">
           <div id="image2">
             <span>Hackathon</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade-up">
           <div id="image3">
             <span>Mamak Session</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade-up">
           <div id="image4">
             <span>Idea Talk</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
+        <div class="eventBox mx-auto col-lg-3 col-md-4 col-sm-6 col-sx-12" data-aos="fade-up">
           <div id="image5">
             <span>Progress Presentation</span>
           </div>
         </div>
-        <div class="eventBox mx-auto col-lg-6 col-md-4 col-sm-6 col-sx-12" data-aos="fade">
+        <div class="eventBox mx-auto col-lg-6 col-md-4 col-sm-6 col-sx-12" data-aos="fade-up">
           <div id="image6">
             <span>200th Meetup Anniversary</span>
           </div>
@@ -160,10 +147,39 @@
     </div>
   </div> <!-- End of #events -->
 
-  <div id="contact">
+  <div id="eventSummary" class="container-fluid">
+    <div class="row text-center">
+      <div class="col-md-3 col-sm-12">
+        <p data-aos="fade-up" data-aos-duration="400">
+          <span>73+</span><br>
+          Active Members
+        </p>
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <p data-aos="fade-up" data-aos-duration="550">
+          <span>274+</span><br>
+          Projects Updates
+        </p>
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <P data-aos="fade-up" data-aos-duration="700">
+          <span data-aos="fade-up">31+</span><br>
+          Projects Completed
+        </P>
+      </div>
+      <div class="col-md-3 col-sm-12">
+        <p data-aos="fade-up" data-aos-duration="850">
+          <span data-aos="fade-up">265+</span><br>
+          Meetups
+        </p>
+      </div>
+    </div>
+  </div> <!-- End of #displayBoard -->
+
+  <div id="Join">
     <img src="images/MamakSession2018.jpg" alt="Hackerspace Picture" class="position-relative">
     <div>
-      <h3 class="position-absolute start-50 translate-middle" data-aos="fade">CONTACT</h3>
+      <h3 class="position-absolute start-50 translate-middle" data-aos="fade">JOIN US</h3>
     </div>
     <div class="container">
       <div class="row">
@@ -174,12 +190,13 @@
           </p>
           <p data-aos="fade">
             Sometimes being pointed in the right direction helps a lot. Quite a lot of people starting out with basics -
-            like following a tutorial on the web, etc.
+            like following a tutorial on the web, etc. But in Hackerspace, we always declare a project and work towards
+            it. That's how we all learn.
           </p>
           <p data-aos="fade">
-            In Hackerspace, we always declare a project and work towards it. That's how we all learn. You are welcome to
-            join us to be part of our community. However, membership is exclusive to MMU students or staff only. But feel
-            free to contact us though email if you have any inquiries.
+            You are welcome to join us to be part of our community. However, membership is exclusive to MMU students or
+            staff only. You may sign up through application form provided below or contact us though email if you have
+            any inquiries.
           </p>
         </div>
 
@@ -191,8 +208,8 @@
 
         <form class="col-md-6 col-sm-12" id="email-validation"
           action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
-          target="_blank" data-aos="zoom-out">
-          <label for="validationMMUEmail" class="form-label">Apply Now! (Only for MMU)</label>
+          target="_blank" data-aos="zoom-out" data-aos-duration="2000">
+          <label for="validationMMUEmail" class="form-label">Join us now! Only for MMU</label>
           <input type="email" class="form-control" id="validationMMUEmail" placeholder="Please enter MMU email"
             required>
           <div class="valid-feedback">
@@ -209,7 +226,7 @@
 
       </div>
     </div>
-  </div> <!-- end of #contact -->
+  </div> <!-- end of #Join -->
 
   <footer class="panel-footer">
     <div class="container-fluid">

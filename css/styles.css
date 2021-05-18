@@ -1,10 +1,12 @@
 html, body {
-  /*Standardize font for website consistency*/
-  font-size: 16px;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Ubuntu', sans-serif; 
   /*Disable horizontal scroll because of the AOS*/
   max-width: 100%;
   overflow-x: hidden;
+}
+
+body h2, body h3 {
+  font-family: 'Prompt', sans-serif; 
 }
 
 /** HEADER **/
@@ -14,6 +16,7 @@ html, body {
 
 #header-nav .navbar-brand span {
   padding-left: 7px;
+  letter-spacing: 1px; 
 }
 
 #nav-list {
@@ -40,7 +43,8 @@ html, body {
 }
 
 .jumbotron h1 {
-  background-color: rgba(10, 10, 10, 0.9);
+  background-color: rgba(10, 10, 10, 0.6);
+  border-radius: 5px;
   color: white;
   padding: 10px 25px;
   position: absolute;
@@ -48,7 +52,7 @@ html, body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 5vw;
-  font-weight: 300;
+  font-weight: 500;
   letter-spacing: 3px;
   display: inline-block;
   white-space: nowrap;
@@ -58,7 +62,7 @@ html, body {
   color: #00C2FF;
 }
 
-#about h3 {
+#about h2 {
   margin-top: 50px;
   margin-bottom: 10px;
 }
@@ -80,16 +84,16 @@ html, body {
 
 #mission img {
   position: relative;
-  padding-top: 50px;
+  margin-top: 20px;
   margin-bottom: 25px;
   width: 100%;
   max-width: 500px;
-  height: 280px;
+  height: 250px;
+  border-radius: 5px;
   object-fit: cover;
 }
 
-#mission h4 {
-  font-size: 2.8vw;
+#mission h3 {
   padding-top: 25px;
 }
 
@@ -101,15 +105,15 @@ html, body {
   text-justify: inter-word;
 }
 
-#displayBoard > div div {
+#quote {
+  margin-top: 50px;
   background-color: #222;
   color: white;
   padding: 30px 0px;
-  margin: 0px;
 }
 
-#displayBoard .displayBoardLargeFont {
-  font-size: 25px;
+#quote span {
+  font-size: 26px;
 }
 
 #events {
@@ -123,13 +127,10 @@ html, body {
   object-fit: cover;
 }
 
-#events h3 {
+#events h2 {
   color: #222;
   padding: 10px 25px 10px 25px;
-  /*position: absolute;*/
   top: 14%;
-  /*left: 50%;
-  transform: translate(-50%, -50%);*/
   font-size: 5vw;
   font-weight: 600;
   letter-spacing: 8px;
@@ -140,18 +141,18 @@ html, body {
   way too down or up 
 */
 @media (max-width: 575px) {
-  #events h3 { top: 7.5%; }
+  #events h2 { top: 7.5%; }
 }
 @media (min-width: 576px) and (max-width: 768px) {
-  #events h3 { top: 11.5%; }
+  #events h2 { top: 11.5%; }
 }
 
-#events h4 {
+#events h3 {
   padding-top: 80px;
   padding-bottom: 80px;
 }
 
-#events .eventBox { /*box is not bootstrap class*/
+#events .eventBox {
   margin: 10px 0px;
   padding-left:10px;
   padding-right:10px;
@@ -164,6 +165,7 @@ html, body {
   width: 100%;
   height: 250px;
   border-radius: 3px;
+  position: relative;
 }
 
 #events #image1 span, #image2 span, #image3 span, #image4 span, #image5 span, #image6 span {
@@ -171,7 +173,7 @@ html, body {
   padding-bottom: 5px;
   position: absolute;
   bottom: 0;
-  width: 92%;
+  width: 100%;
   text-align: center;
   background-color: #000;
   color: #fff;
@@ -196,49 +198,60 @@ html, body {
   background: url('../images/200anniversary.jpg') no-repeat;
 }
 
-#contact {
+#eventSummary {
   margin-top: 50px;
+}
+
+#eventSummary > div div {
+  background-color: #222;
+  color: white;
+  padding: 30px 0px;
+  margin: 0px;
+}
+
+#eventSummary span {
+  font-size: 25px;
+}
+
+#Join {
   position: relative;
 }
 
-#contact img{
+#Join img{
   opacity: 0.5;
   width: 100%;
   height: 300px;
   object-fit: cover;
 }
 
-#contact h3 {
+#Join h3 {
   color: #222;
   padding: 10px 25px 10px 25px;
-  top: 21%;
+  top: 19%;
   font-size: 5vw;
   font-weight: 600;
   letter-spacing: 8px;
 }
 /* 
-  To fix location of <h3>Contact</h3>
+  To fix location of <h3>Join</h3>
   Without this, the h3 will move
   way too down or up 
 */
-@media (min-width: 576px) and (max-width: 768px) {
-  #contact h3 { top: 17%; }
+@media (min-width: 435px) and (max-width: 768px) {
+  #Join h3 { top: 16%; }
+} 
+@media (min-width: 342px) and (max-width: 434px) {
+  #Join h3 { top: 14%; }
 }
-@media (min-width: 400px) and (max-width: 575px) {
-  #contact h3 { top: 16%; }
-}
-@media (min-width: 301px) and (max-width: 399px) {
-  #contact h3 { top: 15%; }
-}
-@media (max-width: 300px) {
-  #contact h3 { top: 14%; }
+@media (max-width: 341px) {
+  #Join h3 { top: 13%; }
 }
 
-#contact .container {
+#Join .container {
   margin-top: 30px;
 }
 
-#contact #invitationMessage {
+#Join #invitationMessage {
   margin-top: 20px;
   margin-bottom: 20px;
   font-style: italic;
@@ -246,26 +259,26 @@ html, body {
   text-justify: inter-word;
 }
  
-#contact #HackerspaceBasicInfo {
+#Join #HackerspaceBasicInfo {
   padding-top: 15px;
   padding-bottom: 30px;
 }
 
-#contact #HackerspaceBasicInfo .oi {
+#Join #HackerspaceBasicInfo .oi {
   font-weight: 800;
 }
 
-#contact form {
+#Join form {
   padding: 20px 10px 25px 10px;
   border-radius: 15px;
   border: 2px solid #28a745;
 }
 
-#contact form #feedback {
+#Join form #feedback {
   margin-top: 10px;
 }
 
-#contact form #submitBtn {
+#Join form #submitBtn {
   margin-top: 10px;
 }
 
@@ -301,13 +314,18 @@ html, body {
 }
 /* END FOOTER */
 
-
-
 /********** Large devices only **********/
 @media (min-width: 1200px)  {
   html, body {
-    font-size: 22px;
+    font-size: 20px;
   }
+
+  /* MAIN CONTENT */
+  #quote span {
+    font-size: 36px;
+  }
+
+  /* END MAIN CONTENT */
 }
 
 /********** Medium and small devices only **********/
@@ -343,8 +361,7 @@ html, body {
   /* END JUMBOTRON */
 
   /* MAIN CONTENT */
-  #mission h4 {
-    font-size: 20px;
+  #mission h3 {
     padding-top: 30px;
   }
 
