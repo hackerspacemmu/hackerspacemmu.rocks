@@ -270,7 +270,7 @@ body h2, body h3 {
 
 #Join form {
   padding: 20px 10px 25px 10px;
-  border-radius: 15px;
+  border-radius: 10px;
   border: 2px solid #28a745;
 }
 
@@ -282,13 +282,28 @@ body h2, body h3 {
   margin-top: 10px;
 }
 
+#meetAndGreet {
+  background-color: #93BEDF;
+  margin-top: 50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#meetAndGreet #meedAndGreetMessage {
+  font-weight: 600;
+}
+
+#meetAndGreet #meedAndGreetForm {
+  padding-top: 20px;
+}
+
 /* END MAIN CONTENT */
 
 
 /* FOOTER */
 .panel-footer {
   width: 100%;
-  margin-top: 30px;
+  /* margin-top: 30px; */  /* Closed due to meetAndGreet section */
   padding-top: 35px;
   padding-bottom: 30px;
   padding-left: 15px;
