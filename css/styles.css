@@ -1,0 +1,64 @@
+.container-fluid {
+  max-width: 1000px;
+}
+
+#above-the-fold {
+  background: url("../images/Fullpage-web-banner.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+
+  padding-bottom: 500px; /* Set for demo purpose only */
+}
+
+#hacking-together {
+  background: url("../images/Hacking-together-background.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  padding: 200px 0; /* Set for demo purpose only */
+}
+
+#separator-1 {
+  background-color: #F2F8FF;
+  padding: 20px 0;
+}
+
+#what-do-we-do {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#separator-2 {
+  background-color: #EFEEFF;
+  padding: 20px 0;
+}
+
+#statistics {
+  padding: 100px 0; /* Set for demo purpose only */
+}
+
+#separator-3 {
+  background-color: #F2F8FF;
+  padding: 20px 0;
+}
+
+#events-and-activities {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#registration {
+  background: url("../images/space-background.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  padding: 500px 0;
+}
+
