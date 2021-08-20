@@ -4,6 +4,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -28,17 +29,21 @@ h1 {
 
 .navbar-expand-md {
   display: flex;
-
+  
   justify-content: space-between;
 }
 
-#header-side {
+#header-container {
+  padding-top: 100px;
+}
+
+/* #header-side {
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: left;
   margin-right: 30px;
-}
+} */
 
 #header-side #header-title {
   font-weight: bold;
@@ -71,9 +76,11 @@ h1 {
 }
 
 #header-img {
+  padding-left: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 300px;
 }
 
 #header-img img {
@@ -92,29 +99,41 @@ h1 {
   padding: 100px 0;
 }
 
+/* #separator-1 .container {
+  max-width: 1200px;
+} */
+
 #separator-1 .content-title {
   font-size: 24px;
   font-weight: 600;
 }
 
+#separator-1 .content {
+  padding: 10px 30px;
+}
+
 #separator-1 .content > p {
   font-size: 15px;
   margin-top: 15px;
+  color: #797979;
 }
 
 #separator-1 .icon {
-  margin: 20px auto;
-  background-color: #5d55ff;
+  margin: 0px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
 }
 
-#separator-1 .icon {
-  width: 32px;
+#separator-1 .left-icon {
+  background-color: #B8B5FF;
+}
+
+#separator-1 .right-icon {
+  background-color: #9ECBFF;
 }
 
 #hacking-together {
@@ -143,15 +162,6 @@ h1 {
   left: 50%;
   transform: translate(15%, 0px);
   z-index: 1;
-}
-
-#separator-1 {
-  background-color: #f2f8ff;
-  padding: 100px 0;
-}
-#seperator-1 h3 {
-  font-family: Ubuntu;
-  font-size: 24px;
 }
 
 #what-do-we-do {
@@ -265,14 +275,33 @@ h1 {
   line-height: 30px;
 }
 
-#statistics {
+/* #statistics {
   padding: 3em 0;
-  /* Set for demo purpose only */
+  Set for demo purpose only 
+} */
+#statistics {
+  padding: 100px 0;
+}
+
+
+#statistics .top-title {
+  margin: 0px 500px 40px 500px;
 }
 
 #statistics .title {
-  padding-bottom: 2em;
   font-weight: bold;
+}
+
+#statistics .top-line {
+  border-bottom: 3px solid #80bbff;
+  float: left;
+  width: 40px;
+}
+
+#statistics .bottom-line {
+  border-top: 3px solid #5d55ff;
+  float: right;
+  width: 45px;
 }
 
 #statistics .card-container {
@@ -296,12 +325,12 @@ h1 {
 }
 
 #statistics .card-body {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 18px;
 }
 
 #statistics .icon {
-  margin: 20px auto;
+  margin: 30px auto;
   background-color: #5d55ff;
   border-radius: 50%;
   display: flex;
@@ -338,12 +367,26 @@ h1 {
 }
 
 #events-and-activities {
-  padding-top: 20px;
-  padding-bottom: 300px;
+  padding: 100px 0px;
+}
+
+#events-and-activities .top-title {
+  margin: 0px 300px 70px 300px;
+}
+
+#events-and-activities .top-line {
+  border-bottom: 3px solid #80bbff;
+  float: left;
+  width: 40px;
+}
+
+#events-and-activities .bottom-line {
+  border-top: 3px solid #5d55ff;
+  float: right;
+  width: 45px;
 }
 
 #events-and-activities h1 {
-  padding: 2em 0;
   font-weight: bold;
 }
 
@@ -389,6 +432,7 @@ h1 {
 #registration .form-group {
   text-align: center;
   background-color: #f2f8ff;
+  
   width: 700px;
   height: 350px;
   margin: 0 auto;
@@ -398,7 +442,8 @@ h1 {
   align-items: center;
   position: absolute;
   top: 560px;
-  left: 450px;
+  left: 450px; 
+ 
   border-radius: 10px;
 }
 
