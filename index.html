@@ -81,8 +81,9 @@
         <!-- End of #header-nav -->
 
         <div
+          id="header-container"
           class="
-            header-container
+            container-fluid
             position-absolute
             top-50
             start-50
@@ -90,22 +91,27 @@
             d-flex
           "
         >
-          <div class="header-side">
-            <h1 class="header-title">Grow with <span>Hackerspace MMU</span></h1>
-            <p class="header-content">
-              We're a bunch of coders not hackers, share your thoughts,
-              experience, projects and much more with us!!!
-            </p>
-            <br />
-            <div class="btn-grp">
-              <a class="join-us-btn">Join Us</a>
-              <a class="why-btn">Why Should I Join?</a>
+          <div class="row">
+            <div id="header-side" class="col-sm-12 col-md-6">            
+              <h1 id="header-title">Grow with <span>Hackerspace MMU</span></h1>
+              <p id="header-content">
+                We're a bunch of coders not hackers, share your thoughts,
+                experience, projects and much more with us!!!
+              </p>
+              <br />
+              <div class="btn-grp">
+                <a class="join-us-btn">Join Us</a>
+                <a class="why-btn">Why Should I Join?</a>
+              </div>
+              </div>
+            </div>
+            <div id="header-img" class="col-sm-12 col-md-6">
+              <img src="images/hackerspace-logo4 2.png" alt="" />
             </div>
           </div>
-          <div class="header-img">
-            <img src="images/hackerspace-logo4 2.png" alt="" />
-          </div>
+          <!-- End of .row -->
         </div>
+        <!-- End of #header-container -->
       </div>
       <!--End of #above-the-fold -->
     </header>
