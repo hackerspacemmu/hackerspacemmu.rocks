@@ -154,8 +154,7 @@ h1 {
     box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
 }
 
-#events-and-activities img {
-    width: 360px;
+#events-and-activities .card > img {
 }
 
 #registration {
@@ -164,6 +163,5 @@ h1 {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-
     padding: 500px 0;
 }
