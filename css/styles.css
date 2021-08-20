@@ -1,16 +1,25 @@
 .container-fluid {
-  max-width: 1000px;
+  max-width: 1250px;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  font-family: "Ubuntu", sans-serif;
 }
 
 #above-the-fold {
-  background: url("../images/Fullpage-web-banner.jpg");
+  background: url("../images/Fullpage-web-banner_auto_x2\ \(1\).jpg");
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
   color: white;
 
-  padding-bottom: 500px;
+  padding-bottom: 880px;
   /* Set for demo purpose only */
 }
 
@@ -23,37 +32,134 @@
 
   padding: 200px 0;
   /* Set for demo purpose only */
+
+  /* Testing */
+  display: grid;
+  position: relative;
+  /* imperative for the overlapping to work */
+}
+
+#hacking-together #hacking-together_top {
+  border-radius: 20px;
+  position: absolute;
+  left: 500px;
+  top: 100px;
+  z-index: 2;
+}
+
+#hacking-together #hacking-together_bottom {
+  border-radius: 20px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 1;
 }
 
 #separator-1 {
-  background-color: #F2F8FF;
-  padding: 20px 0;
+  background-color: #f2f8ff;
+  padding: 100px 0;
 }
 
 #what-do-we-do {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 50px 0;
+}
+
+#what-do-we-do .title {
+  padding-bottom: 4em;
+}
+
+#what-do-we-do .image-physical-session {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#what-do-we-do .physical-session {
+  width: 400px;
+  object-fit: contain;
 }
 
 #separator-2 {
-  background-color: #EFEEFF;
+  background-color: #efeeff;
   padding: 20px 0;
 }
 
 #statistics {
-  padding: 100px 0;
+  padding: 3em 0;
   /* Set for demo purpose only */
 }
 
+#statistics .title {
+  padding-bottom: 2em;
+  font-weight: bold;
+}
+
+#statistics .card-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#statistics .card {
+  border-radius: 8px;
+  box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
+  width: 230px;
+  height: 230px;
+  border: none;
+}
+
+#statistics .span {
+  color: #5d55ff;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#statistics .card-body {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#statistics .icon {
+  margin: 20px auto;
+  background-color: #5d55ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+}
+
+#statistics .icon>img {
+  width: 32px;
+}
+
 #separator-3 {
-  background-color: #F2F8FF;
+  background-color: #f2f8ff;
   padding: 20px 0;
 }
 
 #events-and-activities {
   padding-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 300px;
 }
+
+#events-and-activities h1 {
+  padding: 2em 0;
+  font-weight: bold;
+}
+
+#events-and-activities .card {
+  width: 360px;
+  border: none;
+  border-radius: 8px;
+}
+
+#events-and-activities .card-body {
+  box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
+}
+
+#events-and-activities .card>img {}
 
 #registration {
   background: url("../images/space-background.jpg");
@@ -61,6 +167,5 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-
   padding: 500px 0;
 }
