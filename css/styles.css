@@ -26,6 +26,11 @@
 #separator-1 {
   background-color: #F2F8FF;
   padding: 20px 0;
+  
+}
+#seperator-1 h3 {
+  font-family: Ubuntu;
+  font-size:24px;
 }
 
 #what-do-we-do {
@@ -49,6 +54,9 @@ color: #0800A4;
 #separator-3 {
   background-color: #F2F8FF;
   padding: 20px 0;
+}
+#separator-3 h5{
+  color:#336CFF;
 }
 
 #events-and-activities {
