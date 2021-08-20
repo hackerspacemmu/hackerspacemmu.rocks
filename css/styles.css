@@ -36,6 +36,10 @@
 #separator-2 {
   background-color: #EFEEFF;
   padding: 20px 0;
+  
+}
+#separator-2 h3{
+color: #0800A4;
 }
 
 #statistics {
