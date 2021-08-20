@@ -30,6 +30,25 @@ h1 {
     background-size: cover;
 
     padding: 200px 0; /* Set for demo purpose only */
+
+    /* Testing */
+    display: grid;
+    position: relative; /* imperative for the overlapping to work */
+}
+
+#hacking-together #hacking-together_top {
+    border-radius: 20px;
+    position: absolute;
+    left: 500px;
+    top: 100px;
+    z-index: 2;
+}
+#hacking-together #hacking-together_bottom {
+    border-radius: 20px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
 }
 
 #separator-1 {
@@ -117,7 +136,26 @@ h1 {
 
 #events-and-activities {
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 300px;
+}
+
+#events-and-activities h1 {
+    padding: 2em 0;
+    font-weight: bold;
+}
+
+#events-and-activities .card {
+    width: 360px;
+    border: none;
+    border-radius: 8px;
+}
+
+#events-and-activities .card-body {
+    box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
+}
+
+#events-and-activities img {
+    width: 360px;
 }
 
 #registration {
