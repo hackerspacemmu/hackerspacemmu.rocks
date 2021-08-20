@@ -64,6 +64,42 @@ h1 {
     padding-bottom: 4em;
 }
 
+#what-do-we-do .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px;
+    padding: 12px;
+    border-radius: 12px;
+}
+#what-do-we-do .side-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#what-do-we-do .icon-1 {
+    background-color: #ff5c00;
+}
+
+#what-do-we-do .icon-2 {
+    background-color: #ff9900;
+}
+#what-do-we-do .icon-3 {
+    background-color: #ffb800;
+}
+
+#what-do-we-do .box-content {
+    margin-bottom: 40px;
+    width: 510px;
+    padding: 15px 0;
+    justify-content: center;
+    border-radius: 12px;
+    box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
+    align-items: center;
+}
+
 #what-do-we-do .image-physical-session {
     display: flex;
     align-items: center;
@@ -73,6 +109,7 @@ h1 {
 #what-do-we-do .physical-session {
     width: 400px;
     object-fit: contain;
+    border-radius: 10px;
 }
 
 #separator-2 {
