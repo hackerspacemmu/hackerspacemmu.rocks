@@ -18,9 +18,18 @@ h1 {
   background-size: cover;
   background-attachment: fixed;
   color: white;
-
   padding-bottom: 700px;
   /* Set for demo purpose only */
+}
+
+#header-nav .nav-logo-text {
+  color: #ffff;
+}
+
+.navbar-expand-md {
+  display: flex;
+
+  justify-content: space-between;
 }
 
 #hacking-together {
@@ -271,5 +280,44 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 500px 0;
+  padding: 1500px 0 200px 0;
+  position: relative;
+}
+
+#registration .form-title {
+  font-weight: bold;
+}
+
+#registration .form-group {
+  text-align: center;
+  background-color: #f2f8ff;
+  width: 700px;
+  height: 350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 560px;
+  left: 450px;
+}
+
+#registration .form-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer .space-img {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+
+#footer .footer-links {
+  color: #ffff;
+  position: absolute;
+  bottom: 50px;
+  right: 550px;
 }
