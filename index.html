@@ -113,24 +113,26 @@
       <!--End of #above-the-fold -->
     </header>
 
-    <div id="hacking-together" class="position-relative d-flex flex-row">
-      <img
-        id="hacking-together_behind"
-        src="/images/Hackathon2019.jpg"
-        width="400"
-        height="220"
-        alt="Hackathon2019"
-      />
-      <img
-        id="hacking-together_infront"
-        
-        src="/images/VirtualSession_Game.jpg"
-        width="450"
-        height="250"
-        alt="VirtualSession"
-      />
-      <!-- class="position-absolute translate-middle" -->
-    </div>
+    
+      <div 
+        id="hacking-together" 
+        class="position-relative w-100 d-flex flex-row justify-content-center align-items-center"
+      >
+        <div class="row">
+          <img
+            id="hacking-together_behind"
+            src="/images/Hackathon2019.jpg"
+            alt="Hackathon2019"
+          />
+          <div class="d-none d-md-block">
+            <img
+              id="hacking-together_infront"
+              src="/images/VirtualSession_Game.jpg"
+              alt="VirtualSession"
+            />
+          </div>
+        </div>
+      </div>
 
     <div id="separator-1">
       <div class="container">
@@ -225,7 +227,7 @@
     <!--End of #what-do-we-do -->
 
     <div id="separator-2">
-      <div class="container">
+      <div class="container-fluid">
         <h1 class="text-center">OUR MISSION</h1>
         <div class="sep-2-content">
           <h5 class="text-center">
@@ -244,7 +246,7 @@
       <div class="container-fluid">
         <div class="top-title">
           <div class="top-line"></div>
-          <h1 class="title text-center">STATISTICS</h1>
+          <h1 class="text-center">STATISTICS</h1>
           <div class="bottom-line"></div>
         </div>
         <br>
@@ -292,7 +294,7 @@
     <!--End of #statistics -->
 
     <div id="separator-3" class="text-center">
-      <div class="container">
+      <div class="container-fluid">
         <div class="sep-3-container">
           <h4>"The only way to do great work is to love what you do."</h4>
           <p>-Steve Jobs</p>
@@ -304,7 +306,7 @@
     <!--separator-3 -->
 
     <div id="events-and-activities">
-      <div class="container-fluid">
+      <div class="container-fluid d-flex flex-column w-full justify-content-center align-items-center">
         <div class="top-title">
           <div class="top-line"></div>
           <h1 class="text-center">EVENTS AND ACTIVITIES</h1>
@@ -312,8 +314,8 @@
         </div>
         
 
-        <div class="row justify-content-md-center g-4">
-          <div class="col-lg-4 col-sm-6 col-12">
+        <div class="row g-4 d-flex flex-column flex-sm-row justify-content-center align-items-center">
+          <div class="mx-auto col-lg-4 col-sm-6 col-12 ">
             <div class="card h-100">
               <img
                 class="card-img-top"
@@ -334,7 +336,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="mx-auto col-lg-4 col-sm-6 col-12">
             <div class="card h-100">
               <img
                 src="images/idea-talk-events.jpg"
@@ -355,7 +357,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="mx-auto col-lg-4 col-sm-6 col-12">
             <div class="card h-100">
               <img
                 src="images/presentation-events.jpg"
@@ -375,7 +377,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="mx-auto col-lg-4 col-sm-6 col-12">
             <div class="card h-100">
               <img
                 src="images/hackathon-events.jpg"
@@ -396,7 +398,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="mx-auto col-lg-4 col-sm-6 col-12">
             <div class="card h-100">
               <img
                 src="images/anniversary-events.jpg"
@@ -418,7 +420,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-sm-6 col-12">
+          <div class="mx-auto col-lg-4 col-sm-6 col-12">
             <div class="card h-100">
               <img
                 src="images/mamak-events.jpg"
@@ -446,27 +448,20 @@
     <!--End of #events-and-activities -->
 
     <div id="registration">
-      <!-- <div class="form-group">
-        <div class="form-title"><h1>REGISTER HERE</h1></div>
-        <br />
-        <div class="form-content">
-          <div class="form-input">
-            <input type="email" placeholder="Enter your MMU email" />
-          </div>
-          <div class="form-btn"><a href="">Get Form</a></div>
-        </div>
-        <span class="form-note"
-          >*Please note that Hackerspace MMU is only open for MMU students and
-          staff.</span
-        >
-      </div> -->
       <form class="position-absolute align-middle">
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <div class="form-title"><h1>REGISTER HERE</h1></div>
+        <div class="row">
+          <div class="col-8 form-floating">
+            <input type="email" class="form-control" id="mmuEmail" placeholder="name@example.com">
+            <label for="mmuEmail">Email address</label>
+          </div>
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div id="emailHelp" class="form-text">
+          *Please note that Hackerspace MMU is only open for MMU students and staff.
+        </div>
       </form>
 
       <div id="footer">

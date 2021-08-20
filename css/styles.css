@@ -37,14 +37,6 @@ h1 {
   padding-top: 100px;
 }
 
-/* #header-side {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: left;
-  margin-right: 30px;
-} */
-
 #header-side #header-title {
   font-weight: bold;
   padding-bottom: 20px;
@@ -99,10 +91,6 @@ h1 {
   padding: 100px 0;
 }
 
-/* #separator-1 .container {
-  max-width: 1200px;
-} */
-
 #separator-1 .content-title {
   font-size: 24px;
   font-weight: 600;
@@ -142,13 +130,13 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-
-  padding: 200px 0;
-  /* Set for demo purpose only */
+  padding: 250px 0;
+  max-width: 1100px;
 }
 
 #hacking-together #hacking-together_infront {
   border-radius: 20px;
+  width: 450px;
   position: absolute;
   top: 40%;
   left: 50%;
@@ -158,9 +146,11 @@ h1 {
 
 #hacking-together #hacking-together_behind {
   border-radius: 20px;
+  width: 400px;
+  position: absolute;
   top: 20%;
-  left: 50%;
-  transform: translate(15%, 0px);
+  left: 10%;
+  transform: translate(10%, 0px);
   z-index: 1;
 }
 
@@ -186,7 +176,7 @@ h1 {
 }
 
 #what-do-we-do .top-title {
-  margin: 0 400px;
+  margin: 0 0px;
 }
 
 #what-do-we-do .top-line {
@@ -265,11 +255,7 @@ h1 {
   font-weight: 600;
 }
 
-#separator-2 .sep-2-content {
-  margin: 0 130px;
-}
-
-#separator-2 .sep-2-content > h5 {
+#separator-2 h5 {
   font-weight: 400;
   font-size: 18px;
   line-height: 30px;
@@ -283,25 +269,24 @@ h1 {
   padding: 100px 0;
 }
 
-
 #statistics .top-title {
-  margin: 0px 500px 40px 500px;
-}
-
-#statistics .title {
-  font-weight: bold;
+  margin: 0px 0px 40px 0px;
 }
 
 #statistics .top-line {
   border-bottom: 3px solid #80bbff;
   float: left;
-  width: 40px;
+  width: 30px;
 }
 
 #statistics .bottom-line {
   border-top: 3px solid #5d55ff;
   float: right;
   width: 45px;
+}
+
+#statistics h1{
+  font-weight: bold;
 }
 
 #statistics .card-container {
@@ -349,12 +334,7 @@ h1 {
   padding: 60px 0 30px 0;
 }
 
-#separator-3 .sep-3-container {
-  margin: 0 250px;
-  color: #336cff;
-}
-
-#separator-3 .sep-3-container h4 {
+#separator-3 h4 {
   color: #000000;
 }
 
@@ -362,27 +342,24 @@ h1 {
   text-align: right;
 }
 
-#separator-3 h5 {
-  color: #336cff;
-}
-
 #events-and-activities {
   padding: 100px 0px;
 }
 
 #events-and-activities .top-title {
-  margin: 0px 300px 70px 300px;
+  margin: 0px 0px;
+  padding-bottom: 80px;
 }
 
 #events-and-activities .top-line {
   border-bottom: 3px solid #80bbff;
-  float: left;
+  float: right;
   width: 40px;
 }
 
 #events-and-activities .bottom-line {
   border-top: 3px solid #5d55ff;
-  float: right;
+  float: left;
   width: 45px;
 }
 
@@ -425,15 +402,10 @@ h1 {
   position: relative;
 }
 
-#registration .form-title {
-  font-weight: bold;
-}
-
-#registration .form-group {
+#registration form {
   text-align: center;
   background-color: #f2f8ff;
-  
-  width: 700px;
+  width: 600px;
   height: 350px;
   margin: 0 auto;
   display: flex;
@@ -441,10 +413,14 @@ h1 {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 560px;
-  left: 450px; 
- 
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
   border-radius: 10px;
+}
+
+#registration .form-title {
+  font-weight: bold;
 }
 
 #registration .form-content {
@@ -460,12 +436,12 @@ h1 {
 #registration .form-input > input {
   border-radius: 8px;
   border: 1px solid #9895e0;
-  width: 300px;
+  width: 500px;
   height: 40px;
   padding-left: 12px;
 }
 
-#registration .form-btn > a {
+#registration button > a {
   background-color: #5d55ff;
   padding: 12px 20px;
   font-weight: bold;
@@ -543,3 +519,5 @@ h1 {
 .black-bar p {
   font-size: 0.8rem;
 }
+
+
