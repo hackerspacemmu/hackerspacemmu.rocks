@@ -10,7 +10,8 @@
   background-size: cover;
   color: white;
 
-  padding-bottom: 500px; /* Set for demo purpose only */
+  padding-bottom: 500px;
+  /* Set for demo purpose only */
 }
 
 #hacking-together {
@@ -20,7 +21,8 @@
   background-repeat: no-repeat;
   background-size: cover;
 
-  padding: 200px 0; /* Set for demo purpose only */
+  padding: 200px 0;
+  /* Set for demo purpose only */
 }
 
 #separator-1 {
@@ -39,7 +41,8 @@
 }
 
 #statistics {
-  padding: 100px 0; /* Set for demo purpose only */
+  padding: 100px 0;
+  /* Set for demo purpose only */
 }
 
 #separator-3 {
@@ -61,4 +64,3 @@
 
   padding: 500px 0;
 }
-
