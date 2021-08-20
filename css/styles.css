@@ -3,15 +3,15 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 h1 {
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 #above-the-fold {
-  background: url("../images/Fullpage-web-banner_auto_x2\ \(1\).jpg");
+  background: url('../images/Fullpage-web-banner_auto_x2\ \(1\).jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,12 +19,11 @@ h1 {
   background-attachment: fixed;
   color: white;
 
-  padding-bottom: 880px;
-  /* Set for demo purpose only */
+  padding-bottom: 700px; /* Set for demo purpose only */
 }
 
 #hacking-together {
-  background: url("../images/Hacking-together-background.jpg");
+  background: url('../images/Hacking-together-background.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -58,6 +57,56 @@ h1 {
 #separator-1 {
   background-color: #f2f8ff;
   padding: 100px 0;
+}
+
+.header-container {
+  width: 1100px;
+}
+
+.header-side .header-title {
+  font-weight: bold;
+  padding-bottom: 20px;
+  font-size: 65px;
+}
+.header-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-img img {
+  width: 300px;
+}
+.header-side {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  margin-right: 145px;
+}
+
+.header-title span {
+  color: #b2b0ee;
+}
+
+.header-content {
+  margin-right: 90px;
+}
+
+.btn-grp > a {
+  padding: 14px 20px;
+  text-decoration: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-grp .join-us-btn {
+  background-color: #ffff;
+  color: #b2b0ee;
+}
+
+.btn-grp .why-btn {
+  color: #ffff;
 }
 
 #what-do-we-do {
@@ -169,7 +218,7 @@ h1 {
   height: 60px;
 }
 
-#statistics .icon>img {
+#statistics .icon > img {
   width: 32px;
 }
 
@@ -198,15 +247,13 @@ h1 {
   box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
 }
 
-#events-and-activities .card>img {}
-
 #events-and-activities .card .events-icon {
   width: 18px;
   margin-right: 15px;
 }
 
 #registration {
-  background: url("../images/space-background.jpg");
+  background: url('../images/space-background.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
