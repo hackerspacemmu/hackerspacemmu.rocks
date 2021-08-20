@@ -29,25 +29,24 @@ h1 {
     background-repeat: no-repeat;
     background-size: cover;
 
-    padding: 200px 0; /* Set for demo purpose only */
-
     /* Testing */
-    display: grid;
+    padding: 300px 0; /* Set for demo purpose only */
     position: relative; /* imperative for the overlapping to work */
 }
 
 #hacking-together #hacking-together_top {
     border-radius: 20px;
+    padding: 0;
     position: absolute;
     left: 500px;
-    top: 100px;
+    top: 280px;
     z-index: 2;
 }
 #hacking-together #hacking-together_bottom {
     border-radius: 20px;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 100px;
+    top: 50px;
     z-index: 1;
 }
 
