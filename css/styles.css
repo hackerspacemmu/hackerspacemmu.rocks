@@ -41,26 +41,22 @@ h1 {
 
   padding: 200px 0;
   /* Set for demo purpose only */
-
-  /* Testing */
-  display: grid;
-  position: relative;
-  /* imperative for the overlapping to work */
 }
 
-#hacking-together #hacking-together_top {
+#hacking-together #hacking-together_infront {
   border-radius: 20px;
   position: absolute;
-  left: 500px;
-  top: 100px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-20%, 10px);
   z-index: 2;
 }
 
-#hacking-together #hacking-together_bottom {
+#hacking-together #hacking-together_behind {
   border-radius: 20px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
+  top: 20%;
+  left: 50%;
+  transform: translate(15%, 0px);
   z-index: 1;
 }
 
