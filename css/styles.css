@@ -33,6 +33,16 @@ h1 {
   justify-content: space-between;
 }
 
+#header-nav .nav-link {
+  color: #fff;
+}
+
+#header-nav .action-button {
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 7px 20px;
+}
+
 #header-container {
   padding-top: 100px;
 }
@@ -52,7 +62,7 @@ h1 {
 }
 
 #header-side .btn-grp > a {
-  padding: 14px 20px;
+  padding: 14px 50px;
   text-decoration: none;
   border-radius: 10px;
   cursor: pointer;
@@ -60,7 +70,7 @@ h1 {
 
 .btn-grp .join-us-btn {
   background-color: #ffff;
-  color: #b2b0ee;
+  color: #5d55ff;
 }
 
 .btn-grp .why-btn {
