@@ -188,17 +188,25 @@ h1 {
   font-weight: bold;
 }
 
+#events-and-activities .col {
+  margin-bottom: 25px;
+}
+
 #events-and-activities .card {
   width: 360px;
   border: none;
   border-radius: 8px;
+  box-shadow: 0px 16px 40px rgba(114, 114, 114, 0.25);
 }
 
 #events-and-activities .card-body {
-  box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
+  padding: 30px;
+  border-radius: 0px 0px 10px 10px;
 }
 
-#events-and-activities .card>img {}
+#events-and-activities .card>img {
+  border-radius: 10px 10px 0px 0px;
+}
 
 #events-and-activities .card .events-icon {
   width: 18px;
