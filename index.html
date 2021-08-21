@@ -475,12 +475,13 @@
           id="registration-form" 
           class="container-fluid position-absolute align-middle" 
           action="https://docs.google.com/forms/d/e/1FAIpQLScff5p_LOk1a846DhH7JvKZT9KDEGmxa9cIJ6ePgOAtBZr7JQ/viewform?usp=sf_link"
+          target="_blank"
         >
           <div class="form-title"><h1>REGISTER HERE</h1></div>
           <br />
           <div class="row">
               <input type="email" class="form-control mb-4 rounded" id="mmuEmail" placeholder="Enter your email address.">
-              <button type="submit" class="submit-button btn">Submit</button>
+              <button type="submit" id="registration-submit-button" class="submit-button btn">Submit</button>
           </div>
           <br />
           <div id="emailHelp" class="form-text">
@@ -538,6 +539,7 @@
     <!-- Own Js -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/js/script.js"></script>
+    <script src="/js/email-validation.js"></script>
     <script>
       AOS.init();
     </script>
