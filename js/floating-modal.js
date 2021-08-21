@@ -1,5 +1,5 @@
 !(function ($) {
-  var formLink = '';
+  var formLink = 'https://forms.gle/Gzqc87oZEw795LQq5';
 
   function isEmail(email) {
     const targetDomain = 'mmu.edu.my';
