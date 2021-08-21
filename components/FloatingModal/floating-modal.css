@@ -164,8 +164,12 @@
 # Back to top button
 --------------------------------------------------------------*/
 .back-to-top > img {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   right: 20px;
   bottom: 20px;
+  padding: 10px 10px;
+  border-radius: 50%;
+  background: #5d55ff;
+  margin-top: 10px;
 }
