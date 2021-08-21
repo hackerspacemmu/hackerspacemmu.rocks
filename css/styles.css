@@ -61,6 +61,12 @@ h1 {
   font-size: 65px;
 }
 
+@media (max-width: 600px) {
+  #header-side #header-title {
+    font-size: 30px;
+  }
+}
+
 #header-side #header-title span {
   color: #b2b0ee;
 }
@@ -272,6 +278,17 @@ h1 {
   box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
 }
 
+@media (max-width: 510px) {
+  #what-do-we-do .box-content {
+    margin-bottom: 25px;
+    width: 90%;
+  }
+
+  #what-do-we-do .physical-session {
+    width: 90%;
+  }
+}
+
 #separator-2 {
   background-color: #efeeff;
   padding: 60px 0 80px 0;
@@ -407,6 +424,13 @@ h1 {
   box-shadow: 0px 16px 40px rgba(114, 114, 114, 0.25);
 }
 
+@media (max-width: 1200px) {
+  #events-and-activities .card {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
 #events-and-activities .card-body {
   padding: 30px;
   border-radius: 0px 0px 10px 10px;
@@ -446,6 +470,12 @@ h1 {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  #registration form {
+    width: 90%;
+  }
 }
 
 #registration .form-title {
@@ -547,4 +577,22 @@ h1 {
 
 .black-bar p {
   font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  #footer .space-img > img {
+    width: 100px;
+  }
+  #footer .space-img {
+    right: 20px;
+  }
+
+  #footer .footer-links {
+    bottom: 220px;
+    right: 25px;
+    font-size: 12px;
+  }
+  #footer .footer-links .welcome-word {
+    font-size: 16px;
+  }
 }
