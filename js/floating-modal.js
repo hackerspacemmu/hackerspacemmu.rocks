@@ -1,5 +1,6 @@
 !(function ($) {
-  var formLink = 'https://forms.gle/Gzqc87oZEw795LQq5';
+  var formLink =
+    'https://docs.google.com/forms/d/e/1FAIpQLScff5p_LOk1a846DhH7JvKZT9KDEGmxa9cIJ6ePgOAtBZr7JQ/viewform?usp=sf_link';
 
   function isEmail(email) {
     const targetDomain = 'mmu.edu.my';
@@ -39,6 +40,9 @@
   $('.register-form-email-input').keyup(function () {
     if (isEmail(this.value)) {
       hideFormErrorMessage();
+      $('.register-form-submit-button').on('click', function () {
+        window.location.href = formLink;
+      });
     } else {
       showFormErrorMessage();
     }
