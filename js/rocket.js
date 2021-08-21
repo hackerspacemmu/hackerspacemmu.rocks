@@ -1,5 +1,4 @@
 const flightPath = {
-<<<<<<< HEAD
     // how much it curves when the turning
     curviness:1.25,
     // whether the image will routate according to it's path
@@ -14,22 +13,6 @@ const flightPath = {
         {x: window.innerWidth+100, y: -250},
     ],
 }
-=======
-  // how much it curves when the turning
-  curviness: 1.25,
-  // whether the image will routate according to it's path
-  autoRotate: true,
-  // the x and y (like left and top for CSS)
-  // the path for the object to move
-  values: [
-    { x: 100, y: -20 },
-    { x: 300, y: 10 },
-    { x: 500, y: 100 },
-    { x: 750, y: -100 },
-    { x: window.innerWidth, y: -250 },
-  ],
-};
->>>>>>> feat/email-validation
 
 // Tweenlinelite Part
 const tween = new TimelineLite();
