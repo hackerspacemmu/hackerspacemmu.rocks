@@ -1,31 +1,31 @@
-.primary-color{
-  color: #5D55FF;
+.primary-color {
+  color: #5d55ff;
 }
 
-.floating-modal-wrapper{
+.floating-modal-wrapper {
   position: fixed;
   bottom: 20px;
   right: 20px;
   max-width: 550px;
 }
 
-.floating-modal{
+.floating-modal {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0px 16px 40px rgba(203, 203, 203, 0.25);
   backdrop-filter: blur(4px);
   border-radius: 8px;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 
   z-index: -3;
   opacity: 0;
 }
 
-.floating-modal-visible{
+.floating-modal-visible {
   opacity: 1;
   z-index: 1001;
 }
 
-.floating-modal-content{
+.floating-modal-content {
   padding: 20px 10px;
 }
 
@@ -33,73 +33,73 @@
   margin: 0px 0px 0px 0px;
 }
 
-.floating-modal-top-strip{
+.floating-modal-top-strip {
   width: 100%;
   height: 10px;
-  background: #5D55FF;
+  background: #5d55ff;
   border-radius: 8px 8px 0px 0px;
 }
 
-.floating-modal-title{
+.floating-modal-title {
   font-family: Poppins, sans-serif;
   font-size: 22px;
 }
 
-.register-form-input-group{
+.register-form-input-group {
   position: relative;
 }
 
-.register-form-input-group > input{
-  border-color: #5D55FF;
+.register-form-input-group > input {
+  border-color: #5d55ff;
   padding: 15px 20px;
   padding-left: 50px;
   background: none;
   border-radius: 5px;
 }
 
-.register-form-input-group > .register-form-email-icon{
+.register-form-input-group > .register-form-email-icon {
   position: absolute;
   left: 15px;
 }
 
-.register-form > button{
-  background-color: #5D55FF;
+.register-form > button {
+  background-color: #5d55ff;
   padding: 13px 0px;
   border-radius: 5px;
 }
 
-.register-form-error-message{
+.register-form-error-message {
   margin-top: 10px;
-  color: #E04F5F;
+  color: #e04f5f;
 
   display: none;
 }
 
-.register-form-error-message-visible{
+.register-form-error-message-visible {
   display: flex;
 }
 
-.register-form-error-message > img{
+.register-form-error-message > img {
   margin-right: 10px;
 }
 
-.btn-open-modal{
+.btn-open-modal {
   height: 60px;
   width: 60px;
   padding: 10px 10px;
   border-radius: 50%;
-  background: #AAA6FF;
+  background: #5d55ff;
 }
 
-.floating-modal-toggler{
+.floating-modal-toggler {
   margin-top: 20px;
 }
 
-.animated{
+.animated {
   animation-duration: 0.75s;
   animation-fill-mode: both;
-  -webkit-animation-duration:  0.75s;
-  -webkit-animation-fill-mode: both
+  -webkit-animation-duration: 0.75s;
+  -webkit-animation-fill-mode: both;
 }
 
 .fadeInUp {
@@ -114,50 +114,58 @@
 
 @keyframes fadeInUp {
   from {
-    transform: translate3d(0,40px,0);
+    transform: translate3d(0, 40px, 0);
     opacity: 0;
   }
 
   to {
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 }
 
 @-webkit-keyframes fadeInUp {
   from {
-    transform: translate3d(0,40px,0);
-    opacity: 0
+    transform: translate3d(0, 40px, 0);
+    opacity: 0;
   }
 
   to {
-    transform: translate3d(0,0,0);
-    opacity: 1
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 }
 
 @keyframes fadeOutUp {
   from {
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 
   to {
-
-    transform: translate3d(0,40px,0);
+    transform: translate3d(0, 40px, 0);
     opacity: 0;
   }
 }
 
 @-webkit-keyframes fadeOutUp {
   from {
-
-    transform: translate3d(0,0,0);
-    opacity: 1
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 
   to {
-    transform: translate3d(0,40px,0);
-    opacity: 0
+    transform: translate3d(0, 40px, 0);
+    opacity: 0;
   }
+}
+
+/*--------------------------------------------------------------
+# Back to top button
+--------------------------------------------------------------*/
+.back-to-top > img {
+  width: 40px;
+  height: 40px;
+  right: 20px;
+  bottom: 20px;
 }
