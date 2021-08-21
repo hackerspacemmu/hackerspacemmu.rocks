@@ -257,7 +257,7 @@ h1 {
 #what-do-we-do .box-content {
   margin-bottom: 25px;
   width: 510px;
-  padding: 15px 0px;
+  padding: 15px 20px 15px 0;
   justify-content: center;
   border-radius: 12px;
   box-shadow: 0px 16px 40px rgba(130, 130, 130, 0.25);
@@ -431,6 +431,10 @@ h1 {
   }
 }
 
+#events-and-activities .card-title {
+  font-size: 18px;
+}
+
 #events-and-activities .card-body {
   padding: 30px;
   border-radius: 0px 0px 10px 10px;
@@ -446,9 +450,62 @@ h1 {
 }
 
 .animation {
-  height: 100vh;
+  height: 90vh;
   position: relative;
   overflow: hidden;
+  padding-bottom: 200px;
+}
+
+.content-box-1 {
+  position: absolute;
+  background-color: #8fe4ff;
+  width: 420px;
+  height: 90px;
+  font-size: 30px;
+  top: 50px;
+  left: 175px;
+  text-align: center;
+  border-radius: 20px;
+  padding: 20px 20px;
+  color: #052c97;
+}
+
+.content-box-2 {
+  position: absolute;
+  background-color: #c8c6ff;
+  opacity: 0.5;
+  width: 300px;
+  height: 90px;
+  font-size: 30px;
+  right: 200px;
+  bottom: 200px;
+  border-radius: 20px;
+  text-align: center;
+  padding: 20px 20px;
+  color: #0d0597;
+}
+
+.content-box-2 p {
+  opacity: 1;
+}
+
+.content-box-3 {
+  position: absolute;
+  background-color: #7fe6ee;
+  opacity: 0.5;
+  width: 75%;
+  font-size: 18px;
+  /* height: 90px; */
+  border-radius: 20px;
+  text-align: center;
+  padding: 20px 20px;
+  color: black;
+  overflow: visible;
+  bottom: 200px;
+  z-index: 10;
+  /* top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
 }
 
 .rocket {
@@ -503,8 +560,8 @@ h1 {
   align-items: center;
 }
 
-#registration .form-input {
-  margin-right: 15px;
+#mmuEmail {
+  padding: 10px;
 }
 
 #registration .form-input > input {
@@ -512,12 +569,12 @@ h1 {
   border: 1px solid #9895e0;
   width: 500px;
   height: 40px;
-  padding-left: 12px;
+  /* padding-left: 12px; */
 }
 
-#registration button > a {
+#registration .submit-button {
   background-color: #5d55ff;
-  padding: 12px 20px;
+  padding: 10px 20px;
   font-weight: bold;
   text-decoration: none;
   color: #ffff;
@@ -558,6 +615,10 @@ h1 {
 #footer .footer-links .social-media-info {
   font-size: 20px;
   text-align: left;
+}
+
+.social-media-container {
+  justify-content: center;
 }
 
 #footer .footer-icon-wrapper {
