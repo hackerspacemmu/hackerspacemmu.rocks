@@ -18,26 +18,26 @@ const flightPath = {
 const tween = new TimelineLite();
 
 tween.add(
-    /**
-     * Parameters
-     * 
-     * @object_to_animate
-     * @duration_sec
-     * @property_to_animate
-     */
-    TweenLite.to('.rocket', 1, {
-        bezier: flightPath,
-        ease: Power1.easeInOut
-    })
+  /**
+   * Parameters
+   *
+   * @object_to_animate
+   * @duration_sec
+   * @property_to_animate
+   */
+  TweenLite.to('.rocket', 1, {
+    bezier: flightPath,
+    ease: Power1.easeInOut,
+  }),
 );
 
 // ScrollMagic Part
 const controller = new ScrollMagic.Controller();
 
 const scene = new ScrollMagic.Scene({
-    triggerElement: '.animation', //trigger the animation when browser hit .animation class
-    duration: 3000, //duration of animation, 1000 == 1 second
-    triggerHook: 0, //position of the trigger's hook
+  triggerElement: '.animation', //trigger the animation when browser hit .animation class
+  duration: 3000, //duration of animation, 1000 == 1 second
+  triggerHook: 0, //position of the trigger's hook
 })
 .setTween(tween)  //ScrollMagic's GSAP plugin helping this
 // .addIndicators() //help us visualize what's going on
