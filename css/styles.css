@@ -445,6 +445,21 @@ h1 {
   margin-right: 15px;
 }
 
+.animation {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.rocket {
+  height: 150px;
+  position: absolute;
+  transform: rotate(-25deg);
+  top: 50%;
+  left: 10%;
+  z-index: 99;
+}
+
 #registration {
   background: url('../images/space-background.jpg');
   height: 100%;
