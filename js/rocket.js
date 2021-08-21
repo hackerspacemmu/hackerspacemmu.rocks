@@ -10,7 +10,7 @@ const flightPath = {
         {x: 300, y: 10},
         {x: 500, y: 100},
         {x: 750, y: -100},
-        {x: window.innerWidth, y: -250},
+        {x: window.innerWidth+100, y: -250},
     ],
 }
 
@@ -40,6 +40,6 @@ const scene = new ScrollMagic.Scene({
     triggerHook: 0, //position of the trigger's hook
 })
 .setTween(tween)  //ScrollMagic's GSAP plugin helping this
-.addIndicators() //help us visualize what's going on
+// .addIndicators() //help us visualize what's going on
 .setPin(".animation") //"stick" at the animation part until the animation ends
 .addTo(controller)

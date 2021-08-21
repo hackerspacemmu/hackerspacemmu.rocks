@@ -456,7 +456,7 @@ h1 {
   position: absolute;
   transform: rotate(-25deg);
   top: 50%;
-  left: 10%;
+  left: -10%;
   z-index: 99;
 }
 
