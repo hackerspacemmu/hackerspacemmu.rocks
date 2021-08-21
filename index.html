@@ -34,8 +34,8 @@
   <body>
     <header>
       <div id="above-the-fold" class="d-flex flex-row">
-        <nav id="header-nav" class="navbar navbar-expand-md">
-          <div class="container-fluid">
+        <nav id="header-nav" class="navbar navbar-expand-md w-100">
+          <div class="container-fluid nav-container">
             <a href="index.html" class="align-middle navbar-brand">
               <img
                 src="images/hackerspace-logo4 2.png"
@@ -62,10 +62,10 @@
             >
               <ul id="nav-list" class="navbar-nav">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#about-us"> ABOUT US</a>
+                  <a class="nav-link" href="#separator-1"> ABOUT US</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#events"> EVENTS & ACTIVITIES</a>
+                  <a class="nav-link" href="#events-and-activities"> EVENTS & ACTIVITIES</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link action-button" href="#Join"> JOIN US NOW </a>
@@ -98,8 +98,8 @@
               </p>
               <br />
               <div class="btn-grp">
-                <a class="join-us-btn">Join Us</a>
-                <a class="why-btn">Why should I join?</a>
+                <a class="join-us-btn">Join Us<img class="join-us-btn-icon" src="/icon/right-arrow.svg"/></a>
+                <a class="why-btn" href="#what-do-w">Why should I join?</a>
               </div>
             </div>
             <div id="header-img" class="col-12 col-md-6 d-none d-md-block">
@@ -114,28 +114,29 @@
     </header>
 
     
-      <div 
+    
+    <div 
         id="hacking-together" 
-        class="position-relative d-flex flex-row justify-content-center"
+        class="container-fluid position-relative d-flex flex-row justify-content-center"
       >
-        <div class="row">
-          <img
+      <div>
+        <img
             id="hacking-together_behind"
             src="/images/Hackathon2019.jpg"
             alt="Hackathon2019"
-          />
-          <div class="d-none d-md-block">
-            <img
+        />
+        <div class="d-none d-md-block">
+          <img
               id="hacking-together_infront"
               src="/images/VirtualSession_Game.jpg"
               alt="VirtualSession"
-            />
-          </div>
+          />
         </div>
       </div>
+    </div>
 
     <div id="separator-1">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-12 col-lg-4">
             <span>Achieve more with us </span>
@@ -450,7 +451,7 @@
     <!--End of #events-and-activities -->
 
     <div id="registration">
-      <form class="position-absolute align-middle">
+      <form class="container-fluid position-absolute align-middle">
         <div class="form-title"><h1>REGISTER HERE</h1></div>
         <div class="row">
           <div class="col-8 form-floating">

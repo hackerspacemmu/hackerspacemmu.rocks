@@ -25,22 +25,30 @@ h1 {
 
 #header-nav .nav-logo-text {
   color: #ffff;
+  padding-left: 20px;
 }
 
 .navbar-expand-md {
   display: flex;
-  
+
+  justify-content: space-between;
+}
+
+#header-row .nav-container {
+  display: flex;
   justify-content: space-between;
 }
 
 #header-nav .nav-link {
   color: #fff;
+  padding: 8px 30px;
 }
 
 #header-nav .action-button {
   border: 1px solid #fff;
   border-radius: 5px;
   padding: 7px 20px;
+  margin-left: 20px;
 }
 
 #header-container {
@@ -62,15 +70,21 @@ h1 {
 }
 
 #header-side .btn-grp > a {
-  padding: 14px 50px;
   text-decoration: none;
   border-radius: 10px;
   cursor: pointer;
+  padding: 14px 50px;
 }
 
 .btn-grp .join-us-btn {
   background-color: #ffff;
   color: #5d55ff;
+  font-weight: 600;
+}
+
+.btn-grp .join-us-btn-icon {
+  width: 24px;
+  padding: 0 5px;
 }
 
 .btn-grp .why-btn {
@@ -78,7 +92,7 @@ h1 {
 }
 
 #header-img {
-  padding-left: 100px;
+  padding-left: 260px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -127,11 +141,11 @@ h1 {
 }
 
 #separator-1 .left-icon {
-  background-color: #B8B5FF;
+  background-color: #b8b5ff;
 }
 
 #separator-1 .right-icon {
-  background-color: #9ECBFF;
+  background-color: #9ecbff;
 }
 
 #hacking-together {
@@ -140,8 +154,13 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 250px 0;
+  padding: 270px 0;
   max-width: 1100px;
+  z-index: -2;
+}
+
+#hacking-together {
+  margin: 50px auto;
 }
 
 #hacking-together #hacking-together_infront {
@@ -151,7 +170,7 @@ h1 {
   top: 40%;
   left: 50%;
   transform: translate(-20%, 10px);
-  z-index: 2;
+  z-index: 0;
 }
 
 #hacking-together #hacking-together_behind {
@@ -161,7 +180,7 @@ h1 {
   top: 20%;
   left: 10%;
   transform: translate(10%, 0px);
-  z-index: 1;
+  z-index: -1;
 }
 
 #what-do-we-do {
@@ -295,7 +314,7 @@ h1 {
   width: 45px;
 }
 
-#statistics h1{
+#statistics h1 {
   font-weight: bold;
 }
 
@@ -408,7 +427,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 1500px 0 200px 0;
+  padding: 1600px 0 200px 0;
   position: relative;
 }
 
@@ -424,7 +443,7 @@ h1 {
   align-items: center;
   position: absolute;
   top: 50%;
-  left: 50%; 
+  left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
 }
@@ -529,5 +548,3 @@ h1 {
 .black-bar p {
   font-size: 0.8rem;
 }
-
-

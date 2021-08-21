@@ -1,53 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Floating Modal</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Floating Modal</title>
+    <link
+      rel="stylesheet"
+      href="/components/FloatingModal/floating-modal.css"
+    />
+    <link rel="stylesheet" href="/vendor/icofont/icofont.min.css" />
+  </head>
 
-  <link rel="stylesheet" href="/components/FloatingModal/floating-modal.css">
-</head>
-
-<body>
-  <div class="floating-modal-wrapper">
-    <div class="floating-modal animated">
-      <div class="floating-modal-top-strip"></div>
-      <div class="floating-modal-content">
-        <div class="row d-flex flex-column">
-          <div class="col-12 row floating-modal-header justify-content-between">
-            <h3 class="floating-modal-title col-11">We are having <span class="primary-color">Meet & Greet</span> at 24
-              August, 8:00pm. Apply
-              to join now!
-            </h3>
-            <button type="button" class="btn btn-close floating-modal-close-button col-1"></button>
-          </div>
-          <br>
-          <div class="register-form col-12">
-            <div class="register-form-input-group d-flex align-items-center">
-              <img class="register-form-email-icon" src="/icon/email.svg" alt="Email Icon">
-              <input class="register-form-email-input form-control col-12" type="text"
-                placeholder="Enter your MMU email">
-
+  <body>
+    <div class="floating-modal-wrapper">
+      <div class="floating-modal animated">
+        <div class="floating-modal-top-strip"></div>
+        <div class="floating-modal-content">
+          <div class="row d-flex flex-column">
+            <div
+              class="col-12 row floating-modal-header justify-content-between"
+            >
+              <h3 class="floating-modal-title col-11">
+                We are having <span class="primary-color">Meet & Greet</span> at
+                24 August, 8:00pm. Apply to join now!
+              </h3>
+              <button
+                type="button"
+                class="btn btn-close floating-modal-close-button col-1"
+              ></button>
             </div>
-            <div class="register-form-error-message col-12 align-items-center justify-content-end" role="alert">
-              <img src="/icon/warning.svg" height="18px" width="18px" alt=""> Not a valid email!
+            <br />
+            <div class="register-form col-12">
+              <div class="register-form-input-group d-flex align-items-center">
+                <img
+                  class="register-form-email-icon"
+                  src="/icon/email.svg"
+                  alt="Email Icon"
+                />
+                <input
+                  class="register-form-email-input form-control col-12"
+                  type="text"
+                  placeholder="Enter your MMU email"
+                />
+              </div>
+              <div
+                class="
+                  register-form-error-message
+                  col-12
+                  align-items-center
+                  justify-content-end
+                "
+                role="alert"
+              >
+                <img
+                  src="/icon/warning.svg"
+                  height="18px"
+                  width="18px"
+                  alt=""
+                />
+                Not a valid email!
+              </div>
+              <br />
+              <button
+                type="button"
+                class="btn btn-primary register-form-submit-button col-12"
+              >
+                Register
+              </button>
             </div>
-            <br>
-            <button type="button" class="btn btn-primary register-form-submit-button col-12">Register</button>
           </div>
         </div>
       </div>
+
+      <div class="floating-modal-toggler d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-open-modal floating-modal-open-button"
+        >
+          <img src="/icon/register.svg" height="60%" width="60%" alt="" />
+        </button>
+      </div>
+
+      <a href="#" class="back-to-top d-flex justify-content-end"
+        ><img src="/icon/simple-up.svg"
+      /></a>
     </div>
 
-    <div class="floating-modal-toggler d-flex justify-content-end">
-      <button type="button" class="btn btn-open-modal floating-modal-open-button"><img src="/icon/register.svg"
-          height="60%" width="60%" alt=""></button>
-    </div>
-  </div>
-
-  <script src="/js/floating-modal.js"></script>
-</body>
-
+    <script src="/js/floating-modal.js"></script>
+  </body>
 </html>
