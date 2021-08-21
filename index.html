@@ -456,17 +456,32 @@
 
     <div id="registration">
 
-
       <div id="footer">
-        <form class="container-fluid position-absolute align-middle">
+        <form 
+          class="container-fluid position-absolute align-middle"
+          action="https://forms.gle/Gzqc87oZEw795LQq5"
+          target="_blank" 
+        >
           <div class="form-title"><h1>REGISTER HERE</h1></div>
           <div class="row">
             <div class="col-8 form-floating">
               <input type="email" class="form-control" id="mmuEmail" placeholder="name@example.com">
               <label for="mmuEmail">Email address</label>
             </div>
-            <div class="col-4">
-              <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="valid-feedback">
+              Awesome! Great start!
+            </div>
+            <div class="invalid-feedback">
+              Please enter correct MMU email
+            </div>
+            <div id="submitBtn" class="col-4">
+              <button 
+                type="submit" 
+                id="formButton"
+                class="btn btn-primary"
+              >
+                Submit
+              </button>
             </div>
           </div>
           <div id="emailHelp" class="form-text">
