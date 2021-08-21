@@ -8,7 +8,7 @@ const targetPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 const targetDomain = /mmu.edu.my/
 
 const formBtn =
-    document.getElementById('formButton')
+    document.getElementById('registration-submit-button')
         .addEventListener('click', emailValidation, false);
 
 function emailValidation(event) {
@@ -16,10 +16,6 @@ function emailValidation(event) {
     var domainString = emailInputElement.value.slice(emailInputElement.value.lastIndexOf('@') + 1)
     var domainLen = domainString.length
     var idx = domainString.search(targetDomain)
-    
-    // console.log(emailInputElement.value)
-    // console.log(targetPattern)
-    // console.log(idx, domainLen)
 
     // Check if the input is empty
     if (emailInputElement.value == "") {
