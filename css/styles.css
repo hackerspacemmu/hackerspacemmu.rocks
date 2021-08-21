@@ -538,8 +538,8 @@ h1 {
   align-items: center;
 }
 
-#registration .form-input {
-  margin-right: 15px;
+#mmuEmail {
+  padding: 10px;
 }
 
 #registration .form-input > input {
@@ -547,7 +547,7 @@ h1 {
   border: 1px solid #9895e0;
   width: 500px;
   height: 40px;
-  padding-left: 12px;
+  /* padding-left: 12px; */
 }
 
 #registration .submit-button {
