@@ -54,13 +54,13 @@
 
   var once = false;
   //detecting scroll events
-  $(window).scroll(function (event) {
-    var windowHeight = $(window).scrollTop();
-    if (!once) {
-      if (windowHeight > 100) {
-        showFloatingModal();
-        once = true;
-      }
-    }
-  });
+  // $(window).scroll(function (event) {
+  //   var windowHeight = $(window).scrollTop();
+  //   if (!once) {
+  //     if (windowHeight > 100) {
+  //       showFloatingModal();
+  //       once = true;
+  //     }
+  //   }
+  // });
 })(jQuery);
