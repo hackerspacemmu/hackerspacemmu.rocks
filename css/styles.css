@@ -1,3 +1,4 @@
+
 .container-fluid {
   max-width: 1250px;
 }
@@ -537,6 +538,7 @@ h1 {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  
 }
 
 #registration .qrcode-and-form {
@@ -547,18 +549,19 @@ h1 {
   align-items: center;
   position: relative;
   bottom: 700px;
+  margin: 0 auto;
 }
 
 #registration .qrcode-and-form img {
   width: 400px;
-  /* max-width: 80%; */
+  max-width: 90%;
 }
 
-/* @media (max-width: 600px) {
-  #registration form {
-    width: 90%;
-  }
-} */
+#registration .qr-code {
+  text-align: center;
+
+}
+
 
 @media (max-width: 600px) {
   #registration form {
