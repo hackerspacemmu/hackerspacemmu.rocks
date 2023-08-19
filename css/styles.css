@@ -546,13 +546,25 @@ h1 {
   justify-content: center;
   align-items: center;
   position: relative;
-  bottom: 500px;
+  bottom: 700px;
 }
+
+#registration .qrcode-and-form img {
+  width: 400px;
+  /* max-width: 80%; */
+}
+
+/* @media (max-width: 600px) {
+  #registration form {
+    width: 90%;
+  }
+} */
 
 @media (max-width: 600px) {
   #registration form {
     width: 90%;
   }
+
 }
 
 #registration .form-title {
