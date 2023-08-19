@@ -531,17 +531,22 @@ h1 {
   text-align: center;
   background-color: #f2f8ff;
   width: 600px;
-  height: 350px;
-  margin: 0 auto;
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border-radius: 10px;
+}
+
+#registration .qrcode-and-form {
+  display: flex;
+  flex-wrap:wrap;
+  gap: 100px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 500px;
 }
 
 @media (max-width: 600px) {
