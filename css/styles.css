@@ -1,3 +1,4 @@
+
 .container-fluid {
   max-width: 1250px;
 }
@@ -531,23 +532,42 @@ h1 {
   text-align: center;
   background-color: #f2f8ff;
   width: 600px;
-  height: 350px;
-  margin: 0 auto;
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border-radius: 10px;
+  
 }
+
+#registration .qrcode-and-form {
+  display: flex;
+  flex-wrap:wrap;
+  gap: 100px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 700px;
+  margin: 0 auto;
+}
+
+#registration .qrcode-and-form img {
+  width: 400px;
+  max-width: 90%;
+}
+
+#registration .qr-code {
+  text-align: center;
+
+}
+
 
 @media (max-width: 600px) {
   #registration form {
     width: 90%;
   }
+
 }
 
 #registration .form-title {
