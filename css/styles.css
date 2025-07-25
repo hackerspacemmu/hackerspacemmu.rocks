@@ -13,20 +13,24 @@ h1 {
 }
 
 #above-the-fold {
-  background: url('../images/hackerspace-header.jpg');
+  background: url('../images/hackerspace-header-v2.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
   color: white;
-  padding-bottom: 700px;
+  padding-bottom: 900px;
   /* Set for demo purpose only */
 }
 
 #header-nav .nav-logo-text {
   color: #ffff;
   padding-left: 20px;
+  text-shadow:
+    0 0 3px #000,
+    0 0 3px #000,
+    0 0 6px #000;
 }
 
 .navbar-expand-md {
@@ -43,6 +47,10 @@ h1 {
 #header-nav .nav-link {
   color: #fff;
   padding: 8px 30px;
+  text-shadow:
+    0 0 3px #000,
+    0 0 3px #000,
+    0 0 6px #000;
 }
 
 #header-nav .action-button {
@@ -60,6 +68,10 @@ h1 {
   font-weight: bold;
   padding-bottom: 20px;
   font-size: 65px;
+  text-shadow:
+    0 0 4px #000,
+    0 0 8px #000,
+    0 0 12px #000;
 }
 
 @media (max-width: 600px) {
@@ -74,6 +86,10 @@ h1 {
 
 #header-side #header-content {
   margin-right: 30px;
+  text-shadow:
+    0 0 4px #000,
+    0 0 8px #000,
+    0 0 12px #000;
 }
 
 #header-side .btn-grp > a {
@@ -96,6 +112,12 @@ h1 {
 
 .btn-grp .why-btn {
   color: #ffff;
+  border: 2px solid #ffff;
+  margin-left: 10px;
+  text-shadow:
+    0 0 4px #000,
+    0 0 8px #000,
+    0 0 12px #000;
 }
 
 #header-img {
