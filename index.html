@@ -33,7 +33,7 @@
   </head>
   <body>
     <header>
-      <div id="above-the-fold" class="d-flex flex-row">
+      <div id="above-the-fold" class="d-flex flex-column min-vh-100">
         <nav id="header-nav" class="navbar navbar-expand-md w-100">
           <div class="container-fluid nav-container">
             <a href="index.html" class="align-middle navbar-brand">
@@ -83,10 +83,8 @@
           id="header-container"
           class="
             container-fluid
-            position-absolute
-            top-50
-            start-50
-            translate-middle
+            position-relative
+            d-flex flex-column
           "
         >
           <div class="row">
@@ -104,7 +102,7 @@
                 <a class="why-btn" href="#what-do-we-do">Why should I join?</a>
               </div>
             </div>
-            <div id="header-img" data-aos='fade-left' data-aos-delay='300'  class="col-12 col-md-6 d-none d-md-block">
+            <div id="header-img" data-aos='fade-left' data-aos-delay='300' class="col-12 col-md-6 d-none d-lg-block">
               <img src="images/hsm_logo_ver_3.png" alt="" />
             </div>
           </div>

@@ -12,16 +12,18 @@ h1 {
   font-family: 'Ubuntu', sans-serif;
 }
 
+.row {
+    margin: 0 auto;
+    padding: 2em;
+}
+
 #above-the-fold {
   background: url('../images/hackerspace-header-v2.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
   color: white;
-  padding-bottom: 900px;
-  /* Set for demo purpose only */
 }
 
 #header-nav .nav-logo-text {
@@ -62,6 +64,12 @@ h1 {
 
 #header-container {
   padding-top: 100px;
+}
+
+@media screen and (max-width: 900px) {
+    #header-container {
+        padding-top: 0;
+    }
 }
 
 #header-side #header-title {
@@ -121,15 +129,24 @@ h1 {
 }
 
 #header-img {
-  padding-left: 260px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 100%;
+  max-width: 400px;
+    margin: auto;
 }
 
 #header-img img {
-  width: 400px;
+  width: 80%;
+  max-width: 400px;
+}
+
+@media screen and (max-width: 900px) {
+    #header-img {
+        padding-left: 0;
+        width: 200px;
+    }
 }
 
 #separator-1 .achievement-title {
