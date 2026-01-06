@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Bootstrap 5 -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,10 +14,8 @@
 
     <title>Hackerspace MMU</title>
     <link rel="shortcut icon" type="image/jpg" href="images/hackerspace-logo4 2.png"/>
-    <!-- Customization CSS -->
     <link href="css/styles.css" rel="stylesheet" />
 
-    <!-- Font -->
     <link
       href="https://fonts.googleapis.com/css?family=Ubuntu"
       rel="stylesheet"
@@ -28,19 +25,17 @@
       rel="stylesheet"
     />
 
-    <!-- Animated On Scroll -->
     <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
   </head>
   <body>
     <header>
-      <div id="above-the-fold" class="d-flex flex-column min-vh-100">
-        <nav id="header-nav" class="navbar navbar-expand-md w-100">
+      <div id="above-the-fold" class="d-flex flex-column justify-content-center min-vh-100">
+        <nav id="header-nav" class="navbar navbar-expand-lg w-100">
           <div class="container-fluid nav-container">
             <a href="index.html" class="align-middle navbar-brand">
               <img
                 src="images/hsm_logo_ver_3.png"
                 width="85"
-                
                 alt="Hackerspace Logo"
               />
               <span class="nav-logo-text align-middle">Hackerspace MMU</span>
@@ -54,7 +49,7 @@
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon" style="background-image: url('data:image/svg+xml;charset=utf8,%3Csvg viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath stroke=\'rgba(255, 255, 255, 1)\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-miterlimit=\'10\' d=\'M4 7h22M4 15h22M4 23h22\'/%3E%3C/svg%3E');"></span>
             </button>
             <div
               class="collapse navbar-collapse flex-row-reverse"
@@ -71,25 +66,17 @@
                   <a class="nav-link action-button" href="#registration-form"> JOIN US NOW </a>
                 </li>
               </ul>
-              <!-- End of #nav-list -->
             </div>
-            <!-- End of .collapse .navbar-collapse -->
           </div>
-          <!-- End of .container -->
         </nav>
-        <!-- End of #header-nav -->
 
         <div
           id="header-container"
-          class="
-            container-fluid
-            position-relative
-            d-flex flex-column justify-content-center align-items-center my-auto
-          "
+          class="container-fluid position-relative d-flex flex-column justify-content-center align-items-center flex-grow-1"
         >
-          <div class="row">
-            <div id="header-side" data-aos='fade-right' data-aos-delay='300' class="col-12 col-md-6">            
-              <h1 id="header-title">Grow with </br><span>Hackerspace MMU</span></h1>
+          <div class="row w-100">
+            <div id="header-side" data-aos='fade-right' data-aos-delay='300' class="col-12 col-lg-6">           
+              <h1 id="header-title">Grow with <br><span>Hackerspace MMU</span></h1>
               <p id="header-content">
                 We're a bunch of coders building things together. Not (necessarily) hacking into things. Find a
                 community to support your learning and learn from what others share!
@@ -102,38 +89,13 @@
                 <a class="why-btn" href="#what-do-we-do">Why should I join?</a>
               </div>
             </div>
-            <div id="header-img" data-aos='fade-left' data-aos-delay='300' class="col-12 col-md-6 d-none d-lg-block">
+            <div id="header-img" data-aos='fade-left' data-aos-delay='300' class="col-12 col-lg-6 d-none d-lg-block">
               <img src="images/hsm_logo_ver_3.png" alt="" />
             </div>
           </div>
-          <!-- End of .row -->
         </div>
-        <!-- End of #header-container -->
       </div>
-      <!--End of #above-the-fold -->
     </header>
-
-    
-    
-    <!-- <div 
-        id="hacking-together" 
-        class="container-fluid position-relative d-flex flex-row justify-content-center"
-      >
-      <div>
-        <img
-            id="hacking-together_behind"
-            src="/images/Hackathon2019.jpg"
-            alt="Hackathon2019"
-        />
-        <div class="d-none d-md-block">
-          <img
-              id="hacking-together_infront"
-              src="/images/VirtualSession_Game.jpg"
-              alt="VirtualSession"
-          />
-        </div>
-      </div>
-    </div> -->
 
     <div id="separator-1">
       <div class="container-fluid">
@@ -159,15 +121,14 @@
                 <h1 class="content-title">Reach the next level</h1>
                 <p>
                   If you're already taking freelance projects and contributing to open source projects, then we're a community who can appreciate your work and provide you
-                  both the peer pressure you need to keep it up, and the peer support to get you to the next level!              </div>
+                  both the peer pressure you need to keep it up, and the peer support to get you to the next level!
+                </p>
+               </div>
             </div>
           </div>
         </div>
-        <!--row -->
       </div>
-      <!--container -->
     </div>
-    <!--separator-1 -->
 
     <div id="what-do-we-do">
       <div class="container-fluid">
@@ -232,7 +193,6 @@
         </div>
       </div>
     </div>
-    <!--End of #what-do-we-do -->
 
     <div id="separator-2">
       <div class="container-fluid" >
@@ -247,9 +207,7 @@
           </h5>
         </div>
       </div>
-      <!--container -->
     </div>
-    <!--separator-2 -->
 
     <div id="statistics">
       <div class="container-fluid">
@@ -298,9 +256,7 @@
           </div>
         </div>
       </div>
-      <!--End of .container-fluid -->
     </div>
-    <!--End of #statistics -->
 
     <div id="separator-3" class="text-center">
       <div class="container-fluid">
@@ -308,11 +264,8 @@
           <h4>"I hear and I forget. I see and I remember. I do and I understand."</h4>
           <p>- <a href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand">Not</a> Confucius</p>
         </div>
-        <!--row -->
       </div>
-      <!--container -->
     </div>
-    <!--separator-3 -->
 
     <div id="events-and-activities">
       <div class="container-fluid d-flex flex-column w-full justify-content-center align-items-center">
@@ -337,10 +290,6 @@
                   <img class="events-icon" src="/icon/time.svg" />8.00pm -
                   10.00pm
                 </p>
-                <!-- <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cum,
-                  ducimus.
-                </p> -->
               </div>
             </div>
           </div>
@@ -357,10 +306,6 @@
                   <img class="events-icon" src="/icon/date.svg" />Every Trimester<br />
                   <img class="events-icon" src="/icon/time.svg" />9am - 10pm
                 </p>
-                <!-- <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Quos, officia.
-                </p> -->
               </div>
             </div>
           </div>
@@ -373,15 +318,6 @@
               />
               <div class="card-body">
                 <h5 class="card-title">Idea Talk</h5>
-                <!-- <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />Every Tuesday
-                  <br /><img class="events-icon" src="/icon/time.svg" />9.30pm -
-                  10.00pm
-                </p> -->
-                <!-- <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Accusamus, temporibus.
-                </p> -->
               </div>
             </div>
           </div>
@@ -394,18 +330,10 @@
               />
               <div class="card-body">
                 <h5 class="card-title">Progress Presentation</h5>
-                <!-- <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />To be decided
-                  <br /><img class="events-icon" src="/icon/time.svg" />
-                </p> -->
-                <!-- <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Quia, aliquam.
-                </p> -->
               </div>
             </div>
           </div>
-          
+           
           <div data-aos='zoom-in' data-aos-delay='300' class="mx-auto col-lg-4 col-sm-6 col-12">
             <div class="card h-100">
               <img
@@ -415,16 +343,6 @@
               />
               <div class="card-body">
                 <h5 class="card-title">200th Meetup Anniversary</h5>
-                <!-- <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" /> <br /><img
-                    class="events-icon"
-                    src="/icon/time.svg"
-                  />
-                </p> -->
-                <!-- <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Fugit, sapiente.
-                </p> -->
               </div>
             </div>
           </div>
@@ -437,40 +355,19 @@
               />
               <div class="card-body">
                 <h5 class="card-title">Mamak Session</h5>
-                <!-- <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />Every Tuesday
-                  <br /><img class="events-icon" src="/icon/time.svg" />10.00pm+
-                </p> -->
-                <!-- <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Numquam, ad?
-                </p> -->
               </div>
             </div>
           </div>
         </div>
-        <!--End of .row -->
       </div>
-      <!--End of .container-fluid -->
     </div>
-    <!--End of #events-and-activities -->
 
     <section class="animation">
       <div class="content-box-1">Take your coding skills</div>
       <div class="content-box-2"><p  >To the next level</p></div>
       <img class="rocket" src="images/rocket.png" alt="rocket">
-      <!-- <div class="
-        content-box-3
-        position-relative top-100
-        start-50
-        translate-middle
-      ">
-        We know a rocket that moves when scrolling is not that 'next level', but hey – this page was community built, and even our web beginners figured out how to git push their contribution into the page's codebase, and that's what matters!
-      </div> -->
     </section>
-    <!--
-      
-    -->
+
     <div id="registration">
       <div id="footer"> 
         <div class="qrcode-and-form">
@@ -496,7 +393,6 @@
             </div>
           </form>
         </div>
-        <!-- End of form -->
 
         <div class="space-img">
           <img src="images/pngkey 13.png" alt="" />
@@ -545,37 +441,24 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- Animated on scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init();
     </script>
 
-    <!-- Floating-modal -->
     <script src="/js/script.js"></script>
 
-    <!-- Email validation -->
     <script src="/js/email-validation.js"></script>
 
-    <!-- 
-        ScrollMagic 
-        Used for rocket.js
-    -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- For debugging ScrollMagic, will show you trigger indicators -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/debug.addIndicators.min.js" integrity="sha512-RvUydNGlqYJapy0t4AH8hDv/It+zKsv4wOQGb+iOnEfa6NnF2fzjXgRy+FDjSpMfC3sjokNUzsfYZaZ8QAwIxg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- 
-        GSAP 
-        Used for rocket.js
-    -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js" integrity="sha512-5/OHwmQzDSBS0Ous4/hlYoWLHd06/d2r7LdKZQVBXOA6PvOqWVXtdboiLTU7lQTGyVoKVTNkwi0ol4gHGlw5ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenLite.min.js" integrity="sha512-pvDW4tehKKsohH97164HwKwRGFpzayEFWTVbk8HuUoLIQ7Jp+WLN5XYokVuoCj2aT6dy8ihbW8SRTG1k0W4mSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TimelineLite.min.js" integrity="sha512-tSIDeirKC6suYILHqqPuZH3s0MvD4a5vCHXhBIcdmq4gQXZ2IB3fEYA5x2f3D2p/CbSqzKEvuTEVbS5VZ2u+ew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Tweenlite needs CSSplugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/CSSPlugin.min.js" integrity="sha512-ocsFo48WU8Xq6Y1Lwi7psXRAujG9E4TKNR4q1DbrKzaaxOMTEoao/a+mDoB+cYzY4lwbyxvqjkp/ZA1/MNlfsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- To animate on certain path, used in tweenlite -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/BezierPlugin.min.js" integrity="sha512-plyexAULVlTExvDn2yUZFJV9F8q+53MC/GpU9dEuNGXmrrI3J8Rcffjvxg3OOBALBvF+UILPLIBEoCeF2maqTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Logic for .animation .rocket -->
     <script src="js/rocket.js"></script>
   </body>
 </html>
