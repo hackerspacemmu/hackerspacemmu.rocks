@@ -149,7 +149,7 @@ h1 {
 }
 
 /* FLUID TYPOGRAPHY: Scales automatically */
-#separator-1 .achievement-title {
+#about-us .achievement-title {
   font-size: clamp(24px, 5vw, 28px);
   margin-top: 10px;
   font-weight: 600;
@@ -157,27 +157,27 @@ h1 {
   word-wrap: break-word;
 }
 
-#separator-1 {
+#about-us {
   background-color: #f2f8ff;
   padding: 100px 0;
 }
 
-#separator-1 .content-title {
+#about-us .content-title {
   font-size: 24px;
   font-weight: 600;
 }
 
-#separator-1 .content {
+#about-us .content {
   padding: 10px 30px;
 }
 
-#separator-1 .content > p {
+#about-us .content > p {
   font-size: 15px;
   margin-top: 15px;
   color: #797979;
 }
 
-#separator-1 .icon {
+#about-us .icon {
   margin: 0px;
   border-radius: 50%;
   display: flex;
@@ -187,11 +187,11 @@ h1 {
   height: 50px;
 }
 
-#separator-1 .left-icon {
+#about-us .left-icon {
   background-color: #b8b5ff;
 }
 
-#separator-1 .right-icon {
+#about-us .right-icon {
   background-color: #9ecbff;
 }
 
