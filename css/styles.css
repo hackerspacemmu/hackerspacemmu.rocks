@@ -672,8 +672,6 @@ h1 {
   background-color: #222222;
   width: 100%;
   height: 50px;
-  position: absolute;
-  bottom: 0;
   color: #ffff;
   text-align: center;
   display: flex;
