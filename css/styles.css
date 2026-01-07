@@ -683,7 +683,7 @@ h1 {
   font-size: 0.8rem;
 }
 
-@media (max-width: 1040px) {
+@media (max-width: 1400px) {
     #footer .footer-links {
         position: static;
         width: 100%;
