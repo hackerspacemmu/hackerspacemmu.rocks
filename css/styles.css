@@ -13,8 +13,8 @@ h1 {
 }
 
 .row {
-    margin: 0 auto;
-    padding: 0;
+  margin: 0 auto;
+  padding: 0;
 }
 
 #above-the-fold {
@@ -27,9 +27,9 @@ h1 {
 }
 
 @media screen and (max-width: 1100px) {
-    #above-the-fold {
-        background-size: cover;
-    }
+  #above-the-fold {
+    background-size: cover;
+  }
 }
 
 #header-nav .nav-logo-text {
@@ -63,16 +63,15 @@ h1 {
 }
 
 @media screen and (max-width: 375px) {
-
-    .navbar-toggler-icon {
-        display: none;
-    }
+  .navbar-toggler-icon {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 900px) {
-    #header-container {
-        padding-top: 0;
-    }
+  #header-container {
+    padding-top: 0;
+  }
 }
 
 #header-side #header-title {
@@ -86,7 +85,6 @@ h1 {
     0 0 8px #000,
     0 0 12px #000;
 }
-
 
 #header-side #header-title span {
   color: #b2b0ee;
@@ -133,7 +131,7 @@ h1 {
   align-items: center;
   width: 100%;
   max-width: 400px;
-    margin: auto;
+  margin: auto;
 }
 
 #header-img img {
@@ -142,10 +140,10 @@ h1 {
 }
 
 @media screen and (max-width: 900px) {
-    #header-img {
-        padding-left: 0;
-        width: 80%;
-    }
+  #header-img {
+    padding-left: 0;
+    width: 80%;
+  }
 }
 
 /* FLUID TYPOGRAPHY: Scales automatically */
@@ -189,6 +187,13 @@ h1 {
 
 #about-us .left-icon {
   background-color: #b8b5ff;
+}
+
+@media screen and (max-width: 350px) {
+  #about-us .left-icon,
+  #about-us .right-icon {
+    margin-top: 0.7em;
+  }
 }
 
 #about-us .right-icon {
@@ -555,12 +560,11 @@ h1 {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  
 }
 
 #registration .qrcode-and-form {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   gap: 100px;
   justify-content: center;
   align-items: center;
@@ -576,15 +580,12 @@ h1 {
 
 #registration .qr-code {
   text-align: center;
-
 }
-
 
 @media (max-width: 600px) {
   #registration form {
     width: 90%;
   }
-
 }
 
 #registration .form-title {
@@ -691,56 +692,57 @@ h1 {
 }
 
 @media (max-width: 1400px) {
-    #footer .footer-links {
-        position: static;
-        width: 100%;
-        text-align: center;
-        margin: 30px auto 0 auto;
-        padding-bottom: 50px;
-    }
+  #footer .footer-links {
+    position: static;
+    width: 100%;
+    text-align: center;
+    margin: 30px auto 0 auto;
+    padding-bottom: 50px;
+  }
 
-    #footer .space-img {
-        position: static;
-        display: block;
-        margin: 0 auto;
-        width: 150px;
-    }
-  
-    #footer .space-img img {
-        width: 100%;
-    }
+  #footer .space-img {
+    position: static;
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+  }
 
-    html, body {
-        overflow-x: hidden;
-        width: 100%;
-        position: relative;
-    }
+  #footer .space-img img {
+    width: 100%;
+  }
 
-    .animation {
-        height: auto;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 50px;
-    }
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
 
-    .content-box-1,
-    .content-box-2 {
-        position: relative;
-        left: auto !important;
-        right: auto !important;
-        top: auto !important;
-        width: 90%;
-        max-width: 100%;
-        margin: 10px auto;
-        text-align: center;
-    }
+  .animation {
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 50px;
+  }
 
-    .rocket {
-      position: relative;
-      left: auto;
-      margin-top: 20px;
-      transform: rotate(-45deg);
-    }
+  .content-box-1,
+  .content-box-2 {
+    position: relative;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    width: 90%;
+    max-width: 100%;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+  .rocket {
+    position: relative;
+    left: auto;
+    margin-top: 20px;
+    transform: rotate(-45deg);
+  }
 }
