@@ -602,21 +602,23 @@ h1 {
 
 .social-media-container {
   justify-content: center;
+  margin-bottom: 0.5em;
 }
 
 #footer .footer-icon-wrapper {
   width: 10%;
-  margin: 0 8px 8px 0;
 }
 
 #footer .footer-icon {
   width: 24px;
 }
+#footer .social-media-info {
+  text-align: left;
+}
 
 .black-bar {
   background-color: #222222;
   width: 100%;
-  height: 50px;
   color: #ffff;
   text-align: center;
   display: flex;
@@ -626,9 +628,16 @@ h1 {
 
 .black-bar p {
   font-size: 0.8rem;
+
+  margin-top: 1rem;
 }
 
-/* Footer Responsiveness */
+@media (max-width: 400px) {
+  #footer .footer-links .social-media-info {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 1400px) {
   #footer .footer-links {
     position: static;
@@ -636,6 +645,35 @@ h1 {
     text-align: center;
     margin: 30px auto 0 auto;
     padding-bottom: 50px;
+  }
+
+  #footer .social-media-wrapper {
+    width: fit-content !important;
+    margin: 0 auto;
+    align-items: center !important;
+  }
+
+  #footer .social-media-container {
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+
+  #footer .footer-links .social-media-info {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+
+  #footer .footer-icon-wrapper {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    margin-right: 10px;
   }
 
   #footer .space-img {
@@ -658,19 +696,17 @@ h1 {
 }
 
 .animation {
-  /* Flexbox Layout to Center Items */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  /* Large gap to accommodate the rocket flying between/around them */
   gap: 15vh;
 
   width: 100%;
   min-height: 90vh;
   position: relative;
-  overflow: visible; /* Allows rocket to fly outside boundaries */
+  overflow: visible;
   padding: 50px 0 200px 0;
   background-color: transparent;
   z-index: 100;
@@ -678,7 +714,6 @@ h1 {
 
 .content-box-1,
 .content-box-2 {
-  /* Reset Positioning for Flexbox */
   position: relative !important;
   left: auto !important;
   right: auto !important;
