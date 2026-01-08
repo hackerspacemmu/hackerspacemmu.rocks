@@ -652,7 +652,6 @@ h1 {
 
 #footer .footer-links .social-media-info {
   font-size: 20px;
-  text-align: left;
 }
 
 .social-media-container {
@@ -666,14 +665,6 @@ h1 {
 
 #footer .footer-icon {
   width: 24px;
-}
-
-#footer .social-media-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 300px;
 }
 
 .black-bar {
