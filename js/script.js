@@ -25,7 +25,24 @@ async function getMeetups() {
   }
 }
 
+async function getProjectUpdates() {}
+function getDaysActive() {
+  const currentDate = new Date();
+  const creationDate = new Date('2011-06-09');
+  console.log(currentDate);
+
+  const timeDifference = currentDate - creationDate; // in ms
+  const daysActive = Math.ceil(timeDifference / (24 * 60 * 60 * 1000)); // convert ms into days
+
+  return daysActive;
+}
+
+async function getActiveMembers() {}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const meetups = await getMeetups();
   meetupsEl.textContent = meetups;
+
+  const daysActive = getDaysActive();
+  daysActiveEl.textContent = daysActive;
 });
