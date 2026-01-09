@@ -42,7 +42,6 @@ async function getProjectUpdates() {
 function getDaysActive() {
   const currentDate = new Date();
   const creationDate = new Date('2011-06-09');
-  console.log(currentDate);
 
   const timeDifference = currentDate - creationDate; // in ms
   const daysActive = Math.ceil(timeDifference / (24 * 60 * 60 * 1000)); // convert ms into days
@@ -50,7 +49,18 @@ function getDaysActive() {
   return daysActive;
 }
 
-async function getActiveMembers() {}
+async function getActiveMembers() {
+  try {
+    const response = await $.ajax({
+      url: `${CONFIG.API_BASE_URL}/api/v1/members/count`,
+      type: 'GET',
+    });
+    const activeMembers = response.total;
+    return activeMembers;
+  } catch (error) {
+    console.error('error');
+  }
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
   const meetups = await getMeetups();
@@ -61,4 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const projectUpdates = await getProjectUpdates();
   projectUpdatesEl.textContent = projectUpdates;
+
+  const activeMembers = await getActiveMembers();
+  activeMembersEl.textContent = activeMembers;
 });
