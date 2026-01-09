@@ -25,7 +25,20 @@ async function getMeetups() {
   }
 }
 
-async function getProjectUpdates() {}
+async function getProjectUpdates() {
+  try {
+    const response = await $.ajax({
+      url: `${CONFIG.API_BASE_URL}/api/v1/updates/count`,
+      type: 'GET',
+    });
+
+    const projectUpdates = response.total;
+    return projectUpdates;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 function getDaysActive() {
   const currentDate = new Date();
   const creationDate = new Date('2011-06-09');
@@ -45,4 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const daysActive = getDaysActive();
   daysActiveEl.textContent = daysActive;
+
+  const projectUpdates = await getProjectUpdates();
+  projectUpdatesEl.textContent = projectUpdates;
 });
