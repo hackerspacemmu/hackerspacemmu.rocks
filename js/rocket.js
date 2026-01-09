@@ -13,9 +13,9 @@ const flightPath = {
   values: [
     { x: 100, y: -20 },
     { x: 300, y: 10 },
-    { x: 500, y: 400 },
+    { x: 500, y: 200 },
     { x: 750, y: -100 },
-    { x: window.innerWidth - valueToSubtract, y: -250 },
+    { x: window.innerWidth - valueToSubtract, y: -200 },
   ],
 };
 

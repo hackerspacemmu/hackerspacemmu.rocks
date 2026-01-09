@@ -26,12 +26,6 @@ h1 {
   color: white;
 }
 
-@media screen and (max-width: 1100px) {
-  #above-the-fold {
-    background-size: cover;
-  }
-}
-
 #header-nav .nav-logo-text {
   color: #ffff;
   padding-left: 20px;
@@ -573,8 +567,8 @@ h1 {
 
 #footer .space-img {
   position: absolute;
-  bottom: 50px;
-  right: 220px;
+  bottom: 120px;
+  right: 150px;
 }
 
 #footer .space-img > img {
@@ -756,7 +750,7 @@ h1 {
   height: auto;
   left: -100px;
   top: 35%;
-  transform: rotate(-45deg);
+  transform: rotate(-20deg);
   margin: 0;
 }
 
