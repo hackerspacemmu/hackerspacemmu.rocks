@@ -56,7 +56,7 @@ h1 {
   margin-left: 20px;
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 575px) {
   .navbar-toggler-icon {
     display: none;
   }
@@ -117,6 +117,47 @@ h1 {
     0 0 4px #000,
     0 0 8px #000,
     0 0 12px #000;
+}
+
+#header-side {
+  padding-left: 1em;
+}
+
+#header-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 410px;
+
+  margin: 0 auto; /* Ensures wrapper is centered */
+  padding-left: 0; /* Removes the 2em offset from before */
+}
+
+#header-img img {
+  width: 100%;
+  max-width: 400px;
+}
+
+@media screen and (max-width: 1025px) {
+  #header-img {
+    display: none !important;
+  }
+
+  #header-side {
+    /* Turn on Flexbox to control alignment */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centers elements horizontally */
+    text-align: center; /* Centers the text itself */
+  }
+
+  /* 2. Center the Button Group container */
+  #header-side .btn-grp {
+    justify-content: center; /* Centers buttons when side-by-side */
+    width: 100%;
+  }
 }
 
 #header-img {
