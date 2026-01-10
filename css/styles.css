@@ -223,7 +223,7 @@ h1 {
   background-color: #b8b5ff;
 }
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 355px) {
   #about-us .left-icon,
   #about-us .right-icon {
     margin-top: 0.7em;
