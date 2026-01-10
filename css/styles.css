@@ -1,4 +1,3 @@
-
 .container-fluid {
   max-width: 1250px;
 }
@@ -6,11 +5,19 @@
 body {
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  max-width: 100%;
 }
 
 h1 {
   font-family: 'Ubuntu', sans-serif;
 }
+
+.row {
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* --- HEADER SECTION --- */
 
 #above-the-fold {
   background: url('../images/hackerspace-header-v2.jpg');
@@ -18,10 +25,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
   color: white;
-  padding-bottom: 900px;
-  /* Set for demo purpose only */
 }
 
 #header-nav .nav-logo-text {
@@ -31,12 +35,6 @@ h1 {
     0 0 3px #000,
     0 0 3px #000,
     0 0 6px #000;
-}
-
-.navbar-expand-md {
-  display: flex;
-
-  justify-content: space-between;
 }
 
 #header-row .nav-container {
@@ -60,24 +58,27 @@ h1 {
   margin-left: 20px;
 }
 
-#header-container {
-  padding-top: 100px;
+@media screen and (max-width: 575px) {
+  .navbar-toggler-icon {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #header-container {
+    padding-top: 0;
+  }
 }
 
 #header-side #header-title {
   font-weight: bold;
   padding-bottom: 20px;
-  font-size: 65px;
+  font-size: clamp(30px, 8vw, 65px);
+  line-height: 1.2;
   text-shadow:
     0 0 4px #000,
     0 0 8px #000,
     0 0 12px #000;
-}
-
-@media (max-width: 600px) {
-  #header-side #header-title {
-    font-size: 30px;
-  }
 }
 
 #header-side #header-title span {
@@ -85,7 +86,6 @@ h1 {
 }
 
 #header-side #header-content {
-  margin-right: 30px;
   text-shadow:
     0 0 4px #000,
     0 0 8px #000,
@@ -113,53 +113,89 @@ h1 {
 .btn-grp .why-btn {
   color: #ffff;
   border: 2px solid #ffff;
-  margin-left: 10px;
   text-shadow:
     0 0 4px #000,
     0 0 8px #000,
     0 0 12px #000;
 }
 
+#header-side {
+  padding-left: 1em;
+}
+
 #header-img {
-  padding-left: 260px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  width: 300px;
+  width: 100%;
+  height: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #header-img img {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
+  transform: translateX(28px);
 }
 
-#separator-1 .achievement-title {
-  font-size: 28px;
-  margin-top: 10px;
-  font-weight: 600;
-  word-spacing: 3px;
+@media screen and (max-width: 1025px) {
+  #header-img {
+    display: none !important;
+  }
+
+  #header-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  #header-side .btn-grp {
+    justify-content: center;
+    width: 100%;
+  }
 }
 
-#separator-1 {
+@media screen and (max-width: 900px) {
+  #header-img {
+    padding-left: 0;
+    width: 90%;
+  }
+}
+
+/* --- ABOUT US --- */
+
+#about-us {
   background-color: #f2f8ff;
   padding: 100px 0;
 }
 
-#separator-1 .content-title {
+#about-us .achievement-title {
+  font-size: clamp(24px, 5vw, 28px);
+  margin-top: 10px;
+  font-weight: 600;
+  word-spacing: 3px;
+  word-wrap: break-word;
+}
+
+#about-us .content-title {
   font-size: 24px;
   font-weight: 600;
 }
 
-#separator-1 .content {
+#about-us .content {
   padding: 10px 30px;
 }
 
-#separator-1 .content > p {
+#about-us .content > p {
   font-size: 15px;
   margin-top: 15px;
   color: #797979;
 }
 
-#separator-1 .icon {
+#about-us .icon {
   margin: 0px;
   border-radius: 50%;
   display: flex;
@@ -169,13 +205,22 @@ h1 {
   height: 50px;
 }
 
-#separator-1 .left-icon {
+#about-us .left-icon {
   background-color: #b8b5ff;
 }
 
-#separator-1 .right-icon {
+#about-us .right-icon {
   background-color: #9ecbff;
 }
+
+@media screen and (max-width: 355px) {
+  #about-us .left-icon,
+  #about-us .right-icon {
+    margin-top: 0.7em;
+  }
+}
+
+/* --- HACKING TOGETHER --- */
 
 #hacking-together {
   background: url('../images/Hacking-together-background.jpg');
@@ -186,9 +231,6 @@ h1 {
   padding: 270px 0;
   max-width: 1100px;
   z-index: -2;
-}
-
-#hacking-together {
   margin: 50px auto;
 }
 
@@ -211,6 +253,8 @@ h1 {
   transform: translate(10%, 0px);
   z-index: -1;
 }
+
+/* --- WHAT DO WE DO --- */
 
 #what-do-we-do {
   padding: 100px 0;
@@ -312,6 +356,8 @@ h1 {
   }
 }
 
+/* --- SEPARATORS & STATISTICS --- */
+
 #separator-2 {
   background-color: #efeeff;
   padding: 60px 0 80px 0;
@@ -330,10 +376,6 @@ h1 {
   line-height: 30px;
 }
 
-/* #statistics {
-  padding: 3em 0;
-  Set for demo purpose only 
-} */
 #statistics {
   padding: 100px 0;
 }
@@ -411,6 +453,8 @@ h1 {
   text-align: right;
 }
 
+/* --- EVENTS --- */
+
 #events-and-activities {
   padding: 100px 0px;
 }
@@ -472,73 +516,7 @@ h1 {
   margin-right: 15px;
 }
 
-.animation {
-  height: 90vh;
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 200px;
-}
-
-.content-box-1 {
-  position: absolute;
-  background-color: #8fe4ff;
-  width: 420px;
-  height: 90px;
-  font-size: 30px;
-  top: 50px;
-  left: 175px;
-  text-align: center;
-  border-radius: 20px;
-  padding: 20px 20px;
-  color: #052c97;
-}
-
-.content-box-2 {
-  position: absolute;
-  background-color: #c8c6ff;
-  opacity: 0.5;
-  width: 300px;
-  height: 90px;
-  font-size: 30px;
-  right: 200px;
-  bottom: 200px;
-  border-radius: 20px;
-  text-align: center;
-  padding: 20px 20px;
-  color: #0d0597;
-}
-
-.content-box-2 p {
-  opacity: 1;
-}
-
-.content-box-3 {
-  position: absolute;
-  background-color: #7fe6ee;
-  opacity: 0.5;
-  width: 75%;
-  font-size: 18px;
-  /* height: 90px; */
-  border-radius: 20px;
-  text-align: center;
-  padding: 20px 20px;
-  color: black;
-  overflow: visible;
-  bottom: 200px;
-  z-index: 10;
-  /* top: 100%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-}
-
-.rocket {
-  height: 150px;
-  position: absolute;
-  transform: rotate(-25deg);
-  top: 50%;
-  left: -10%;
-  z-index: 99;
-}
+/* --- REGISTRATION --- */
 
 #registration {
   background: url('../images/space-background.jpg');
@@ -560,12 +538,11 @@ h1 {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  
 }
 
 #registration .qrcode-and-form {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   gap: 100px;
   justify-content: center;
   align-items: center;
@@ -581,15 +558,12 @@ h1 {
 
 #registration .qr-code {
   text-align: center;
-
 }
-
 
 @media (max-width: 600px) {
   #registration form {
     width: 90%;
   }
-
 }
 
 #registration .form-title {
@@ -611,7 +585,6 @@ h1 {
   border: 1px solid #9895e0;
   width: 500px;
   height: 40px;
-  /* padding-left: 12px; */
 }
 
 #registration .submit-button {
@@ -628,10 +601,12 @@ h1 {
   padding-top: 50px;
 }
 
+/* --- FOOTER --- */
+
 #footer .space-img {
   position: absolute;
-  bottom: 50px;
-  right: 220px;
+  bottom: 120px;
+  right: 150px;
 }
 
 #footer .space-img > img {
@@ -656,36 +631,27 @@ h1 {
 
 #footer .footer-links .social-media-info {
   font-size: 20px;
-  text-align: left;
 }
 
 .social-media-container {
   justify-content: center;
+  margin-bottom: 0.5em;
 }
 
 #footer .footer-icon-wrapper {
   width: 10%;
-  margin: 0 8px 8px 0;
 }
 
 #footer .footer-icon {
   width: 24px;
 }
-
-#footer .social-media-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 300px;
+#footer .social-media-info {
+  text-align: left;
 }
 
 .black-bar {
   background-color: #222222;
   width: 100%;
-  height: 50px;
-  position: absolute;
-  bottom: 0;
   color: #ffff;
   text-align: center;
   display: flex;
@@ -695,22 +661,162 @@ h1 {
 
 .black-bar p {
   font-size: 0.8rem;
+  margin-top: 1rem;
 }
 
-@media (max-width: 600px) {
-  #footer .space-img > img {
-    width: 100px;
+@media (max-width: 400px) {
+  #footer .footer-links .social-media-info {
+    font-size: 1rem;
   }
-  #footer .space-img {
-    right: 20px;
+}
+
+@media (max-width: 1400px) {
+  #footer .footer-links {
+    position: static;
+    width: 100%;
+    text-align: center;
+    margin: 30px auto 0 auto;
+    padding-bottom: 50px;
   }
 
-  #footer .footer-links {
-    bottom: 220px;
-    right: 25px;
-    font-size: 12px;
+  #footer .social-media-wrapper {
+    width: fit-content !important;
+    margin: 0 auto;
+    align-items: center !important;
   }
-  #footer .footer-links .welcome-word {
-    font-size: 16px;
+
+  #footer .social-media-container {
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+
+  #footer .footer-links .social-media-info {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+
+  #footer .footer-icon-wrapper {
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    margin-right: 10px;
+  }
+
+  #footer .space-img {
+    position: static;
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+  }
+
+  #footer .space-img img {
+    width: 100%;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+}
+
+/* --- ANIMATION --- */
+
+.animation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15vh;
+  width: 100%;
+  min-height: 90vh;
+  position: relative;
+  overflow: visible;
+  padding: 50px 0 200px 0;
+  background-color: transparent;
+  z-index: 100;
+}
+
+.content-box-1,
+.content-box-2 {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+
+  /* Sizing */
+  width: 80%;
+  max-width: 500px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 20px;
+
+  /* Fluid Typography */
+  font-size: clamp(1rem, 5vw, 1.8rem);
+}
+
+.content-box-1 {
+  background-color: #8fe4ff;
+  color: #052c97;
+}
+
+.content-box-2 {
+  background-color: rgba(200, 198, 255, 0.7);
+  color: #0d0597;
+}
+
+.content-box-2 p {
+  opacity: 1;
+  margin: 0;
+}
+
+/* Rocket Styles (Base) */
+.rocket {
+  position: absolute !important;
+  z-index: 10;
+  width: clamp(150px, 20vw, 300px);
+  height: auto;
+  left: -100px;
+  top: 35%;
+  transform: rotate(-20deg);
+  margin: 0;
+}
+
+@media screen and (min-width: 1024px) {
+  .animation {
+    display: block; /* Disable Flexbox */
+    height: 90vh;
+    padding-bottom: 0;
+  }
+
+  .content-box-1 {
+    position: absolute !important;
+    width: 420px;
+    height: 90px;
+    font-size: 30px;
+    top: 10% !important;
+    left: 15% !important;
+  }
+
+  .content-box-2 {
+    position: absolute !important;
+    width: 300px;
+    height: 90px;
+    font-size: 30px;
+    bottom: 20% !important;
+    right: 15% !important;
+  }
+
+  .rocket {
+    left: -150px;
   }
 }
