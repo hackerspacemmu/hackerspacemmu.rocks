@@ -17,6 +17,8 @@ h1 {
   padding: 0;
 }
 
+/* --- HEADER SECTION --- */
+
 #above-the-fold {
   background: url('../images/hackerspace-header-v2.jpg');
   height: 100%;
@@ -71,7 +73,6 @@ h1 {
 #header-side #header-title {
   font-weight: bold;
   padding-bottom: 20px;
-  /* FLUID TYPOGRAPHY: Scales automatically between 30px and 65px */
   font-size: clamp(30px, 8vw, 65px);
   line-height: 1.2;
   text-shadow:
@@ -124,18 +125,18 @@ h1 {
 
 #header-img {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
-  max-width: 410px;
-
-  margin: 0 auto; /* Ensures wrapper is centered */
-  padding-left: 0; /* Removes the 2em offset from before */
+  height: 100%;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #header-img img {
   width: 100%;
   max-width: 400px;
+  transform: translateX(28px);
 }
 
 @media screen and (max-width: 1025px) {
@@ -144,34 +145,17 @@ h1 {
   }
 
   #header-side {
-    /* Turn on Flexbox to control alignment */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Centers elements horizontally */
-    text-align: center; /* Centers the text itself */
+    align-items: center;
+    text-align: center;
   }
 
-  /* 2. Center the Button Group container */
   #header-side .btn-grp {
-    justify-content: center; /* Centers buttons when side-by-side */
+    justify-content: center;
     width: 100%;
   }
-}
-
-#header-img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 410px;
-  margin: auto;
-  padding-left: 2em;
-}
-
-#header-img img {
-  width: 100%;
-  max-width: 400px;
 }
 
 @media screen and (max-width: 900px) {
@@ -181,17 +165,19 @@ h1 {
   }
 }
 
+/* --- ABOUT US --- */
+
+#about-us {
+  background-color: #f2f8ff;
+  padding: 100px 0;
+}
+
 #about-us .achievement-title {
   font-size: clamp(24px, 5vw, 28px);
   margin-top: 10px;
   font-weight: 600;
   word-spacing: 3px;
   word-wrap: break-word;
-}
-
-#about-us {
-  background-color: #f2f8ff;
-  padding: 100px 0;
 }
 
 #about-us .content-title {
@@ -223,6 +209,10 @@ h1 {
   background-color: #b8b5ff;
 }
 
+#about-us .right-icon {
+  background-color: #9ecbff;
+}
+
 @media screen and (max-width: 355px) {
   #about-us .left-icon,
   #about-us .right-icon {
@@ -230,9 +220,7 @@ h1 {
   }
 }
 
-#about-us .right-icon {
-  background-color: #9ecbff;
-}
+/* --- HACKING TOGETHER --- */
 
 #hacking-together {
   background: url('../images/Hacking-together-background.jpg');
@@ -265,6 +253,8 @@ h1 {
   transform: translate(10%, 0px);
   z-index: -1;
 }
+
+/* --- WHAT DO WE DO --- */
 
 #what-do-we-do {
   padding: 100px 0;
@@ -366,6 +356,8 @@ h1 {
   }
 }
 
+/* --- SEPARATORS & STATISTICS --- */
+
 #separator-2 {
   background-color: #efeeff;
   padding: 60px 0 80px 0;
@@ -461,6 +453,8 @@ h1 {
   text-align: right;
 }
 
+/* --- EVENTS --- */
+
 #events-and-activities {
   padding: 100px 0px;
 }
@@ -521,6 +515,8 @@ h1 {
   width: 18px;
   margin-right: 15px;
 }
+
+/* --- REGISTRATION --- */
 
 #registration {
   background: url('../images/space-background.jpg');
@@ -605,6 +601,8 @@ h1 {
   padding-top: 50px;
 }
 
+/* --- FOOTER --- */
+
 #footer .space-img {
   position: absolute;
   bottom: 120px;
@@ -663,7 +661,6 @@ h1 {
 
 .black-bar p {
   font-size: 0.8rem;
-
   margin-top: 1rem;
 }
 
@@ -730,14 +727,14 @@ h1 {
   }
 }
 
+/* --- ANIMATION --- */
+
 .animation {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   gap: 15vh;
-
   width: 100%;
   min-height: 90vh;
   position: relative;
