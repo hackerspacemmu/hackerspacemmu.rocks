@@ -22,6 +22,7 @@ async function getMeetups() {
     return meetups;
   } catch (error) {
     console.error(error);
+    return '500+';
   }
 }
 
@@ -36,6 +37,7 @@ async function getProjectUpdates() {
     return projectUpdates;
   } catch (error) {
     console.error(error);
+    return '1500+';
   }
 }
 
@@ -59,6 +61,7 @@ async function getActiveMembers() {
     return activeMembers;
   } catch (error) {
     console.error('error');
+    return '50+';
   }
 }
 
