@@ -568,6 +568,8 @@
         --legacy-blue: #93a5ff;
         --legacy-inset: clamp(12px, 8.25vw, 170px);
         --card-h: clamp(150px, 28vh, 340px);
+        --lane-h: 40px;
+        --rocket-w: clamp(56px, 4.4vw, 76px);
 
         min-height: calc(100vh - var(--nav-h));
         min-height: calc(100dvh - var(--nav-h));
@@ -607,6 +609,7 @@
         align-items: center;
         gap: clamp(14px, 1.6vw, 28px);
         margin-bottom: 22px;
+        padding-top: var(--lane-h);
       }
 
       .timeline-now {
@@ -623,6 +626,42 @@
       .timeline-rail {
         position: relative;
         flex: 0 1 clamp(200px, 26vw, 460px);
+      }
+
+      /* the rocket flies in a lane above the ticks; JS positions it */
+      .timeline-flight {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 100%;
+        height: var(--lane-h);
+        pointer-events: none;
+      }
+
+      .timeline-trail {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 2px;
+        margin-top: -1px;
+        border-radius: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.35) 40%,
+          var(--now-accent, #fff)
+        );
+        transform-origin: 0 50%;
+      }
+
+      .timeline-rocket {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: var(--rocket-w);
+        height: auto;
+        display: block;
+        will-change: transform, opacity;
       }
 
       .timeline-ticks {
@@ -658,6 +697,11 @@
         transition:
           height 0.3s var(--ease-out),
           background 0.3s;
+      }
+
+      .tick.is-passed::before {
+        height: 14px;
+        background: #bdbdbd;
       }
 
       .tick:hover::before {
@@ -1070,14 +1114,10 @@
       <ul id="nav-links" class="nav-links">
         <li><a href="index.html#about-us">About Us</a></li>
         <li>
-          <a href="index.html#events-and-activities"
-            >Events &amp; Activities</a
-          >
+          <a href="index.html#events-and-activities">Events &amp; Activities</a>
         </li>
         <li>
-          <a class="nav-cta" href="index.html#registration-form"
-            >Join Us Now</a
-          >
+          <a class="nav-cta" href="index.html#registration-form">Join Us Now</a>
         </li>
       </ul>
     </nav>
@@ -1249,6 +1289,10 @@
         <div class="timeline">
           <p class="timeline-now" aria-hidden="true">2011</p>
           <div class="timeline-rail">
+            <div class="timeline-flight" aria-hidden="true">
+              <span class="timeline-trail"></span>
+              <img class="timeline-rocket" src="images/rocket%203.svg" alt="" />
+            </div>
             <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
             <div class="timeline-ends" aria-hidden="true">
               <span></span><span></span>
@@ -1458,7 +1502,7 @@
       const nowLabel = legacy.querySelector('.timeline-now');
       const pauseBtn = legacy.querySelector('.timeline-pause');
 
-      const DRIFT = 38; // px per second
+      const DRIFT = 60; // px per second
       const IDLE_MS = 2500; // how long drift waits after the user takes over
       const GLIDE_MS = 900;
 
@@ -1487,6 +1531,14 @@
       firstEnd.textContent = years[0];
       lastEnd.textContent = years.at(-1);
 
+      const rail = legacy.querySelector('.timeline-rail');
+      const rocket = rail.querySelector('.timeline-rocket');
+      const trail = rail.querySelector('.timeline-trail');
+      const yearOf = cards.map((card) => years.indexOf(card.dataset.year));
+      const LEVEL = 31.7; // the artwork climbs at ~32°; this turns it to face right
+      const LAUNCH = 0.55; // share of the last-year → first-year gap spent lifting off
+      let tickX = [];
+
       // The track holds the real cards followed by enough inert copies to
       // cover the viewport, so wrapping the offset by one set's width is
       // seamless.
@@ -1501,6 +1553,10 @@
         const oldW = setW;
         setW = last.offsetLeft + last.offsetWidth + gap - first.offsetLeft;
         lefts = cards.map((card) => card.offsetLeft - first.offsetLeft);
+
+        tickX = ticks.map((tick) => tick.offsetLeft + tick.offsetWidth / 2);
+        trail.style.left = `${tickX[0]}px`;
+        trail.style.width = `${tickX.at(-1) - tickX[0]}px`;
 
         const copies = Math.ceil(reel.clientWidth / setW);
         for (let n = 0; n < copies; n++) {
@@ -1531,6 +1587,8 @@
       const loopDelta = (a, b) => wrap(b - a + setW / 2) - setW / 2;
       const easeInOut = (t) =>
         t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+      const easeOut = (t) => 1 - (1 - t) ** 3;
+      const clamp01 = (t) => Math.min(1, Math.max(0, t));
 
       const setActive = (pos) => {
         // the card whose left edge sits closest to the intro's left edge
@@ -1549,10 +1607,63 @@
         );
       };
 
+      // The rocket is driven by the reel's position rather than a clock, so
+      // dragging backwards (or pausing mid-launch) just works.
+      const fly = (pos) => {
+        let i = lefts.length - 1;
+        while (i > 0 && lefts[i] > pos) i--;
+        const next = lefts[i + 1] ?? setW;
+        const frac = (pos - lefts[i]) / (next - lefts[i]);
+        const start = tickX[0];
+        const end = tickX.at(-1);
+
+        let rx;
+        let ry = 0;
+        let tilt = LEVEL;
+        let scale = 1;
+        let alpha = 1;
+        let trailAlpha = 1;
+
+        if (i < lefts.length - 1) {
+          // cruising between two years
+          const a = tickX[yearOf[i]];
+          const b = tickX[yearOf[i + 1]];
+          rx = a + (b - a) * frac;
+        } else if (frac < LAUNCH) {
+          // past the last year: pitch up and blast off into the open space
+          const t = frac / LAUNCH;
+          const e = t * t;
+          rx = end + 320 * e;
+          ry = -260 * e;
+          tilt = LEVEL - 45 * easeOut(clamp01(t / 0.4));
+          scale = 1 - 0.35 * e;
+          alpha = 1 - clamp01((t - 0.6) / 0.4);
+          trailAlpha = 1 - t;
+        } else {
+          // back round to the start: glide in from the left onto the first year
+          const e = easeOut((frac - LAUNCH) / (1 - LAUNCH));
+          rx = start - 70 * (1 - e);
+          alpha = e;
+          trailAlpha = 0;
+        }
+
+        rocket.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) rotate(${tilt}deg) scale(${scale})`;
+        rocket.style.opacity = alpha;
+        trail.style.transform = `scaleX(${(Math.min(rx, end) - start) / (end - start)})`;
+        trail.style.opacity = trailAlpha;
+        ticks.forEach((tick, j) =>
+          tick.classList.toggle(
+            'is-passed',
+            trailAlpha > 0 && tickX[j] <= rx + 0.5,
+          ),
+        );
+      };
+
       const render = () => {
         const pos = wrap(x);
         track.style.transform = `translate3d(${-pos}px, 0, 0)`;
         setActive(pos);
+        fly(pos);
       };
 
       const frame = (now) => {
@@ -1584,9 +1695,13 @@
       const goTo = (year) => {
         const pos = wrap(x);
         const target = lefts[cards.findIndex((c) => c.dataset.year === year)];
+        // Fly straight along the rail; only carry on round the loop when
+        // already mid-launch and heading back to the start.
+        let d = target - pos;
+        if (pos > lefts.at(-1) && Math.abs(d + setW) < Math.abs(d)) d += setW;
         glide = {
           from: pos,
-          to: pos + loopDelta(pos, target),
+          to: pos + d,
           start: performance.now(),
           dur: reduceMotion.matches ? 1 : GLIDE_MS,
         };
@@ -1653,10 +1768,12 @@
 
       measure();
       render();
-      new ResizeObserver(() => {
+      const resizer = new ResizeObserver(() => {
         measure();
         render();
-      }).observe(reel);
+      });
+      resizer.observe(reel);
+      resizer.observe(rail);
 
       new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting;
