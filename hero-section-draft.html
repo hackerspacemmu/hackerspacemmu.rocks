@@ -1,0 +1,1680 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hackerspace MMU</title>
+    <link rel="icon" type="image/png" href="images/hsm_logo_ver_3.png" />
+
+    <link
+      rel="preload"
+      href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="vendor/main-fonts/Jost-VariableFont_wght.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+
+    <style>
+      @font-face {
+        font-family: 'Special Gothic Expanded One';
+        src: url('vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf')
+          format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Jost';
+        src: url('vendor/main-fonts/Jost-VariableFont_wght.ttf')
+          format('truetype');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --page-bg: #1a1a1a;
+        --tile-bg: #333;
+        --text: #fff;
+        --text-muted: #dcdcdc;
+
+        --font-body: 'Jost', system-ui, sans-serif;
+        --font-display: 'Special Gothic Expanded One', 'Jost', sans-serif;
+
+        --edge: clamp(12px, 2vw, 40px);
+        --gap: clamp(8px, 1vw, 18px);
+        --tile-pad: clamp(8px, 1vw, 18px);
+        --tile-radius: clamp(10px, 0.8vw, 16px);
+        --img-radius: clamp(6px, 0.45vw, 9px);
+
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        --stagger: 90ms;
+
+        /* kept in sync with the sticky nav's real height by JS */
+        --nav-h: 64px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+      }
+
+      html {
+        scroll-padding-top: var(--nav-h);
+      }
+
+      body {
+        background: var(--page-bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-synthesis: none;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .hero-screen {
+        height: calc(100vh - var(--nav-h));
+        height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ---------- NAV ---------- */
+
+      .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--page-bg);
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: clamp(10px, 1.6vh, 18px) var(--edge);
+        font-family: var(--font-body);
+        opacity: 0;
+        animation: fade-down 0.6s var(--ease-out) 0.05s forwards;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .brand img {
+        height: clamp(22px, 3.2vh, 32px);
+        width: auto;
+        display: block;
+      }
+
+      .brand span {
+        font-family: var(--font-display);
+        font-size: clamp(14px, 1.1vw, 18px);
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(16px, 2.4vw, 40px);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: clamp(14px, 1vw, 17px);
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+      }
+
+      .nav-links a:hover {
+        opacity: 0.7;
+      }
+
+      .nav-links .nav-cta {
+        display: inline-block;
+        padding: 0.65em 1.5em;
+        border: 1px solid #fff;
+        border-radius: 999px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+
+      .nav-links .nav-cta:hover {
+        background: #fff;
+        color: #111;
+        opacity: 1;
+      }
+
+      .nav-toggle {
+        display: none;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .nav-toggle svg {
+        display: block;
+        margin: auto;
+      }
+
+      /* ---------- HERO LAYOUT ---------- */
+
+      .hero {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        gap: var(--gap);
+        padding: 0 var(--edge) var(--edge);
+      }
+
+      .hero-main {
+        flex: 1153 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      .hero-side {
+        flex: 615 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      .hero-row {
+        flex: var(--grow) 1 0;
+        min-height: 0;
+        display: flex;
+        gap: var(--gap);
+      }
+
+      /* the text row may grow to fit its copy; photo rows absorb the difference */
+      .hero-row.row-text {
+        min-height: auto;
+      }
+
+      .tile {
+        position: relative;
+        flex: var(--grow) 1 0;
+        min-width: 0;
+        min-height: 0;
+        margin: 0;
+        overflow: hidden;
+        background: var(--tile-bg);
+        border-radius: var(--tile-radius);
+        opacity: 0;
+        transform: translateY(16px) scale(0.965);
+        animation: tile-in 0.7s var(--ease-out) forwards;
+        animation-delay: calc(150ms + var(--i) * var(--stagger));
+      }
+
+      /* ---------- PHOTO LOAD-IN ---------- */
+
+      .tile::before {
+        content: '';
+        position: absolute;
+        inset: var(--tile-pad);
+        border-radius: var(--img-radius);
+        background: linear-gradient(
+            100deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.06) 50%,
+            transparent 70%
+          )
+          #3b3b3b;
+        background-size: 250% 100%;
+        animation: shimmer 1.4s linear infinite;
+        transition: opacity 0.4s;
+      }
+
+      .tile.is-loaded::before {
+        opacity: 0;
+        animation: none;
+      }
+
+      .frame {
+        position: absolute;
+        inset: var(--tile-pad);
+        overflow: hidden;
+        border-radius: var(--img-radius);
+        clip-path: inset(100% 0 0 0 round var(--img-radius));
+        transition: clip-path 0.9s var(--ease-in-out) var(--reveal-delay, 0ms);
+      }
+
+      .frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+        display: block;
+        transform: scale(1.18);
+        filter: brightness(1.6) saturate(0.4);
+        transition:
+          transform 1.6s var(--ease-out) var(--reveal-delay, 0ms),
+          filter 1.2s var(--ease-out) var(--reveal-delay, 0ms);
+      }
+
+      .tile.is-loaded .frame {
+        clip-path: inset(0 0 0 0 round var(--img-radius));
+      }
+
+      .tile.is-loaded .frame img {
+        transform: none;
+        filter: none;
+      }
+
+      /* ---------- TEXT TILE ---------- */
+
+      .tile-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(14px, 3vh, 44px) clamp(16px, 2.2vw, 44px);
+      }
+
+      .tile-text::before {
+        content: none;
+      }
+
+      .tile-text > * {
+        opacity: 0;
+        transform: translateY(12px);
+        animation: fade-up 0.7s var(--ease-out) forwards;
+      }
+
+      .tile-text > :nth-child(1) {
+        animation-delay: 0.75s;
+      }
+      .tile-text > :nth-child(2) {
+        animation-delay: 0.85s;
+      }
+      .tile-text > :nth-child(3) {
+        animation-delay: 0.95s;
+      }
+
+      .tile-text h1 {
+        margin: 0 0 clamp(8px, 1.6vh, 18px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(20px, min(2.95vw, 5.4vh), 58px);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+      }
+
+      .tile-text p {
+        margin: 0 0 clamp(12px, 2.6vh, 32px);
+        font-size: clamp(13px, min(1.24vw, 2.2vh), 23px);
+        line-height: 1.45;
+        letter-spacing: 0.02em;
+        text-align: justify;
+        color: var(--text-muted);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px clamp(14px, 1.3vw, 24px);
+      }
+
+      .btn-signup {
+        display: inline-block;
+        padding: 0.78em 2.9em;
+        border-radius: 999px;
+        background: #fff;
+        color: #111;
+        font-weight: 600;
+        font-size: clamp(13px, min(1.08vw, 2vh), 21px);
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+          transform 0.2s var(--ease-out),
+          background 0.2s;
+      }
+
+      .btn-signup:hover {
+        background: #e8e8e8;
+        transform: translateY(-1px);
+      }
+
+      .link-why {
+        font-size: clamp(13px, min(1.08vw, 2vh), 21px);
+        text-underline-offset: 3px;
+        white-space: nowrap;
+      }
+
+      .link-why:hover {
+        color: var(--text-muted);
+      }
+
+      /* ---------- STATS ---------- */
+
+      .stats {
+        --stat-blue: #1d4ae0;
+        --stat-red: #c4291e;
+
+        height: calc(100vh - var(--nav-h));
+        height: calc(100dvh - var(--nav-h));
+        min-height: 540px;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(20px, 4.5vh, 56px) clamp(12px, 8.25vw, 170px)
+          clamp(20px, 6vh, 90px);
+      }
+
+      .stats h2 {
+        flex: none;
+        margin: 0 0 clamp(16px, 5vh, 68px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(24px, min(2.9vw, 4.4vh), 60px);
+        line-height: 1.1;
+        text-align: center;
+      }
+
+      .stats-grid {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        max-width: 1680px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      .stats-row {
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+        gap: var(--gap);
+      }
+
+      .stat {
+        position: relative;
+        flex: var(--grow, 1) 1 0;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--tile-radius);
+        background: var(--tile-bg);
+        /* text inside sizes itself against the tile via cqw/cqh */
+        container-type: size;
+      }
+
+      .stat-text {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        line-height: 1.25;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .stat-text > span {
+        display: block;
+      }
+
+      .count {
+        display: inline-block;
+        text-align: right;
+      }
+
+      /* photo tiles */
+      .stat-photo {
+        overflow: hidden;
+      }
+
+      .stat-photo img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+      }
+
+      .stat-photo::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: var(--shade, rgba(0, 0, 0, 0.42));
+      }
+
+      /* the numbers and labels are sized off each tile's mockup proportions */
+      .stat-members {
+        --pos: 50% 42%;
+        --shade: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0.25) 75%
+        );
+        align-items: flex-start;
+      }
+
+      .stat-members .stat-text {
+        padding-left: 11cqw;
+        text-align: left;
+        font-size: min(19.6cqh, 8cqw);
+      }
+
+      .stat-days {
+        background: #fff;
+        color: var(--stat-blue);
+      }
+
+      .stat-days .stat-text {
+        font-size: min(22.4cqh, 9.4cqw);
+      }
+
+      .stat-meetups {
+        background: var(--stat-blue);
+      }
+
+      .stat-meetups .stat-text {
+        font-size: min(19.7cqh, 13.4cqw);
+      }
+
+      /* the member cut-out pokes out over the top edge, so no clipping here */
+      .stat-updates {
+        background: var(--stat-red);
+        align-items: flex-end;
+      }
+
+      .stat-updates .stat-text {
+        margin-right: 67cqh;
+        padding-left: 5cqw;
+        font-size: min(26.4cqh, calc((95cqw - 67cqh) / 8.1));
+      }
+
+      .stat-person {
+        position: absolute;
+        right: 1%;
+        bottom: 0;
+        z-index: 1;
+        height: 112%;
+        width: auto;
+        pointer-events: none;
+      }
+
+      .stat-hackathons {
+        --pos: 50% 44%;
+      }
+
+      .stat-hackathons .stat-text {
+        font-size: min(30cqh, 9.4cqw);
+      }
+
+      /* tiles rise in once the section scrolls into view (JS adds these) */
+      .stats.is-armed .stat {
+        opacity: 0;
+        transform: translateY(16px) scale(0.965);
+      }
+
+      .stats.is-armed.is-in .stat {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+        transition-delay: calc(var(--i) * var(--stagger));
+      }
+
+      /* ---------- LEGACY ---------- */
+
+      .legacy {
+        --legacy-red: #f0776c;
+        --legacy-blue: #93a5ff;
+        --legacy-inset: clamp(12px, 8.25vw, 170px);
+        --card-h: clamp(150px, 28vh, 340px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(28px, 6vh, 72px);
+        padding: clamp(40px, 8vh, 110px) 0;
+        overflow: hidden;
+      }
+
+      .legacy-intro {
+        padding-inline: var(--legacy-inset);
+      }
+
+      .legacy h2 {
+        margin: 0 0 clamp(12px, 2.4vh, 24px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(28px, min(3.4vw, 6vh), 68px);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+      }
+
+      .legacy-intro > p {
+        max-width: 40ch;
+        margin: 0 0 clamp(20px, 4vh, 44px);
+        font-size: clamp(14px, min(1.1vw, 2vh), 20px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        color: #a8a8a8;
+      }
+
+      /* year readout + one tick per year, so there are no gaps to explain */
+      .timeline {
+        display: flex;
+        align-items: center;
+        gap: clamp(14px, 1.6vw, 28px);
+        margin-bottom: 22px;
+      }
+
+      .timeline-now {
+        flex: none;
+        min-width: 4.6ch;
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(20px, min(1.9vw, 3.4vh), 36px);
+        line-height: 1;
+        color: var(--now-accent, #fff);
+        transition: color 0.3s;
+      }
+
+      .timeline-rail {
+        position: relative;
+        flex: 0 1 clamp(200px, 26vw, 460px);
+      }
+
+      .timeline-ticks {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .tick {
+        position: relative;
+        display: block;
+        width: 14px;
+        height: 28px;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+      }
+
+      .tick::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 2px;
+        height: 10px;
+        border-radius: 1px;
+        background: #555;
+        translate: -50% 0;
+        transition:
+          height 0.3s var(--ease-out),
+          background 0.3s;
+      }
+
+      .tick:hover::before {
+        height: 15px;
+        background: #999;
+      }
+
+      .tick[aria-current='true']::before {
+        height: 26px;
+        background: var(--now-accent, #fff);
+      }
+
+      .tick:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+        border-radius: 3px;
+      }
+
+      .timeline-ends {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: #8a8a8a;
+      }
+
+      .timeline-pause {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid #555;
+        border-radius: 50%;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+
+      .timeline-pause:hover,
+      .timeline-pause:focus-visible {
+        border-color: #fff;
+      }
+
+      .timeline-pause .icon-play,
+      .legacy.is-paused .timeline-pause .icon-pause {
+        display: none;
+      }
+
+      .legacy.is-paused .timeline-pause .icon-play {
+        display: block;
+      }
+
+      /* the reel drifts on its own; JS moves the track and loops it */
+      .reel {
+        --fade: clamp(24px, 6vw, 120px);
+
+        cursor: grab;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 var(--fade),
+          #000 calc(100% - var(--fade)),
+          transparent
+        );
+        mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 var(--fade),
+          #000 calc(100% - var(--fade)),
+          transparent
+        );
+      }
+
+      .reel.is-dragging {
+        cursor: grabbing;
+      }
+
+      .reel-track {
+        position: relative;
+        display: flex;
+        gap: var(--gap);
+        width: max-content;
+        padding-left: var(--legacy-inset);
+        will-change: transform;
+      }
+
+      .year-card {
+        flex: none;
+        width: calc(var(--card-h) * var(--ar, 4 / 3));
+        margin: 0;
+      }
+
+      .year-photo {
+        height: var(--card-h);
+        overflow: hidden;
+        border-radius: var(--img-radius);
+        background: #262626;
+      }
+
+      .year-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+        display: block;
+        pointer-events: none;
+        -webkit-user-drag: none;
+      }
+
+      .year-photo.is-placeholder {
+        display: grid;
+        place-items: center;
+        background: repeating-linear-gradient(
+          135deg,
+          #242424 0 12px,
+          #292929 12px 24px
+        );
+      }
+
+      .year-photo.is-placeholder span {
+        font-family: var(--font-display);
+        font-size: calc(var(--card-h) * 0.2);
+        color: rgba(255, 255, 255, 0.07);
+      }
+
+      .year-card figcaption {
+        display: flex;
+        align-items: baseline;
+        gap: 0.8em;
+        margin-top: 12px;
+        font-size: clamp(13px, 0.95vw, 16px);
+        letter-spacing: 0.02em;
+        color: #a8a8a8;
+      }
+
+      .year-card figcaption b {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(16px, 1.35vw, 24px);
+        color: var(--accent, #fff);
+      }
+
+      .legacy.is-armed .legacy-intro > *,
+      .legacy.is-armed .reel {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .legacy.is-armed.is-in .legacy-intro > *,
+      .legacy.is-armed.is-in .reel {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .legacy.is-in .legacy-intro > :nth-child(2) {
+        transition-delay: 90ms;
+      }
+      .legacy.is-in .legacy-intro > :nth-child(3) {
+        transition-delay: 180ms;
+      }
+      .legacy.is-in .reel {
+        transition-delay: 270ms;
+      }
+
+      /* ---------- KEYFRAMES ---------- */
+
+      @keyframes tile-in {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes fade-up {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes fade-down {
+        from {
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes shimmer {
+        from {
+          background-position: 100% 0;
+        }
+        to {
+          background-position: -150% 0;
+        }
+      }
+
+      /* ---------- SMALL SCREENS: stack & scroll ---------- */
+
+      @media (max-width: 860px) {
+        .hero-screen {
+          height: auto;
+          min-height: calc(100dvh - var(--nav-h));
+        }
+
+        .nav-toggle {
+          display: block;
+        }
+
+        .nav-links {
+          position: absolute;
+          top: 100%;
+          left: var(--edge);
+          right: var(--edge);
+          z-index: 10;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 4px;
+          padding: 10px;
+          background: #262626;
+          border: 1px solid #3d3d3d;
+          border-radius: var(--tile-radius);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+          display: none;
+        }
+
+        .site-nav.is-open .nav-links {
+          display: flex;
+        }
+
+        .nav-links a {
+          display: block;
+          padding: 12px 14px;
+          font-size: 16px;
+        }
+
+        .nav-links .nav-cta {
+          display: block;
+          text-align: center;
+          margin-top: 6px;
+        }
+
+        .hero {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-auto-flow: row dense;
+          align-content: start;
+        }
+
+        .hero-main,
+        .hero-side,
+        .hero-row {
+          display: contents;
+        }
+
+        .tile {
+          aspect-ratio: 4 / 3;
+        }
+
+        .tile-text {
+          order: -1;
+          grid-column: 1 / -1;
+          aspect-ratio: auto;
+        }
+
+        .tile-wide {
+          grid-column: 1 / -1;
+          aspect-ratio: 16 / 7;
+        }
+
+        .tile-text h1 {
+          font-size: clamp(24px, 6.4vw, 40px);
+        }
+
+        .tile-text p {
+          font-size: 15px;
+          text-align: left;
+        }
+
+        .btn-signup,
+        .link-why {
+          font-size: 15px;
+        }
+      }
+
+      /* phones and portrait tablets: one tile per row, still filling the screen */
+      @media (max-width: 640px),
+        (max-width: 1024px) and (orientation: portrait) {
+        .stats {
+          height: auto;
+          min-height: calc(100vh - var(--nav-h));
+          min-height: calc(100dvh - var(--nav-h));
+          padding-inline: var(--edge);
+        }
+
+        .stats h2 {
+          font-size: clamp(24px, 6.4vw, 44px);
+        }
+
+        .stats-row {
+          display: contents;
+        }
+
+        .stat {
+          flex: 1 0 0;
+          min-height: clamp(96px, 13vh, 180px);
+        }
+
+        .legacy {
+          --legacy-inset: var(--edge);
+          --card-h: clamp(170px, 48vw, 300px);
+        }
+
+        .legacy h2 {
+          font-size: clamp(28px, 7.4vw, 48px);
+        }
+
+        .legacy-intro > p {
+          font-size: 15px;
+        }
+
+        .timeline-rail {
+          flex: 1 1 auto;
+        }
+
+        .reel {
+          --fade: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .brand span {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .site-nav,
+        .tile,
+        .tile-text > *,
+        .tile::before {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+
+        .frame,
+        .frame img {
+          clip-path: none;
+          transform: none;
+          filter: none;
+        }
+
+        .frame {
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+
+        .tile.is-loaded .frame {
+          opacity: 1;
+        }
+
+        .stats.is-armed .stat,
+        .legacy.is-armed .legacy-intro > *,
+        .legacy.is-armed .reel {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html" class="brand">
+        <img src="icon/hackerspaceLogoWhite.svg" alt="Hackerspace MMU logo" />
+        <span>Hackerspace MMU</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-controls="nav-links"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+          <path
+            d="M1 1h20M1 8h20M1 15h20"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html#about-us">About Us</a></li>
+        <li>
+          <a href="index.html#events-and-activities"
+            >Events &amp; Activities</a
+          >
+        </li>
+        <li>
+          <a class="nav-cta" href="index.html#registration-form"
+            >Join Us Now</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <div class="hero-screen">
+      <main class="hero">
+        <div class="hero-main">
+          <div class="hero-row" style="--grow: 433">
+            <figure class="tile" style="--grow: 674; --i: 0">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20230606_134556550.jpg"
+                  alt="Members working on laptops around a long table"
+                />
+              </div>
+            </figure>
+            <figure class="tile" style="--grow: 461; --i: 1; --pos: 72% 50%">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20260426_102855293.MP.jpg"
+                  alt="A member presenting in front of a screen"
+                />
+              </div>
+            </figure>
+          </div>
+
+          <div class="hero-row" style="--grow: 318">
+            <figure class="tile" style="--grow: 394; --i: 3">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20230530_125505518.jpg"
+                  alt="Members gathered around tables in a seminar room"
+                />
+              </div>
+            </figure>
+            <figure class="tile tile-wide" style="--grow: 742; --i: 4">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20260330_125931505.PANO.jpg"
+                  alt="Panorama of a full room of members celebrating with cakes"
+                />
+              </div>
+            </figure>
+          </div>
+
+          <div class="hero-row row-text" style="--grow: 379">
+            <section class="tile tile-text" style="--grow: 684; --i: 5">
+              <h1>Hackerspace MMU</h1>
+              <p>
+                We're a bunch of problem solvers building things together. Not
+                (necessarily) hacking into things. We support each other’s
+                learning and learn from what others share!
+              </p>
+              <div class="actions">
+                <a class="btn-signup" href="index.html#registration-form"
+                  >Sign Up</a
+                >
+                <a class="link-why" href="index.html#about-us"
+                  >Why should I join?</a
+                >
+              </div>
+            </section>
+            <figure class="tile" style="--grow: 450; --i: 6; --pos: 62% 50%">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20260330_134259803.jpg"
+                  alt="A member presenting slides to the audience"
+                />
+              </div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <figure class="tile" style="--grow: 631; --i: 2">
+            <div class="frame">
+              <img
+                src="images/hero-section/PXL_20250923_124703509.MP.jpg"
+                alt="Members coding together at a hackathon"
+              />
+            </div>
+          </figure>
+          <figure class="tile" style="--grow: 505; --i: 7">
+            <div class="frame">
+              <img
+                src="images/hero-section/PXL_20230516_134205840.MP.jpg"
+                alt="A full computer lab during a workshop"
+              />
+            </div>
+          </figure>
+        </div>
+      </main>
+    </div>
+
+    <section class="stats" aria-labelledby="stats-heading">
+      <h2 id="stats-heading">We have had...</h2>
+
+      <div class="stats-grid">
+        <div class="stats-row">
+          <div class="stat stat-photo stat-members" style="--i: 0">
+            <img
+              src="images/statistic-section/active_member-web.jpg"
+              alt="Members watching a talk"
+              loading="lazy"
+            />
+            <p class="stat-text">
+              <span><span class="count" data-count="71">71</span></span>
+              <span>Active Members</span>
+            </p>
+          </div>
+          <div class="stat stat-days" style="--i: 1">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="5574" data-since="2011-06-09"
+                  >5574</span
+                ></span
+              >
+              <span>DAYS ACTIVE</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat stat-meetups" style="--grow: 508; --i: 2">
+            <p class="stat-text">
+              <span><span class="count" data-count="535">535</span></span>
+              <span>MEETUPS</span>
+            </p>
+          </div>
+          <div class="stat stat-updates" style="--grow: 1135; --i: 3">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="251">251</span> UPDATES</span
+              >
+            </p>
+            <img
+              class="stat-person"
+              src="images/statistic-section/update_photo-web.png"
+              alt="A member smiling behind a sticker-covered laptop"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat stat-photo stat-hackathons" style="--i: 4">
+            <img
+              src="images/statistic-section/hackathon-web.jpg"
+              alt="Members coding at laptops during a hackathon"
+              loading="lazy"
+            />
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="67">67</span> Hackathons</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
+      <div class="legacy-intro">
+        <h2 id="legacy-heading">Since 2011,<br />still building.</h2>
+        <p>
+          Hackathons, weekly meetups, mamak runs and plenty of late nights.
+          Here's every year of Hackerspace MMU so far.
+        </p>
+        <div class="timeline">
+          <p class="timeline-now" aria-hidden="true">2011</p>
+          <div class="timeline-rail">
+            <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
+            <div class="timeline-ends" aria-hidden="true">
+              <span></span><span></span>
+            </div>
+          </div>
+          <button
+            class="timeline-pause"
+            type="button"
+            aria-label="Pause slideshow"
+          >
+            <svg class="icon-pause" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor" />
+            </svg>
+            <svg class="icon-play" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2.5 1v10l8.5-5z" fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!--
+        One card per year; add more cards with the same data-year for extra
+        photos. To swap in a photo, replace the placeholder div with:
+          <div class="year-photo">
+            <img src="images/legacy-section/2011.jpg" alt="..." loading="lazy" />
+          </div>
+        Cards are 4:3 by default; set --ar (e.g. 3 / 2) to change the shape.
+      -->
+      <div
+        class="reel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Hackerspace MMU photos by year"
+      >
+        <div class="reel-track">
+          <figure class="year-card" data-year="2011">
+            <div class="year-photo is-placeholder"><span>2011</span></div>
+            <figcaption><b>2011</b> Where it all began</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2012</span></div>
+            <figcaption><b>2012</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2013">
+            <div class="year-photo is-placeholder"><span>2013</span></div>
+            <figcaption><b>2013</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2014">
+            <div class="year-photo is-placeholder"><span>2014</span></div>
+            <figcaption><b>2014</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2015</span></div>
+            <figcaption><b>2015</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2016">
+            <div class="year-photo is-placeholder"><span>2016</span></div>
+            <figcaption><b>2016</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2017">
+            <div class="year-photo is-placeholder"><span>2017</span></div>
+            <figcaption><b>2017</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2018</span></div>
+            <figcaption><b>2018</b> Hackathon crew</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2019">
+            <div class="year-photo is-placeholder"><span>2019</span></div>
+            <figcaption><b>2019</b> Trimester hackathon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2020">
+            <div class="year-photo is-placeholder"><span>2020</span></div>
+            <figcaption><b>2020</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2021</span></div>
+            <figcaption><b>2021</b> Meet &amp; greet</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2022">
+            <div class="year-photo is-placeholder"><span>2022</span></div>
+            <figcaption><b>2022</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2023">
+            <div class="year-photo is-placeholder"><span>2023</span></div>
+            <figcaption><b>2023</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2024</span></div>
+            <figcaption><b>2024</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2025">
+            <div class="year-photo is-placeholder"><span>2025</span></div>
+            <figcaption><b>2025</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2026">
+            <div class="year-photo is-placeholder"><span>2026</span></div>
+            <figcaption><b>2026</b> Coming soon</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const nav = document.querySelector('.site-nav');
+      const toggle = nav.querySelector('.nav-toggle');
+      toggle.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+
+      // Sections size themselves to the viewport minus the sticky nav.
+      new ResizeObserver(([entry]) => {
+        const h = entry.borderBoxSize[0].blockSize;
+        document.documentElement.style.setProperty('--nav-h', `${h}px`);
+      }).observe(nav);
+
+      // Reveal each photo on its own schedule, but never before its tile has
+      // animated in — late-loading images reveal as soon as they arrive.
+      const start = performance.now();
+      document.querySelectorAll('.frame img').forEach((img) => {
+        const tile = img.closest('.tile');
+        const i = Number(tile.style.getPropertyValue('--i'));
+        const revealAt = 450 + i * 90;
+
+        const reveal = () => {
+          const wait = Math.max(0, revealAt - (performance.now() - start));
+          tile.style.setProperty('--reveal-delay', `${wait}ms`);
+          tile.classList.add('is-loaded');
+        };
+
+        img
+          .decode()
+          .catch(() => {})
+          .then(reveal);
+      });
+
+      // ---------- STATS ----------
+
+      const stats = document.querySelector('.stats');
+      const counters = [...stats.querySelectorAll('.count')];
+      const COUNT_MS = 1100;
+
+      // Days active is derived from the founding date, same as index.html.
+      counters.forEach((el) => {
+        if (el.dataset.since) {
+          const ms = Date.now() - new Date(el.dataset.since);
+          el.dataset.count = Math.ceil(ms / (24 * 60 * 60 * 1000));
+        }
+        el.textContent = el.dataset.count;
+      });
+
+      const countUp = (el) => {
+        const target = Number(el.dataset.count);
+        const i = Number(el.closest('.stat').style.getPropertyValue('--i'));
+
+        // Lock the box to the final number's width (in em, so it survives a
+        // resize) so the surrounding text doesn't shuffle as digits change.
+        const size = parseFloat(getComputedStyle(el).fontSize);
+        el.style.width = `${el.getBoundingClientRect().width / size}em`;
+        el.textContent = '0';
+
+        setTimeout(
+          () => {
+            const start = performance.now();
+            const tick = (now) => {
+              const t = Math.min(1, (now - start) / COUNT_MS);
+              const eased = t === 1 ? 1 : 1 - 2 ** (-10 * t); // ease-out expo
+              el.textContent = Math.round(target * eased);
+              if (t < 1) requestAnimationFrame(tick);
+              else el.style.width = '';
+            };
+            requestAnimationFrame(tick);
+          },
+          150 + i * 90,
+        );
+      };
+
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        stats.classList.add('is-armed');
+        counters.forEach((el) => (el.textContent = '0'));
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            io.disconnect();
+            stats.classList.add('is-in');
+            // measure final widths only once the display font is in
+            document.fonts.ready.then(() => {
+              counters.forEach((el) => (el.textContent = el.dataset.count));
+              counters.forEach(countUp);
+            });
+          },
+          { threshold: 0.25 },
+        );
+        io.observe(stats.querySelector('.stats-grid'));
+      }
+
+      // ---------- LEGACY ----------
+
+      const legacy = document.querySelector('.legacy');
+      const reel = legacy.querySelector('.reel');
+      const track = reel.querySelector('.reel-track');
+      const cards = [...track.children];
+      const nowLabel = legacy.querySelector('.timeline-now');
+      const pauseBtn = legacy.querySelector('.timeline-pause');
+
+      const DRIFT = 38; // px per second
+      const IDLE_MS = 2500; // how long drift waits after the user takes over
+      const GLIDE_MS = 900;
+
+      const accentFor = (year) => `var(--legacy-${year % 2 ? 'blue' : 'red'})`;
+      cards.forEach((card) =>
+        card.style.setProperty('--accent', accentFor(card.dataset.year)),
+      );
+
+      // One tick per year, built from the cards, so adding a year only means
+      // adding a card.
+      const years = [...new Set(cards.map((card) => card.dataset.year))];
+      const ticks = years.map((year) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tick';
+        btn.setAttribute('aria-label', `Show ${year}`);
+        btn.addEventListener('click', () => goTo(year));
+        li.append(btn);
+        legacy.querySelector('.timeline-ticks').append(li);
+        return btn;
+      });
+      const [firstEnd, lastEnd] = legacy.querySelectorAll(
+        '.timeline-ends span',
+      );
+      firstEnd.textContent = years[0];
+      lastEnd.textContent = years.at(-1);
+
+      // The track holds the real cards followed by enough inert copies to
+      // cover the viewport, so wrapping the offset by one set's width is
+      // seamless.
+      let setW = 0;
+      let lefts = [];
+
+      const measure = () => {
+        track.querySelectorAll('[data-clone]').forEach((node) => node.remove());
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        const first = cards[0];
+        const last = cards.at(-1);
+        const oldW = setW;
+        setW = last.offsetLeft + last.offsetWidth + gap - first.offsetLeft;
+        lefts = cards.map((card) => card.offsetLeft - first.offsetLeft);
+
+        const copies = Math.ceil(reel.clientWidth / setW);
+        for (let n = 0; n < copies; n++) {
+          cards.forEach((card) => {
+            const clone = card.cloneNode(true);
+            clone.dataset.clone = '';
+            clone.setAttribute('aria-hidden', 'true');
+            clone.inert = true;
+            track.append(clone);
+          });
+        }
+        if (oldW) x = (x / oldW) * setW;
+      };
+
+      let x = 0; // track offset in px; may run past setW, wrapped on render
+      let glide = null;
+      let drag = null;
+      let hovered = false;
+      let paused = reduceMotion.matches;
+      let holdUntil = 0;
+      let visible = false;
+      let running = false;
+      let lastFrame = 0;
+      let activeYear = null;
+
+      const wrap = (v) => ((v % setW) + setW) % setW;
+      // signed shortest distance from a to b around the loop
+      const loopDelta = (a, b) => wrap(b - a + setW / 2) - setW / 2;
+      const easeInOut = (t) =>
+        t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+
+      const setActive = (pos) => {
+        // the card whose left edge sits closest to the intro's left edge
+        const dist = (i) => Math.abs(loopDelta(pos, lefts[i]));
+        let best = 0;
+        lefts.forEach((_, i) => {
+          if (dist(i) < dist(best)) best = i;
+        });
+        const year = cards[best].dataset.year;
+        if (year === activeYear) return;
+        activeYear = year;
+        nowLabel.textContent = year;
+        legacy.style.setProperty('--now-accent', accentFor(year));
+        ticks.forEach((tick, i) =>
+          tick.setAttribute('aria-current', String(years[i] === year)),
+        );
+      };
+
+      const render = () => {
+        const pos = wrap(x);
+        track.style.transform = `translate3d(${-pos}px, 0, 0)`;
+        setActive(pos);
+      };
+
+      const frame = (now) => {
+        const dt = Math.min(64, now - lastFrame) / 1000;
+        lastFrame = now;
+
+        if (glide) {
+          const t = Math.min(1, (now - glide.start) / glide.dur);
+          x = glide.from + (glide.to - glide.from) * easeInOut(t);
+          if (t === 1) glide = null;
+        } else if (!drag && !paused && !hovered && now > holdUntil) {
+          x = wrap(x) + DRIFT * dt;
+        }
+
+        render();
+        if (visible) requestAnimationFrame(frame);
+        else running = false;
+      };
+
+      const run = () => {
+        if (running || !visible) return;
+        running = true;
+        lastFrame = performance.now();
+        requestAnimationFrame(frame);
+      };
+
+      const hold = () => (holdUntil = performance.now() + IDLE_MS);
+
+      const goTo = (year) => {
+        const pos = wrap(x);
+        const target = lefts[cards.findIndex((c) => c.dataset.year === year)];
+        glide = {
+          from: pos,
+          to: pos + loopDelta(pos, target),
+          start: performance.now(),
+          dur: reduceMotion.matches ? 1 : GLIDE_MS,
+        };
+        holdUntil = glide.start + GLIDE_MS + IDLE_MS;
+        run();
+      };
+
+      pauseBtn.addEventListener('click', () => {
+        paused = !paused;
+        legacy.classList.toggle('is-paused', paused);
+        pauseBtn.setAttribute(
+          'aria-label',
+          paused ? 'Play slideshow' : 'Pause slideshow',
+        );
+      });
+      legacy.classList.toggle('is-paused', paused);
+      if (paused) pauseBtn.setAttribute('aria-label', 'Play slideshow');
+
+      reel.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'mouse') hovered = true;
+      });
+      reel.addEventListener('pointerleave', () => (hovered = false));
+
+      // Drag / swipe to scrub. touch-action: pan-y leaves vertical page
+      // scrolling to the browser.
+      reel.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        drag = { id: e.pointerId, startX: e.clientX, from: x, moved: false };
+        glide = null;
+      });
+
+      reel.addEventListener('pointermove', (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        const dx = e.clientX - drag.startX;
+        if (!drag.moved && Math.abs(dx) > 4) {
+          drag.moved = true;
+          reel.setPointerCapture(e.pointerId);
+          reel.classList.add('is-dragging');
+        }
+        if (drag.moved) x = drag.from - dx;
+      });
+
+      const endDrag = (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        drag = null;
+        reel.classList.remove('is-dragging');
+        hold();
+      };
+      reel.addEventListener('pointerup', endDrag);
+      reel.addEventListener('pointercancel', endDrag);
+
+      // horizontal trackpad / shift-wheel scrolling
+      reel.addEventListener(
+        'wheel',
+        (e) => {
+          if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+          e.preventDefault();
+          glide = null;
+          x += e.deltaX;
+          hold();
+        },
+        { passive: false },
+      );
+
+      measure();
+      render();
+      new ResizeObserver(() => {
+        measure();
+        render();
+      }).observe(reel);
+
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        run();
+      }).observe(reel);
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        legacy.classList.add('is-armed');
+        const legacyIo = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            legacyIo.disconnect();
+            legacy.classList.add('is-in');
+          },
+          { threshold: 0.2 },
+        );
+        legacyIo.observe(legacy);
+      }
+    </script>
+  </body>
+</html>
