@@ -304,14 +304,17 @@ html {
 
 /* --- WHY BUILD --- */
 
-/* Moon scene: #why-build pins with its top 40% down the screen (leaving room
-   above the horizon for the astronaut) and fills the rest, so the next
+/* Moon scene: #why-build pins with its top halfway down the screen (leaving
+   room above the horizon for the astronaut) and fills the rest, so the next
    section stays hidden. The 100vh spacer after it is the scroll it stays
    pinned for: stop 1 arrive, stop 2 land (+50vh), stop 3 hold (+100vh). The
    space above the horizon is a static CSS starfield once "What do we do?" and
-   its twinkling stars have scrolled away. */
+   its twinkling stars have scrolled away. The planet is wider than the page
+   for a gentle curve, so the sides are clipped ("clip", not "hidden", which
+   would stop #why-build from pinning). */
 .moon-scene {
   position: relative;
+  overflow-x: clip;
   background-color: #111111;
   background-image:
     radial-gradient(1px 1px at 23px 41px, rgba(255, 255, 255, 0.8), transparent),
@@ -333,11 +336,11 @@ html {
 
 #why-build {
   position: sticky;
-  top: 40vh;
-  min-height: 60vh;
+  top: 50vh;
+  min-height: 50vh;
   isolation: isolate;
   color: #111111;
-  padding: 80px 0;
+  padding: 56px 0;
   --horizon: 90px;
 }
 
@@ -412,11 +415,14 @@ html {
   pointer-events: none;
 }
 
+/* He's ~1.62x as tall as he is wide. On shorter screens he shrinks so his
+   helmet stays below the nav: the crest of the horizon is 50vh - 78px down
+   the screen, less ~80px for the nav and a little breathing room. */
 #why-build .landing-spot {
   grid-column: 9 / 12;
   justify-self: center;
   position: relative;
-  width: 160px;
+  width: clamp(110px, calc((50vh - 160px) / 1.62), 160px);
   visibility: hidden;
 }
 
@@ -506,7 +512,7 @@ html {
   position: absolute;
   left: calc(100% + 4px);
   bottom: -10px;
-  width: 92px;
+  width: 57.5%;
   transform-origin: 3% 97%;
   opacity: 0;
 }

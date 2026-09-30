@@ -15,7 +15,8 @@
         observer.disconnect();
       }
     },
-    { rootMargin: '0px 0px -20% 0px' }
+    // Once it's fully on screen (it sits low while the moon scene is pinned)
+    { threshold: 1 }
   );
   observer.observe(mark);
 })();

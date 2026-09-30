@@ -30,7 +30,7 @@
   // How far past the arrival stop you've scrolled, as a fraction of the gap to
   // the landing stop (half a screen). Land a third of the way there; reset
   // just before the arrival stop (the gap stops it flickering at the edge).
-  const ARRIVE = 0.4; // horizon's position on screen when pinned (see CSS)
+  const ARRIVE = 0.5; // horizon's position on screen when pinned (see CSS)
   const GAP = 0.5;
   const TRIGGER = 0.3;
   const RESET = -0.1;
