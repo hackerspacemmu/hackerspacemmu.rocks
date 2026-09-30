@@ -25,11 +25,11 @@
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css?family=Prompt"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Jost:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
 
-    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   </head>
   <body>
     <header>
@@ -187,116 +187,148 @@
       </div>
     </div>
 
-    <div id="what-do-we-do">
-      <div class="container-fluid">
-        <div class="title" data-aos="fade-up">
-          <div class="top-title">
-            <div class="top-line"></div>
-            <h1
-              class="text-center ml-4 w-full d-flex align-items-center justify-content-center"
-            >
-              WHAT DO WE DO?
-            </h1>
-            <div class="bottom-line"></div>
-          </div>
-          <p>
-            A hackerspace/makerspace is a community where people with common
-            interests (like in coding, tech, art, etc) meet, socialise as well!
-            And we all definitely started as one.though we mostly self-learn,
-            but we do ask one another for some guidance esp when starting on
-            something.
-          </p>
-        </div>
-        <div class="d-flex flex-column flex-lg-row">
-          <div class="col side-content">
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="300"
-              class="box-content d-flex"
-            >
-              <div class="icon icon-1">
-                <img src="icon/trophy-cup-silhouette 7.svg" alt="" />
-              </div>
-              <div class="box-body">
-                <h2 class="sub-title">Projects</h2>
-                <p>
-                  We declare a project and work towards it. That's our mode of
-                  learning. It ranges from "I'll follow this PHP tutorial and
-                  try to build a personal website" to "I'll create a drag and
-                  drop library for Javascript in React."
-                </p>
-              </div>
+    <section id="what-do-we-do">
+      <!-- Scroll stops: one in the middle of each item's stretch of scroll
+           (matches where clicking an item scrolls to) -->
+      <span class="snap-stop" style="--at: 30vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
+      <div class="wdwd-pin">
+        <canvas class="wdwd-stars" aria-hidden="true"></canvas>
+        <div class="grid-12">
+          <div class="wdwd-content">
+            <h2 class="wdwd-title">What do we do?</h2>
+
+            <div class="wdwd-item is-active" role="button" tabindex="0" aria-current="true">
+              <h3>Build Projects</h3>
+              <p>
+                Declare a project &rarr; Build it &rarr; Learn as you go<br />
+                Anything from a first PHP website to your own React
+                drag-and-drop library.
+              </p>
             </div>
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="350"
-              class="box-content d-flex"
-            >
-              <div class="icon icon-2">
-                <img src="icon/trophy-cup-silhouette 7.svg" alt="" />
-              </div>
-              <div class="box-body">
-                <h2 class="sub-title">Tech News</h2>
-                <p>
-                  We're all geeks, and some of us can't stop talking, so you
-                  can't help but be up to date on all the tech news. Especially
-                  on AMD's latest chip *cough* Shaun *cough*.
-                </p>
-              </div>
+
+            <div class="wdwd-item" role="button" tabindex="0">
+              <h3>Share Tech News</h3>
+              <p>
+                You can't help but be up to date on all the tech news.<br />
+                Especially on AMD's latest chip *cough* Shaun *cough*.
+              </p>
             </div>
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="400"
-              class="box-content d-flex"
-            >
-              <div class="icon icon-3">
-                <img src="icon/trophy-cup-silhouette 7.svg" alt="" />
-              </div>
-              <div class="box-body">
-                <h2 class="sub-title">Feedback</h2>
-                <p>
-                  Sometimes, hearing your friends tell you something you built
-                  is awesome is enough. Sometimes, you need ideas on what else
-                  to add. Sometimes, a bit of code refuses to compile and you
-                  just want to scream and someone needs to point out that you
-                  forgot a semi-colon. With love. ❤
-                </p>
-              </div>
+
+            <div class="wdwd-item" role="button" tabindex="0">
+              <h3>Give Feedback</h3>
+              <p>
+                The hype when you need it. Some ideas when you're stuck.
+                Someone to spot the missing semicolon.<br />
+                With love &lt;3
+              </p>
             </div>
           </div>
 
-          <div
-            data-aos="fade-left"
-            data-aos-delay="350"
-            class="col image-physical-session"
-          >
-            <img
-              class="physical-session"
-              src="images/PhysicalSession.jpg"
-              alt="physical-session"
-            />
+          <div class="wdwd-astronaut" aria-hidden="true">
+            <div class="wdwd-spaceman" data-gear="hat">
+              <img src="images/pngkey 13.png" alt="" />
+              <!-- Gear drawn in the image's own coordinates (282 x 458) -->
+              <svg class="wdwd-gear" viewBox="0 0 282 458">
+                <g class="wdwd-acc wdwd-hat">
+                  <image
+                    href="images/builder%20hat.svg"
+                    x="4"
+                    y="-28"
+                    width="250"
+                    height="83"
+                    transform="rotate(-6 130 30)"
+                  />
+                </g>
+
+                <g class="wdwd-acc wdwd-glasses">
+                  <image
+                    href="images/glasses.svg"
+                    x="33"
+                    y="143"
+                    width="169"
+                    height="80"
+                  />
+                </g>
+
+                <g class="wdwd-acc wdwd-megaphone">
+                  <g transform="rotate(-24 185 300)">
+                    <image
+                      href="images/speaker.svg"
+                      x="159"
+                      y="209"
+                      width="180"
+                      height="178"
+                    />
+                    <g
+                      class="wdwd-waves"
+                      fill="none"
+                      stroke="#b8d0da"
+                      stroke-width="7"
+                      stroke-linecap="round"
+                    >
+                      <path d="M306 274 Q322 300 306 326" />
+                      <path d="M326 258 Q350 300 326 342" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div id="separator-2">
-      <div class="container-fluid">
-        <div data-aos="zoom-in" class="sep-2-title">
-          <h1 class="text-center">WHY HACK THOUGH?</h1>
+    <!-- Moon scene: "Why Build?" pins with the horizon 40% down the screen
+         while you scroll through three stops: arrive, land (js/landing.js),
+         hold. Then the page carries on. -->
+    <div class="moon-scene">
+      <span class="snap-stop" style="--at: -40vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 10vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 60vh" aria-hidden="true"></span>
+      <section id="why-build">
+        <div class="planet-glow" aria-hidden="true"></div>
+        <div class="planet" aria-hidden="true">
+          <div class="planet-surface">
+            <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
+            <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
+            <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
+            <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
+            <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
+            <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
+            <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
+            <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
+            <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
+            <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
+          </div>
         </div>
-        <div data-aos="fade-up" class="sep-2-content">
-          <h5 class="text-center">
-            Especially if you're already in a degree program learning about
-            coding, right? Well your formal courses give you the foundation, but
-            it barely gets your feet wet. Your future job interviewer will want
-            to see what you've built (and they're not looking for assignments!)
-            They will ask if you know Laravel, not PHP. They will ask if you
-            have built an app, not if you know Java or C++. Coding is a language
-            you speak, not alphabets you memorize.
-          </h5>
+        <!-- The astronaut from "What do we do?" lands here (js/landing.js) -->
+        <div class="landing" aria-hidden="true">
+          <div class="grid-12">
+            <div class="landing-spot">
+              <span class="landing-dust"></span>
+              <img class="landing-flag" src="images/flag.svg" alt="" />
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="grid-12">
+          <h2 class="why-build-title" data-aos="fade-up">Why<br />Build?</h2>
+          <div class="why-build-body" data-aos="fade-up" data-aos-delay="100">
+            <p>
+              Your degree gives you the foundation, but building is where you put
+              it into practice.
+            </p>
+            <p>
+              When you graduate, interviewers won't just ask what you've learned.
+              They'll ask what you've built. Knowing PHP is one thing. Building
+              with Laravel is another. Knowing Java is one thing. Building an app
+              is another.
+            </p>
+            <p><mark>Don't just learn to code. Build.</mark></p>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div id="statistics">
@@ -620,16 +652,14 @@
     <script src="/js/script.js"></script>
 
     <script src="/js/email-validation.js"></script>
+    <script src="/js/what-we-do.js"></script>
+    <script src="/js/starfield.js"></script>
+    <script src="/js/landing.js"></script>
+    <script src="/js/why-build.js"></script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"
       integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/debug.addIndicators.min.js"
-      integrity="sha512-RvUydNGlqYJapy0t4AH8hDv/It+zKsv4wOQGb+iOnEfa6NnF2fzjXgRy+FDjSpMfC3sjokNUzsfYZaZ8QAwIxg=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
