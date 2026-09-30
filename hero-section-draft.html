@@ -176,7 +176,7 @@
 
       .nav-links .nav-cta:hover {
         background: #fff;
-        color: #111;
+        color: #000;
         opacity: 1;
       }
 
@@ -363,7 +363,7 @@
         padding: 0.78em 2.9em;
         border-radius: 999px;
         background: #fff;
-        color: #111;
+        color: #000;
         font-weight: 600;
         font-size: clamp(13px, min(1.08vw, 2vh), 21px);
         text-decoration: none;
@@ -629,9 +629,14 @@
         transition: color 0.3s;
       }
 
+      /* drag the rocket (or anywhere along the rail) to scrub through the
+         years; pan-y leaves vertical page scrolling to the browser */
       .timeline-rail {
         position: relative;
         flex: 0 1 clamp(200px, 26vw, 460px);
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-user-select: none;
       }
 
       /* the rocket flies in a lane above the ticks; JS positions it */
@@ -641,7 +646,12 @@
         right: 0;
         bottom: 100%;
         height: var(--lane-h);
-        pointer-events: none;
+        cursor: grab;
+      }
+
+      .timeline-rail.is-scrubbing,
+      .timeline-rail.is-scrubbing * {
+        cursor: grabbing;
       }
 
       .timeline-trail {
@@ -668,6 +678,7 @@
         height: auto;
         display: block;
         will-change: transform, opacity;
+        -webkit-user-drag: none;
       }
 
       .timeline-ticks {
@@ -884,6 +895,680 @@
         transition-delay: 270ms;
       }
 
+      /* ---------- QUOTE ---------- */
+
+      .quote {
+        --quote-red: #c4291e;
+        --quote-blue: #1d4ae0;
+        --quote-inset: clamp(20px, 13.75vw, 280px);
+        /* how far each line stops short of its open end */
+        --quote-gap: clamp(10px, 6.7vw, 140px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-block: clamp(60px, 12vh, 160px);
+        overflow: hidden;
+      }
+
+      /* spans the full width so the lines can run off the page edges; its
+         font-size is the quote's, so the lines can sit in em */
+      .quote figure {
+        position: relative;
+        margin: 0;
+        padding-inline: var(--quote-inset);
+        font-size: clamp(26px, min(2.35vw, 4.6vh), 52px);
+      }
+
+      /* red cuts through the first line's capitals, blue sits on its
+         baseline; they run off opposite edges */
+      .quote-line {
+        position: absolute;
+        height: 1px;
+        pointer-events: none;
+      }
+
+      /* rounded to whole pixels, or a 1px line smears grey over two rows */
+      .quote-line-red {
+        top: 0.35em;
+        top: round(0.35em, 1px);
+        left: var(--quote-gap);
+        right: 0;
+        background: var(--quote-red);
+        transform-origin: right;
+      }
+
+      .quote-line-blue {
+        top: 0.89em;
+        top: round(0.89em, 1px);
+        left: 0;
+        right: var(--quote-gap);
+        background: var(--quote-blue);
+        transform-origin: left;
+      }
+
+      .quote blockquote {
+        position: relative;
+        max-width: min(14.8em, 100%);
+        margin: 0;
+      }
+
+      .quote blockquote p {
+        margin: 0;
+        font-family: 'Archivo', var(--font-display);
+        font-stretch: 125%;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+      }
+
+      .quote figcaption {
+        position: relative;
+        margin-top: 0.9em;
+        font-size: clamp(13px, 0.9vw, 17px);
+        letter-spacing: 0.02em;
+      }
+
+      /* lighter than the line red so small text stays readable */
+      .quote figcaption a {
+        color: #e5584b;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.25em;
+        transition: color 0.2s;
+      }
+
+      .quote figcaption a:hover,
+      .quote figcaption a:focus-visible {
+        color: #ff8a7f;
+      }
+
+      .quote.is-armed .quote-line {
+        transform: scaleX(0);
+      }
+
+      .quote.is-armed blockquote,
+      .quote.is-armed figcaption {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .quote.is-armed.is-in .quote-line {
+        transform: none;
+        transition: transform 1.2s var(--ease-in-out);
+      }
+
+      .quote.is-armed.is-in .quote-line-blue {
+        transition-delay: 120ms;
+      }
+
+      .quote.is-armed.is-in blockquote,
+      .quote.is-armed.is-in figcaption {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.8s var(--ease-out) 450ms,
+          transform 0.8s var(--ease-out) 450ms;
+      }
+
+      .quote.is-armed.is-in figcaption {
+        transition-delay: 600ms;
+      }
+
+      /* ---------- EVENTS ---------- */
+
+      .events {
+        --events-blue: #1d4ae0;
+        /* the open panel's share of the row, against 1 per closed panel */
+        --open: 3.4;
+        --panel-pad: clamp(12px, 1.2vw, 22px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(20px, 4vh, 48px);
+        padding: clamp(40px, 8vh, 110px) var(--edge);
+      }
+
+      .events-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: var(--gap) clamp(20px, 4vw, 80px);
+      }
+
+      .events h2 {
+        margin: 0 0 clamp(10px, 2vh, 20px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(28px, min(3.4vw, 6vh), 68px);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+      }
+
+      .events-head p {
+        max-width: 44ch;
+        margin: 0;
+        font-size: clamp(14px, min(1.1vw, 2vh), 20px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        color: #a8a8a8;
+      }
+
+      .next-meetup {
+        min-width: clamp(220px, 19vw, 340px);
+        padding: clamp(14px, 1.4vw, 24px) clamp(16px, 1.6vw, 28px);
+        border-radius: var(--tile-radius);
+        background: var(--events-blue);
+      }
+
+      .next-meetup p {
+        margin: 0;
+        max-width: none;
+        color: #fff;
+      }
+
+      .next-meetup .next-label {
+        font-weight: 500;
+        font-size: clamp(13px, 0.9vw, 16px);
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .next-meetup .next-date {
+        margin: 0.35em 0 0.3em;
+        font-family: var(--font-display);
+        font-size: clamp(22px, min(2.2vw, 4vh), 40px);
+        line-height: 1.1;
+        letter-spacing: 0;
+      }
+
+      .next-meetup .next-time {
+        font-size: clamp(14px, 1vw, 18px);
+      }
+
+      /* Accordion: one panel open at a time. Photos are sized to the open
+         panel's width up front, so opening a panel only uncovers more of the
+         photo instead of rescaling it every frame. */
+      .events-list {
+        --open-w: calc(
+          (100cqw - 5 * var(--gap)) * var(--open) / (var(--open) + 5)
+        );
+
+        container-type: inline-size;
+        display: flex;
+        gap: var(--gap);
+        height: clamp(360px, 54vh, 600px);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .event {
+        position: relative;
+        isolation: isolate;
+        flex: 1 1 0;
+        min-width: 0;
+        overflow: hidden;
+        border-radius: var(--tile-radius);
+        background: var(--tile-bg);
+        transition: flex-grow 0.7s var(--ease-in-out);
+      }
+
+      .event.is-open {
+        flex-grow: var(--open);
+      }
+
+      /* below the dimmer and scrim (the panel isolates its own stacking) */
+      .event-photo {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 50%;
+        width: max(100%, var(--open-w));
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+        translate: -50% 0;
+      }
+
+      /* closed panels sit dimmed; the scrim keeps text readable on any photo */
+      .event::before,
+      .event::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .event::before {
+        background: rgba(26, 26, 26, 0.5);
+        transition: opacity 0.5s var(--ease-out);
+      }
+
+      .event:hover::before {
+        opacity: 0.55;
+      }
+
+      .event.is-open::before {
+        opacity: 0;
+      }
+
+      .event::after {
+        background: linear-gradient(
+          to top,
+          rgba(17, 17, 17, 0.9),
+          rgba(17, 17, 17, 0.45) 38%,
+          transparent 64%
+        );
+      }
+
+      .event-toggle {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        border-radius: inherit;
+        background: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .event.is-open .event-toggle {
+        cursor: default;
+      }
+
+      .event-toggle:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: -4px;
+      }
+
+      .event-label {
+        position: absolute;
+        left: var(--panel-pad);
+        right: var(--panel-pad);
+        bottom: var(--panel-pad);
+        font-weight: 500;
+        font-size: clamp(12px, 1vw, 16px);
+        line-height: 1.25;
+        letter-spacing: 0.02em;
+        text-align: left;
+        transition: opacity 0.3s var(--ease-out) 0.25s;
+      }
+
+      .event.is-open .event-label {
+        opacity: 0;
+        transition-delay: 0s;
+      }
+
+      /* fixed to the open width so the copy never reflows mid-animation */
+      .event-body {
+        position: absolute;
+        z-index: 1;
+        left: var(--panel-pad);
+        bottom: var(--panel-pad);
+        width: calc(var(--open-w) - 2 * var(--panel-pad));
+        opacity: 0;
+        translate: 0 12px;
+        pointer-events: none;
+        transition:
+          opacity 0.3s var(--ease-out),
+          translate 0.3s var(--ease-out);
+      }
+
+      .event.is-open .event-body {
+        opacity: 1;
+        translate: none;
+        transition-duration: 0.6s;
+        transition-delay: 0.3s;
+      }
+
+      .event-body h3 {
+        margin: 0 0 0.45em;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(22px, min(2vw, 3.6vh), 38px);
+        line-height: 1.1;
+      }
+
+      .event-when {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2em 1.2em;
+        margin: 0 0 0.7em;
+        font-weight: 500;
+        font-size: clamp(13px, 0.95vw, 17px);
+        letter-spacing: 0.02em;
+      }
+
+      .event-when span + span {
+        color: #bdbdbd;
+      }
+
+      .event-desc {
+        max-width: 40ch;
+        margin: 0;
+        font-size: clamp(14px, 1vw, 18px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        color: var(--text-muted);
+      }
+
+      .events.is-armed .events-head > *,
+      .events.is-armed .event {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .events.is-armed .event-photo {
+        scale: 1.12;
+      }
+
+      .events.is-armed.is-in .events-head > * {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .events.is-in .events-head > :nth-child(2) {
+        transition-delay: 90ms;
+      }
+
+      /* restates the open/close transitions, which this rule would override */
+      .events.is-armed.is-in .event {
+        --delay: calc(180ms + var(--i) * var(--stagger));
+
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out) var(--delay),
+          transform 0.7s var(--ease-out) var(--delay),
+          flex-grow 0.7s var(--ease-in-out),
+          height 0.7s var(--ease-in-out);
+      }
+
+      .events.is-armed.is-in .event-photo {
+        scale: 1;
+        transition: scale 1.6s var(--ease-out) var(--delay);
+      }
+
+      /* ---------- JOIN ---------- */
+
+      /* Shown on a projector as often as on a laptop, so the QR is sized off
+         the viewport height and kept on a plain light card with a full quiet
+         zone. Controls are pills like the nav CTA; the QR card is an image. */
+      .join {
+        --join-blue: #1d4ae0;
+        --join-focus: #93a5ff;
+        --join-error: #ff8a7f;
+        /* outer size of the light card the code sits on */
+        --qr-size: clamp(220px, min(48vh, 34vw), 580px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: clamp(32px, 6vw, 120px);
+        padding: clamp(40px, 8vh, 110px) clamp(12px, 8.25vw, 170px);
+      }
+
+      .join h2 {
+        max-width: 8.5em;
+        margin: 0 0 0.4em;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(34px, min(4.8vw, 8.5vh), 104px);
+        line-height: 1.02;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+      }
+
+      .join-lede {
+        max-width: 36ch;
+        margin: 0 0 clamp(24px, 5vh, 56px);
+        font-size: clamp(15px, min(1.25vw, 2.3vh), 22px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        color: #a8a8a8;
+      }
+
+      .join-form {
+        max-width: 560px;
+      }
+
+      .join-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
+        font-size: clamp(13px, 0.9vw, 16px);
+        letter-spacing: 0.02em;
+        color: var(--text-muted);
+      }
+
+      .join-field {
+        display: flex;
+        gap: 10px;
+      }
+
+      .join-field input,
+      .join-field button {
+        height: clamp(48px, 6vh, 60px);
+        border-radius: 999px;
+        font: inherit;
+        font-size: clamp(15px, 1.05vw, 18px);
+      }
+
+      .join-field input {
+        flex: 1;
+        min-width: 0;
+        padding: 0 1.3em;
+        border: 1px solid #555;
+        background: #262626;
+        color: var(--text);
+        transition: border-color 0.2s;
+      }
+
+      .join-field input::placeholder {
+        color: #999;
+      }
+
+      .join-field input:hover {
+        border-color: #777;
+      }
+
+      .join-field input:focus-visible {
+        outline: 2px solid var(--join-focus);
+        outline-offset: 2px;
+        border-color: var(--join-focus);
+      }
+
+      .join-field input[aria-invalid='true'] {
+        border-color: var(--join-error);
+      }
+
+      .join-field button {
+        flex: none;
+        padding: 0 1.6em;
+        border: 0;
+        background: var(--join-blue);
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s var(--ease-out);
+      }
+
+      .join-field button:hover {
+        background: #3060f5;
+      }
+
+      .join-field button:active {
+        transform: scale(0.98);
+      }
+
+      .join-field button:focus-visible {
+        outline: 2px solid var(--join-focus);
+        outline-offset: 3px;
+      }
+
+      .join-hint,
+      .join-error {
+        margin: 12px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        letter-spacing: 0.02em;
+      }
+
+      .join-hint {
+        color: #a8a8a8;
+      }
+
+      /* space is held for the message so the QR tile doesn't jump */
+      .join-error {
+        min-height: 1.4em;
+        margin-top: 6px;
+        color: var(--join-error);
+      }
+
+      .join-qr {
+        display: grid;
+        gap: clamp(14px, 2.2vh, 26px);
+        margin: 0;
+        padding: clamp(14px, 1.4vw, 26px);
+        border-radius: var(--tile-radius);
+        background: var(--join-blue);
+      }
+
+      .qr-card {
+        width: var(--qr-size);
+        aspect-ratio: 1;
+        /* ≥ 4 modules of quiet zone around the 29-module code */
+        padding: calc(var(--qr-size) * 0.11);
+        border-radius: var(--img-radius);
+        background: #f4f4f4;
+        cursor: zoom-in;
+      }
+
+      .qr-card img,
+      .qr-dialog img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .join-qr figcaption {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        padding-inline: 4px;
+      }
+
+      .qr-title {
+        display: block;
+        font-family: var(--font-display);
+        font-size: clamp(20px, min(1.9vw, 3.4vh), 36px);
+        line-height: 1.1;
+      }
+
+      .qr-url {
+        display: block;
+        margin-top: 0.3em;
+        font-size: clamp(14px, 1vw, 18px);
+        letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .qr-enlarge,
+      .qr-close {
+        flex: none;
+        padding: 0.55em 1.3em;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 999px;
+        background: transparent;
+        color: #fff;
+        font: inherit;
+        font-weight: 500;
+        font-size: clamp(13px, 0.9vw, 16px);
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+      }
+
+      .qr-enlarge:hover,
+      .qr-close:hover {
+        border-color: #fff;
+        background: #fff;
+        color: #141414;
+      }
+
+      .qr-enlarge:focus-visible,
+      .qr-close:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+      }
+
+      /* fills the screen so the code reads from the back of a lecture hall */
+      .qr-dialog {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        padding: 4vmin;
+        border: 0;
+        background: var(--page-bg);
+        color: var(--text);
+      }
+
+      .qr-dialog[open] {
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 3vh;
+      }
+
+      .qr-dialog .qr-card {
+        --qr-size: min(80vh, 88vw);
+        cursor: zoom-out;
+      }
+
+      .qr-dialog p {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(20px, 3.4vh, 44px);
+      }
+
+      .qr-close {
+        position: absolute;
+        top: clamp(12px, 3vmin, 32px);
+        right: clamp(12px, 3vmin, 32px);
+      }
+
+      html:has(.qr-dialog[open]) {
+        overflow: hidden;
+      }
+
       /* ---------- KEYFRAMES ---------- */
 
       @keyframes tile-in {
@@ -1050,6 +1735,117 @@
         .reel {
           --fade: 16px;
         }
+
+        .quote {
+          --quote-inset: calc(var(--edge) * 2);
+          --quote-gap: var(--edge);
+        }
+
+        .quote figure {
+          font-size: clamp(24px, 7vw, 40px);
+        }
+
+        .quote figcaption {
+          font-size: 14px;
+        }
+      }
+
+      /* below laptop width the event panels stack and open downwards */
+      @media (max-width: 1023px),
+        (max-width: 1180px) and (orientation: portrait) {
+        .events-head {
+          grid-template-columns: minmax(0, 1fr);
+          align-items: start;
+          row-gap: clamp(16px, 4vw, 28px);
+        }
+
+        .next-meetup {
+          justify-self: start;
+        }
+
+        .events h2 {
+          font-size: clamp(28px, 7.4vw, 48px);
+        }
+
+        .events-head p {
+          font-size: 15px;
+        }
+
+        .events-list {
+          --open-h: clamp(300px, 88vw, 460px);
+
+          flex-direction: column;
+          height: auto;
+        }
+
+        .event {
+          flex: none;
+          height: clamp(64px, 9vw, 80px);
+          transition: height 0.7s var(--ease-in-out);
+        }
+
+        .event.is-open {
+          height: var(--open-h);
+        }
+
+        .event-photo {
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: var(--open-h);
+          translate: 0 -50%;
+        }
+
+        .event-label {
+          top: 0;
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+        }
+
+        .event-body {
+          right: var(--panel-pad);
+          width: auto;
+        }
+      }
+
+      /* copy on top, QR tile underneath */
+      @media (max-width: 1023px),
+        (max-width: 1180px) and (orientation: portrait) {
+        .join {
+          --qr-size: clamp(200px, 52vw, 400px);
+
+          grid-template-columns: minmax(0, 1fr);
+          align-content: center;
+          padding-inline: var(--edge);
+        }
+
+        .join h2 {
+          font-size: clamp(32px, 8vw, 64px);
+        }
+
+        .join-qr {
+          justify-self: start;
+        }
+      }
+
+      /* a phone is already on the site, so the code has nothing to offer */
+      @media (max-width: 560px) {
+        .join {
+          min-height: 0;
+        }
+
+        .join-qr {
+          display: none;
+        }
+
+        .join-field {
+          flex-direction: column;
+        }
+
+        .join-field input {
+          flex: none;
+        }
       }
 
       @media (max-width: 480px) {
@@ -1086,9 +1882,19 @@
 
         .stats.is-armed .stat,
         .legacy.is-armed .legacy-intro > *,
-        .legacy.is-armed .reel {
+        .legacy.is-armed .reel,
+        .quote.is-armed .quote-line,
+        .quote.is-armed blockquote,
+        .quote.is-armed figcaption {
           opacity: 1;
           transform: none;
+        }
+
+        .event,
+        .event::before,
+        .event-label,
+        .event-body {
+          transition: none;
         }
       }
     </style>
@@ -1118,13 +1924,10 @@
       </button>
 
       <ul id="nav-links" class="nav-links">
-        <li><a href="index.html#about-us">About Us</a></li>
-        <li>
-          <a href="index.html#events-and-activities">Events &amp; Activities</a>
-        </li>
-        <li>
-          <a class="nav-cta" href="index.html#registration-form">Join Us Now</a>
-        </li>
+        <li><a href="#what-do-we-do">About Us</a></li>
+        <li><a href="#legacy">History</a></li>
+        <li><a href="#events-and-activities">Events &amp; Activities</a></li>
+        <li><a class="nav-cta" href="#registration">Join Us Now</a></li>
       </ul>
     </nav>
 
@@ -1441,7 +2244,12 @@
           <div class="timeline-rail">
             <div class="timeline-flight" aria-hidden="true">
               <span class="timeline-trail"></span>
-              <img class="timeline-rocket" src="images/rocket%203.svg" alt="" />
+              <img
+                class="timeline-rocket"
+                src="images/rocket%203.svg"
+                alt=""
+                draggable="false"
+              />
             </div>
             <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
             <div class="timeline-ends" aria-hidden="true">
@@ -1546,12 +2354,294 @@
       </div>
     </section>
 
+    <section class="quote" aria-label="Quote">
+      <figure>
+        <span class="quote-line quote-line-red" aria-hidden="true"></span>
+        <span class="quote-line quote-line-blue" aria-hidden="true"></span>
+        <blockquote>
+          <p>
+            “I hear and I forget. I see and I remember. I do and I
+            understand.”
+          </p>
+        </blockquote>
+        <figcaption>
+          <a
+            href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
+            >Not Confucius</a
+          >
+        </figcaption>
+      </figure>
+    </section>
+
+    <section
+      id="events-and-activities"
+      class="events"
+      aria-labelledby="events-heading"
+    >
+      <div class="events-head">
+        <div>
+          <h2 id="events-heading">What’s on?</h2>
+          <p>
+            A weekly meetup, a hackathon every trimester, and a few traditions
+            picked up along the way.
+          </p>
+        </div>
+        <!-- JS swaps "Every Tuesday" for the actual next date -->
+        <div class="next-meetup">
+          <p class="next-label">Next meetup</p>
+          <p class="next-date">Every Tuesday</p>
+          <p class="next-time">8.00pm - 10.00pm</p>
+        </div>
+      </div>
+
+      <!-- One panel per event; the first one starts open. Only events with a
+           fixed schedule get an .event-when line. -->
+      <ul class="events-list">
+        <li class="event is-open" style="--i: 0">
+          <img
+            class="event-photo"
+            src="images/PhysicalSession.jpg"
+            alt="Members with laptops around a long table at a weekly meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="event-meetups"
+            aria-labelledby="event-meetups-title"
+          >
+            <span class="event-label" aria-hidden="true">Weekly Meetups</span>
+          </button>
+          <div class="event-body" id="event-meetups">
+            <h3 id="event-meetups-title">Weekly Meetups</h3>
+            <p class="event-when">
+              <span>Every Tuesday</span><span>8.00pm - 10.00pm</span>
+            </p>
+            <p class="event-desc">
+              Bring your laptop and whatever you’re working on. Share progress,
+              get unstuck and catch up on tech news.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 1; --pos: 40% 50%">
+          <img
+            class="event-photo"
+            src="images/Hackathon2019.jpg"
+            alt="A member's selfie in front of a room full of hackathon teams"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-hackathons"
+            aria-labelledby="event-hackathons-title"
+          >
+            <span class="event-label" aria-hidden="true">Hackathons</span>
+          </button>
+          <div class="event-body" id="event-hackathons">
+            <h3 id="event-hackathons-title">Hackathons</h3>
+            <p class="event-when">
+              <span>Every trimester</span><span>9.00am - 10.00pm</span>
+            </p>
+            <p class="event-desc">
+              One long day of building something from scratch. Start with an
+              idea in the morning, demo it by night.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 2; --pos: 40% 50%">
+          <img
+            class="event-photo"
+            src="images/PhysicalSession_presentation_Anonoz.jpg"
+            alt="A member pointing at code projected on a screen"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-progress"
+            aria-labelledby="event-progress-title"
+          >
+            <span class="event-label" aria-hidden="true"
+              >Progress Presentations</span
+            >
+          </button>
+          <div class="event-body" id="event-progress">
+            <h3 id="event-progress-title">Progress Presentations</h3>
+            <p class="event-desc">
+              Show the room what you’ve built since your last update. Wins, bugs
+              and all.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 3; --pos: 72% 50%">
+          <img
+            class="event-photo"
+            src="images/PhysicalSession_projectDemo.jpg"
+            alt="A member holding up a printout while talking to the room"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-ideas"
+            aria-labelledby="event-ideas-title"
+          >
+            <span class="event-label" aria-hidden="true">Idea Talks</span>
+          </button>
+          <div class="event-body" id="event-ideas">
+            <h3 id="event-ideas-title">Idea Talks</h3>
+            <p class="event-desc">
+              Pitch the idea you can’t stop thinking about and hear what
+              everyone else makes of it.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 4; --pos: 35% 50%">
+          <img
+            class="event-photo"
+            src="images/MamakSession2018.jpg"
+            alt="Members sharing food and drinks at a mamak after a meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-mamak"
+            aria-labelledby="event-mamak-title"
+          >
+            <span class="event-label" aria-hidden="true">Mamak Sessions</span>
+          </button>
+          <div class="event-body" id="event-mamak">
+            <h3 id="event-mamak-title">Mamak Sessions</h3>
+            <p class="event-desc">
+              When the meetup wraps up, the conversation carries on over teh
+              tarik at the mamak.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 5; --pos: 50% 40%">
+          <img
+            class="event-photo"
+            src="images/200anniversary.jpg"
+            alt="A packed group photo around a cake at the 200th meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-milestones"
+            aria-labelledby="event-milestones-title"
+          >
+            <span class="event-label" aria-hidden="true"
+              >Milestone Meetups</span
+            >
+          </button>
+          <div class="event-body" id="event-milestones">
+            <h3 id="event-milestones-title">Milestone Meetups</h3>
+            <p class="event-desc">
+              Our 200th meetup called for cake and the biggest group photo we
+              could fit in the room.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="registration" class="join" aria-labelledby="join-heading">
+      <div class="join-copy">
+        <h2 id="join-heading">Come build with us.</h2>
+        <p class="join-lede">
+          Open to every MMU student and staff member. Enter your MMU email and
+          we’ll take you to the sign-up form.
+        </p>
+        <!-- validated in the script below before the Google Form opens -->
+        <form
+          id="registration-form"
+          class="join-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
+          target="_blank"
+          novalidate
+        >
+          <label for="mmuEmail">MMU email</label>
+          <div class="join-field">
+            <input
+              id="mmuEmail"
+              type="email"
+              autocomplete="email"
+              spellcheck="false"
+              placeholder="you@student.mmu.edu.my"
+              aria-describedby="join-hint join-error"
+            />
+            <button id="registration-submit-button" type="submit">
+              Join Us Now
+            </button>
+          </div>
+          <p id="join-hint" class="join-hint">
+            Student and staff addresses ending in mmu.edu.my.
+          </p>
+          <p id="join-error" class="join-error" role="alert"></p>
+        </form>
+      </div>
+
+      <figure class="join-qr">
+        <!-- the Enlarge button is the keyboard route to the same dialog -->
+        <div class="qr-card">
+          <img
+            src="images/join-qr.svg"
+            alt="QR code linking to hackerspacemmu.rocks"
+            width="29"
+            height="29"
+          />
+        </div>
+        <figcaption>
+          <div>
+            <span class="qr-title">Scan to join</span>
+            <span class="qr-url">hackerspacemmu.rocks</span>
+          </div>
+          <button class="qr-enlarge" type="button" aria-haspopup="dialog">
+            Enlarge
+          </button>
+        </figcaption>
+      </figure>
+
+      <dialog class="qr-dialog" aria-label="QR code, enlarged">
+        <div class="qr-card">
+          <img
+            src="images/join-qr.svg"
+            alt="QR code linking to hackerspacemmu.rocks"
+            width="29"
+            height="29"
+          />
+        </div>
+        <p>hackerspacemmu.rocks</p>
+        <button class="qr-close" type="button">Close</button>
+      </dialog>
+    </section>
+
     <script>
       const nav = document.querySelector('.site-nav');
       const toggle = nav.querySelector('.nav-toggle');
       toggle.addEventListener('click', () => {
         const open = nav.classList.toggle('is-open');
         toggle.setAttribute('aria-expanded', String(open));
+      });
+      // picking a section from the mobile menu closes it
+      nav.querySelector('.nav-links').addEventListener('click', (e) => {
+        if (!e.target.closest('a')) return;
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
       });
 
       // Sections size themselves to the viewport minus the sticky nav.
@@ -1653,7 +2743,7 @@
       const pauseBtn = legacy.querySelector('.timeline-pause');
 
       const DRIFT = 60; // px per second
-      const IDLE_MS = 2500; // how long drift waits after the user takes over
+      const IDLE_MS = 1000; // how long drift waits after the user takes over
       const GLIDE_MS = 900;
 
       const accentFor = (year) => `var(--legacy-${year % 2 ? 'blue' : 'red'})`;
@@ -1724,6 +2814,7 @@
       let x = 0; // track offset in px; may run past setW, wrapped on render
       let glide = null;
       let drag = null;
+      let scrub = null; // dragging the rocket along the timeline
       let hovered = false;
       let paused = reduceMotion.matches;
       let holdUntil = 0;
@@ -1824,7 +2915,7 @@
           const t = Math.min(1, (now - glide.start) / glide.dur);
           x = glide.from + (glide.to - glide.from) * easeInOut(t);
           if (t === 1) glide = null;
-        } else if (!drag && !paused && !hovered && now > holdUntil) {
+        } else if (!drag && !scrub && !paused && !hovered && now > holdUntil) {
           x = wrap(x) + DRIFT * dt;
         }
 
@@ -1874,6 +2965,94 @@
         if (e.pointerType === 'mouse') hovered = true;
       });
       reel.addEventListener('pointerleave', () => (hovered = false));
+
+      // The reverse of fly()'s cruising stretch: a point on the rail → the
+      // reel position that puts the rocket there. Cards sharing a year have
+      // no rail between them, so they're skipped over.
+      const posAt = (px) => {
+        if (px <= tickX[0]) return 0;
+        for (let i = 0; i < lefts.length - 1; i++) {
+          const a = tickX[yearOf[i]];
+          const b = tickX[yearOf[i + 1]];
+          if (b > a && px <= b) {
+            return lefts[i] + ((px - a) / (b - a)) * (lefts[i + 1] - lefts[i]);
+          }
+        }
+        return lefts.at(-1);
+      };
+
+      // Grab the rocket (or anywhere on the rail) and drag to scrub through
+      // the years; the reel follows. Letting go settles on the nearest card.
+      // A plain tap on a tick is left to its click handler.
+      let scrubbed = false;
+      const railX = (e) => e.clientX - rail.getBoundingClientRect().left;
+
+      rail.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        const at = railX(e);
+        const box = rocket.getBoundingClientRect();
+        const rx = (box.left + box.right) / 2 - rail.getBoundingClientRect().left;
+        // grabbing the rocket itself keeps it under the finger instead of
+        // jumping its centre to the pointer
+        const onRocket = Math.abs(rx - at) < box.width / 2;
+        scrub = {
+          id: e.pointerId,
+          startX: e.clientX,
+          offset: onRocket ? rx - at : 0,
+          moved: false,
+        };
+        scrubbed = false;
+      });
+
+      rail.addEventListener('pointermove', (e) => {
+        if (!scrub || e.pointerId !== scrub.id) return;
+        if (!scrub.moved) {
+          if (Math.abs(e.clientX - scrub.startX) <= 4) return;
+          scrub.moved = true;
+          rail.setPointerCapture(e.pointerId);
+          rail.classList.add('is-scrubbing');
+          glide = null;
+        }
+        x = posAt(railX(e) + scrub.offset);
+        run();
+      });
+
+      const endScrub = (e) => {
+        if (!scrub || e.pointerId !== scrub.id) return;
+        const { moved } = scrub;
+        scrub = null;
+        if (!moved) return;
+        scrubbed = true;
+        rail.classList.remove('is-scrubbing');
+        const pos = wrap(x);
+        const nearest = lefts.reduce((best, left) =>
+          Math.abs(left - pos) < Math.abs(best - pos) ? left : best,
+        );
+        glide = {
+          from: pos,
+          to: nearest,
+          start: performance.now(),
+          dur: reduceMotion.matches ? 1 : 400,
+        };
+        holdUntil = glide.start + 400 + IDLE_MS;
+        run();
+      };
+      rail.addEventListener('pointerup', endScrub);
+      rail.addEventListener('pointercancel', endScrub);
+      // Firefox ignores -webkit-user-drag and starts a native image drag,
+      // which cancels the pointer stream mid-scrub
+      rail.addEventListener('dragstart', (e) => e.preventDefault());
+      // a drag that ends over a tick shouldn't also count as clicking it
+      rail.addEventListener(
+        'click',
+        (e) => {
+          if (!scrubbed) return;
+          scrubbed = false;
+          e.stopPropagation();
+          e.preventDefault();
+        },
+        true,
+      );
 
       // Drag / swipe to scrub. touch-action: pan-y leaves vertical page
       // scrolling to the browser.
@@ -1942,6 +3121,175 @@
         );
         legacyIo.observe(legacy);
       }
+
+      // ---------- QUOTE ----------
+
+      const quote = document.querySelector('.quote');
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        quote.classList.add('is-armed');
+        const quoteIo = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            quoteIo.disconnect();
+            quote.classList.add('is-in');
+          },
+          { threshold: 0.5 },
+        );
+        quoteIo.observe(quote.querySelector('figure'));
+      }
+
+      // ---------- EVENTS ----------
+
+      const events = document.querySelector('.events');
+      const eventItems = [...events.querySelectorAll('.event')];
+      const eventToggles = eventItems.map((li) =>
+        li.querySelector('.event-toggle'),
+      );
+      // same query as the CSS breakpoint where the panels stack
+      const eventsStacked = matchMedia(
+        '(max-width: 1023px), (max-width: 1180px) and (orientation: portrait)',
+      );
+
+      const openEvent = (i) => {
+        eventItems.forEach((li, j) => {
+          const isOpen = i === j;
+          li.classList.toggle('is-open', isOpen);
+          eventToggles[j].setAttribute('aria-expanded', String(isOpen));
+          li.querySelector('.event-body').setAttribute(
+            'aria-hidden',
+            String(!isOpen),
+          );
+        });
+      };
+      openEvent(0);
+
+      eventToggles.forEach((btn, i) => {
+        btn.addEventListener('click', () => openEvent(i));
+        btn.addEventListener('keydown', (e) => {
+          const last = eventToggles.length - 1;
+          const to = {
+            ArrowRight: Math.min(last, i + 1),
+            ArrowLeft: Math.max(0, i - 1),
+            Home: 0,
+            End: last,
+          }[e.key];
+          if (to === undefined) return;
+          e.preventDefault();
+          eventToggles[to].focus();
+          openEvent(to);
+        });
+      });
+
+      // Sweeping the mouse along the row opens whichever panel it settles
+      // on. Stacked panels only open on tap, or the page would jump around
+      // under the pointer.
+      let hoverTimer = 0;
+      eventItems.forEach((li, i) => {
+        li.addEventListener('pointerenter', (e) => {
+          if (e.pointerType !== 'mouse' || eventsStacked.matches) return;
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(() => openEvent(i), 120);
+        });
+        li.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
+      });
+
+      // Meetups run on Malaysian time, so work the next one out in that
+      // timezone whatever the visitor's clock says.
+      const nextMeetup = events.querySelector('.next-meetup');
+      const kl = Object.fromEntries(
+        new Intl.DateTimeFormat('en-US', {
+          timeZone: 'Asia/Kuala_Lumpur',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          weekday: 'short',
+          hour: 'numeric',
+          hourCycle: 'h23',
+        })
+          .formatToParts(new Date())
+          .map(({ type, value }) => [type, value]),
+      );
+      const klDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(
+        kl.weekday,
+      );
+      const klHour = Number(kl.hour);
+      const MEETUP_DAY = 2; // Tuesday
+      const daysAway =
+        klDay === MEETUP_DAY && klHour < 22 ? 0 : (MEETUP_DAY - klDay + 7) % 7 || 7;
+      const meetupDate = new Date(
+        Date.UTC(Number(kl.year), kl.month - 1, Number(kl.day) + daysAway),
+      );
+
+      if (daysAway === 0 && klHour >= 20) {
+        nextMeetup.querySelector('.next-label').textContent = 'Weekly meetup';
+        nextMeetup.querySelector('.next-date').textContent = 'On right now';
+      } else {
+        nextMeetup.querySelector('.next-date').textContent =
+          daysAway === 0
+            ? 'Tonight'
+            : daysAway === 1
+              ? 'Tomorrow'
+              : meetupDate.toLocaleDateString('en-GB', {
+                  timeZone: 'UTC',
+                  weekday: 'short',
+                  day: 'numeric',
+                  month: 'short',
+                });
+      }
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        events.classList.add('is-armed');
+        const eventsIo = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            eventsIo.disconnect();
+            events.classList.add('is-in');
+          },
+          { threshold: 0.2 },
+        );
+        eventsIo.observe(events.querySelector('.events-list'));
+      }
+
+      // ---------- JOIN ----------
+
+      const join = document.querySelector('.join');
+      const joinForm = join.querySelector('.join-form');
+      const joinEmail = joinForm.querySelector('#mmuEmail');
+      const joinError = joinForm.querySelector('.join-error');
+      // student.mmu.edu.my, mmu.edu.my and any other MMU subdomain
+      const MMU_EMAIL = /^[^\s@]+@(?:[a-z0-9-]+\.)*mmu\.edu\.my$/i;
+
+      const setJoinError = (message) => {
+        joinError.textContent = message;
+        joinEmail.setAttribute('aria-invalid', String(Boolean(message)));
+      };
+
+      joinForm.addEventListener('submit', (e) => {
+        const value = joinEmail.value.trim();
+        const message = !value
+          ? 'Enter your MMU email first.'
+          : MMU_EMAIL.test(value)
+            ? ''
+            : 'That isn’t an MMU address. It should end in mmu.edu.my.';
+        setJoinError(message);
+        if (message) {
+          e.preventDefault();
+          joinEmail.focus();
+        }
+      });
+
+      // clear the complaint as soon as they start fixing it
+      joinEmail.addEventListener('input', () => {
+        if (joinError.textContent) setJoinError('');
+      });
+
+      const qrDialog = join.querySelector('.qr-dialog');
+      const openQr = () => qrDialog.showModal();
+      join.querySelector('.qr-enlarge').addEventListener('click', openQr);
+      join.querySelector('.join-qr .qr-card').addEventListener('click', openQr);
+      // a click anywhere, the Close button included, dismisses it
+      qrDialog.addEventListener('click', () => qrDialog.close());
     </script>
     <script src="js/what-we-do.js"></script>
     <script src="js/starfield.js"></script>
