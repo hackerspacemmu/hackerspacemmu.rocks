@@ -147,7 +147,7 @@ html {
 }
 
 #what-do-we-do .wdwd-item:focus-visible {
-  outline: 2px solid #b8d0da;
+  outline: 2px solid #ffffff;
   outline-offset: 4px;
   border-radius: 4px;
 }
@@ -339,7 +339,7 @@ html {
   top: 50vh;
   min-height: 50vh;
   isolation: isolate;
-  color: #111111;
+  color: #f2f2f2;
   padding: 56px 0;
   --horizon: 90px;
 }
@@ -358,13 +358,13 @@ html {
   border-radius: 50% 50% 0 0 / var(--horizon) var(--horizon) 0 0;
   background: radial-gradient(
     ellipse 55% 160% at 50% 0%,
-    #c9dde5 0%,
-    #b8d0da 45%,
-    #a6c1ce 100%
+    #4a4a4a 0%,
+    #3e3e3e 45%,
+    #303030 100%
   );
   /* Rim light along the horizon; a top border follows the curve and tapers
      off at the sides (an inset shadow leaves a straight seam instead). */
-  border-top: 4px solid rgba(255, 255, 255, 0.45);
+  border-top: 4px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Atmosphere: only the curved cap glows, and the planet covers its lower
@@ -378,8 +378,8 @@ html {
   right: -15%;
   border-radius: 50% 50% 0 0 / var(--horizon) var(--horizon) 0 0;
   box-shadow:
-    0 -4px 24px rgba(184, 208, 218, 0.45),
-    0 -16px 80px rgba(127, 156, 197, 0.35);
+    0 -4px 24px rgba(200, 200, 200, 0.25),
+    0 -16px 80px rgba(150, 150, 150, 0.18);
   pointer-events: none;
 }
 
@@ -395,11 +395,11 @@ html {
   width: var(--s);
   height: var(--s);
   border-radius: 50%;
-  background-color: #a3bfcc;
+  background-color: #353535;
   box-shadow:
-    inset 3px 4px 0 rgba(17, 17, 17, 0.1),
-    inset -2px -3px 0 rgba(255, 255, 255, 0.5),
-    0 1px 0 rgba(255, 255, 255, 0.35);
+    inset 3px 4px 0 rgba(0, 0, 0, 0.35),
+    inset -2px -3px 0 rgba(255, 255, 255, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.08);
   transform: translate(-50%, -50%) scaleY(var(--squash));
 }
 
@@ -464,7 +464,7 @@ html {
   width: 44px;
   height: 16px;
   border-radius: 50%;
-  background-color: rgba(233, 241, 244, 0.9);
+  background-color: rgba(150, 150, 150, 0.9);
   opacity: 0;
 }
 
@@ -607,11 +607,11 @@ html {
 /* Highlighter sweep: the blue fills in left to right when it scrolls into
    view (js/why-build.js adds .is-highlighted). */
 #why-build mark {
-  color: #111111;
+  color: inherit;
   font-weight: 600;
   padding: 2px 6px;
   background-color: transparent;
-  background-image: linear-gradient(#7f9cc5, #7f9cc5);
+  background-image: linear-gradient(#1d4ae0, #1d4ae0);
   background-repeat: no-repeat;
   background-size: 0% 100%;
   box-decoration-break: clone;

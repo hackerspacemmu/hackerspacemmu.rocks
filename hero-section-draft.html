@@ -241,12 +241,24 @@
         min-height: 0;
         margin: 0;
         overflow: hidden;
-        background: var(--tile-bg);
+        /* darker than the shared --tile-bg; scoped so other sections keep #333 */
+        background: #222;
         border-radius: var(--tile-radius);
         opacity: 0;
         transform: translateY(16px) scale(0.965);
         animation: tile-in 0.7s var(--ease-out) forwards;
         animation-delay: calc(150ms + var(--i) * var(--stagger));
+      }
+
+      /* accent frames in the stat/quote red and blue */
+      .tile-red {
+        background: #c4291e;
+      }
+      .tile-blue {
+        background: #1d4ae0;
+      }
+      .tile-white {
+        background: #fff;
       }
 
       /* ---------- PHOTO LOAD-IN ---------- */
@@ -584,8 +596,8 @@
       /* ---------- LEGACY ---------- */
 
       .legacy {
-        --legacy-red: #f0776c;
-        --legacy-blue: #93a5ff;
+        --legacy-red: #c4291e;
+        --legacy-blue: #1d4ae0;
         --legacy-inset: clamp(12px, 8.25vw, 170px);
         --card-h: clamp(150px, 28vh, 340px);
         --lane-h: 40px;
@@ -1957,7 +1969,7 @@
                 />
               </div>
             </figure>
-            <figure class="tile" style="--grow: 461; --i: 1; --pos: 55% 50%">
+            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 55% 50%">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20240908_112450591.MP.jpg"
@@ -1968,7 +1980,7 @@
           </div>
 
           <div class="hero-row" style="--grow: 318">
-            <figure class="tile" style="--grow: 394; --i: 3">
+            <figure class="tile tile-white" style="--grow: 394; --i: 3">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20230530_125505518.jpg"
@@ -1976,7 +1988,7 @@
                 />
               </div>
             </figure>
-            <figure class="tile tile-wide" style="--grow: 742; --i: 4">
+            <figure class="tile tile-wide tile-blue" style="--grow: 742; --i: 4">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20260330_125931505.PANO.jpg"
@@ -2023,7 +2035,7 @@
               />
             </div>
           </figure>
-          <figure class="tile" style="--grow: 505; --i: 7; --pos: 45% 50%">
+          <figure class="tile tile-red" style="--grow: 505; --i: 7; --pos: 45% 50%">
             <div class="frame">
               <img
                 src="images/hero-section/A6703510.jpg"
@@ -2112,7 +2124,7 @@
                     <g
                       class="wdwd-waves"
                       fill="none"
-                      stroke="#b8d0da"
+                      stroke="#dcdcdc"
                       stroke-width="7"
                       stroke-linecap="round"
                     >
