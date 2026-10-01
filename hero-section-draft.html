@@ -47,7 +47,7 @@
       }
 
       :root {
-        --page-bg: #1a1a1a;
+        --page-bg: #000;
         --tile-bg: #333;
         --text: #fff;
         --text-muted: #dcdcdc;
@@ -466,6 +466,15 @@
         text-align: right;
       }
 
+      /* Numbers that share a line with their label: digits here vary in width,
+         so mid-count values can be wider than the final one. rtl pins the right
+         edge so any overflow spills left, away from the word. */
+      .stat-updates .count,
+      .stat-hackathons .count {
+        direction: rtl;
+        margin-right: 0.15em;
+      }
+
       /* photo tiles */
       .stat-photo {
         overflow: hidden;
@@ -531,7 +540,12 @@
       .stat-updates .stat-text {
         margin-right: 67cqh;
         padding-left: 5cqw;
-        font-size: min(26.4cqh, calc((95cqw - 67cqh) / 8.1));
+        /* the line is the number (--count-em, set by JS once it's known) plus
+           ~6.2em of gap and "UPDATES"; scale it to fit beside the cut-out */
+        font-size: min(
+          26.4cqh,
+          calc((95cqw - 67cqh) / (var(--count-em, 2.9) + 6.2))
+        );
       }
 
       .stat-person {
@@ -1115,7 +1129,7 @@
         overflow: hidden;
         border-radius: var(--tile-radius);
         background: var(--tile-bg);
-        transition: flex-grow 0.7s var(--ease-in-out);
+        transition: flex-grow 0.45s var(--ease-in-out);
       }
 
       .event.is-open {
@@ -1146,7 +1160,7 @@
       }
 
       .event::before {
-        background: rgba(26, 26, 26, 0.5);
+        background: rgba(0, 0, 0, 0.5);
         transition: opacity 0.5s var(--ease-out);
       }
 
@@ -1161,8 +1175,8 @@
       .event::after {
         background: linear-gradient(
           to top,
-          rgba(17, 17, 17, 0.9),
-          rgba(17, 17, 17, 0.45) 38%,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 0, 0, 0.45) 38%,
           transparent 64%
         );
       }
@@ -1226,8 +1240,8 @@
       .event.is-open .event-body {
         opacity: 1;
         translate: none;
-        transition-duration: 0.6s;
-        transition-delay: 0.3s;
+        transition-duration: 0.4s;
+        transition-delay: 0.15s;
       }
 
       .event-body h3 {
@@ -1293,7 +1307,7 @@
         transition:
           opacity 0.7s var(--ease-out) var(--delay),
           transform 0.7s var(--ease-out) var(--delay),
-          flex-grow 0.7s var(--ease-in-out),
+          flex-grow 0.45s var(--ease-in-out),
           height 0.7s var(--ease-in-out);
       }
 
@@ -1943,11 +1957,11 @@
                 />
               </div>
             </figure>
-            <figure class="tile" style="--grow: 461; --i: 1; --pos: 72% 50%">
+            <figure class="tile" style="--grow: 461; --i: 1; --pos: 55% 50%">
               <div class="frame">
                 <img
-                  src="images/hero-section/PXL_20260426_102855293.MP.jpg"
-                  alt="A member presenting in front of a screen"
+                  src="images/hero-section/PXL_20240908_112450591.MP.jpg"
+                  alt="A member presenting a Pomato Timer app on a large screen"
                 />
               </div>
             </figure>
@@ -2009,11 +2023,11 @@
               />
             </div>
           </figure>
-          <figure class="tile" style="--grow: 505; --i: 7">
+          <figure class="tile" style="--grow: 505; --i: 7; --pos: 45% 50%">
             <div class="frame">
               <img
-                src="images/hero-section/PXL_20230516_134205840.MP.jpg"
-                alt="A full computer lab during a workshop"
+                src="images/hero-section/A6703510.jpg"
+                alt="A member pointing at a monitor while helping another with a 3D scene"
               />
             </div>
           </figure>
@@ -2177,7 +2191,11 @@
               loading="lazy"
             />
             <p class="stat-text">
-              <span><span class="count" data-count="71">71</span></span>
+              <span
+                ><span class="count" data-count="73" data-endpoint="members"
+                  >73</span
+                ></span
+              >
               <span>Active Members</span>
             </p>
           </div>
@@ -2196,14 +2214,21 @@
         <div class="stats-row">
           <div class="stat stat-meetups" style="--grow: 508; --i: 2">
             <p class="stat-text">
-              <span><span class="count" data-count="535">535</span></span>
+              <span
+                ><span class="count" data-count="539" data-endpoint="meetups"
+                  >539</span
+                ></span
+              >
               <span>MEETUPS</span>
             </p>
           </div>
           <div class="stat stat-updates" style="--grow: 1135; --i: 3">
             <p class="stat-text">
               <span
-                ><span class="count" data-count="251">251</span> UPDATES</span
+                ><span class="count" data-count="2179" data-endpoint="updates"
+                  >2179</span
+                >
+                UPDATES</span
               >
             </p>
             <img
@@ -2530,29 +2555,27 @@
           </div>
         </li>
 
-        <li class="event" style="--i: 5; --pos: 50% 40%">
+        <li class="event" style="--i: 5; --pos: 60% 55%">
           <img
             class="event-photo"
-            src="images/200anniversary.jpg"
-            alt="A packed group photo around a cake at the 200th meetup"
+            src="images/events-activities-section/PXL_20241001_133251242.MP(1).jpg"
+            alt="Members gathered around a table playing a board game, with more tables of players behind them"
             loading="lazy"
           />
           <button
             class="event-toggle"
             type="button"
             aria-expanded="false"
-            aria-controls="event-milestones"
-            aria-labelledby="event-milestones-title"
+            aria-controls="event-games"
+            aria-labelledby="event-games-title"
           >
-            <span class="event-label" aria-hidden="true"
-              >Milestone Meetups</span
-            >
+            <span class="event-label" aria-hidden="true">Game Nights</span>
           </button>
-          <div class="event-body" id="event-milestones">
-            <h3 id="event-milestones-title">Milestone Meetups</h3>
+          <div class="event-body" id="event-games">
+            <h3 id="event-games-title">Game Nights</h3>
             <p class="event-desc">
-              Our 200th meetup called for cake and the biggest group photo we
-              could fit in the room.
+              When study week hits, we trade keyboards for dice and board games
+              to take a break before the finals.
             </p>
           </div>
         </li>
@@ -2630,6 +2653,7 @@
       </dialog>
     </section>
 
+    <script src="js/config.js"></script>
     <script>
       const nav = document.querySelector('.site-nav');
       const toggle = nav.querySelector('.nav-toggle');
@@ -2675,6 +2699,9 @@
       const stats = document.querySelector('.stats');
       const counters = [...stats.querySelectorAll('.count')];
       const COUNT_MS = 1100;
+      // a cold-starting API shouldn't hold up the count-up; past this we
+      // count to the numbers baked into the markup instead
+      const API_WAIT_MS = 2500;
 
       // Days active is derived from the founding date, same as index.html.
       counters.forEach((el) => {
@@ -2682,8 +2709,36 @@
           const ms = Date.now() - new Date(el.dataset.since);
           el.dataset.count = Math.ceil(ms / (24 * 60 * 60 * 1000));
         }
-        el.textContent = el.dataset.count;
       });
+
+      // Write the final numbers and let the tiles size their text to them.
+      const showFinal = () => {
+        counters.forEach((el) => (el.textContent = el.dataset.count));
+        counters.forEach((el) => {
+          const style = getComputedStyle(el);
+          const em = parseFloat(style.width) / parseFloat(style.fontSize);
+          el.closest('.stat-text').style.setProperty('--count-em', em);
+        });
+      };
+      showFinal();
+
+      // Members, meetups and updates come from the same API as index.html.
+      // Values that land after the count-up has started are dropped.
+      let countStarted = false;
+      const liveCounts = Promise.all(
+        counters
+          .filter((el) => el.dataset.endpoint)
+          .map((el) =>
+            fetch(`${CONFIG.API_BASE_URL}/api/v1/${el.dataset.endpoint}/count`)
+              .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+              .then(({ total }) => {
+                if (!countStarted && Number.isFinite(total)) {
+                  el.dataset.count = total;
+                }
+              })
+              .catch((err) => console.error(err)),
+          ),
+      );
 
       const countUp = (el) => {
         const target = Number(el.dataset.count);
@@ -2691,8 +2746,10 @@
 
         // Lock the box to the final number's width (in em, so it survives a
         // resize) so the surrounding text doesn't shuffle as digits change.
-        const size = parseFloat(getComputedStyle(el).fontSize);
-        el.style.width = `${el.getBoundingClientRect().width / size}em`;
+        // Computed width is the untransformed layout width; the tile is still
+        // mid scale-in here, so getBoundingClientRect() would come up short.
+        const style = getComputedStyle(el);
+        el.style.width = `${parseFloat(style.width) / parseFloat(style.fontSize)}em`;
         el.textContent = '0';
 
         setTimeout(
@@ -2722,15 +2779,23 @@
             if (!entries.some((entry) => entry.isIntersecting)) return;
             io.disconnect();
             stats.classList.add('is-in');
-            // measure final widths only once the display font is in
-            document.fonts.ready.then(() => {
-              counters.forEach((el) => (el.textContent = el.dataset.count));
+            // measure final widths only once the display font and the live
+            // numbers are in
+            const apiWait = new Promise((r) => setTimeout(r, API_WAIT_MS));
+            Promise.all([
+              document.fonts.ready,
+              Promise.race([liveCounts, apiWait]),
+            ]).then(() => {
+              countStarted = true;
+              showFinal();
               counters.forEach(countUp);
             });
           },
           { threshold: 0.25 },
         );
         io.observe(stats.querySelector('.stats-grid'));
+      } else {
+        liveCounts.then(showFinal);
       }
 
       // ---------- LEGACY ----------
@@ -3189,7 +3254,7 @@
         li.addEventListener('pointerenter', (e) => {
           if (e.pointerType !== 'mouse' || eventsStacked.matches) return;
           clearTimeout(hoverTimer);
-          hoverTimer = setTimeout(() => openEvent(i), 120);
+          hoverTimer = setTimeout(() => openEvent(i), 60);
         });
         li.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
       });
