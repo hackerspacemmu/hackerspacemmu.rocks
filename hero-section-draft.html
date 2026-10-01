@@ -4,23 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hackerspace MMU</title>
-    <link rel="icon" type="image/png" href="images/hsm_logo_ver_3.png" />
+    <link rel="icon" type="image/png" href="images/hsm_logo_ver_3-96.png" />
 
     <link
       rel="preload"
-      href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf"
+      href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="vendor/main-fonts/Jost-VariableFont_wght.ttf"
+      href="vendor/main-fonts/Jost-VariableFont_wght.woff2"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossorigin
     />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&display=swap"
       rel="stylesheet"
@@ -30,8 +32,9 @@
     <style>
       @font-face {
         font-family: 'Special Gothic Expanded One';
-        src: url('vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf')
-          format('truetype');
+        src:
+          url('vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2') format('woff2'),
+          url('vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf') format('truetype');
         font-weight: 400;
         font-style: normal;
         font-display: swap;
@@ -39,8 +42,9 @@
 
       @font-face {
         font-family: 'Jost';
-        src: url('vendor/main-fonts/Jost-VariableFont_wght.ttf')
-          format('truetype');
+        src:
+          url('vendor/main-fonts/Jost-VariableFont_wght.woff2') format('woff2'),
+          url('vendor/main-fonts/Jost-VariableFont_wght.ttf') format('truetype');
         font-weight: 100 900;
         font-style: normal;
         font-display: swap;
@@ -1975,6 +1979,13 @@
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20230606_134556550.jpg"
+                  srcset="
+                    images/hero-section/PXL_20230606_134556550-480.webp 480w,
+                    images/hero-section/PXL_20230606_134556550-800.webp 800w,
+                    images/hero-section/PXL_20230606_134556550-1200.webp 1200w,
+                    images/hero-section/PXL_20230606_134556550.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
                   alt="Members working on laptops around a long table"
                 />
               </div>
@@ -1983,6 +1994,13 @@
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20240908_112450591.MP.jpg"
+                  srcset="
+                    images/hero-section/PXL_20240908_112450591.MP-480.webp 480w,
+                    images/hero-section/PXL_20240908_112450591.MP-800.webp 800w,
+                    images/hero-section/PXL_20240908_112450591.MP-1200.webp 1200w,
+                    images/hero-section/PXL_20240908_112450591.MP.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
                   alt="A member presenting a Pomato Timer app on a large screen"
                 />
               </div>
@@ -1994,6 +2012,13 @@
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20230530_125505518.jpg"
+                  srcset="
+                    images/hero-section/PXL_20230530_125505518-480.webp 480w,
+                    images/hero-section/PXL_20230530_125505518-800.webp 800w,
+                    images/hero-section/PXL_20230530_125505518-1200.webp 1200w,
+                    images/hero-section/PXL_20230530_125505518.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
                   alt="Members gathered around tables in a seminar room"
                 />
               </div>
@@ -2002,6 +2027,14 @@
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20260330_125931505.PANO.jpg"
+                  srcset="
+                    images/hero-section/PXL_20260330_125931505.PANO-480.webp 480w,
+                    images/hero-section/PXL_20260330_125931505.PANO-800.webp 800w,
+                    images/hero-section/PXL_20260330_125931505.PANO-1200.webp 1200w,
+                    images/hero-section/PXL_20260330_125931505.PANO-1600.webp 1600w,
+                    images/hero-section/PXL_20260330_125931505.PANO.jpg 2200w
+                  "
+                  sizes="(max-width: 860px) 145vw, 45vw"
                   alt="Panorama of a full room of members celebrating with cakes"
                 />
               </div>
@@ -2029,6 +2062,13 @@
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20260330_134259803.jpg"
+                  srcset="
+                    images/hero-section/PXL_20260330_134259803-480.webp 480w,
+                    images/hero-section/PXL_20260330_134259803-800.webp 800w,
+                    images/hero-section/PXL_20260330_134259803-1200.webp 1200w,
+                    images/hero-section/PXL_20260330_134259803.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
                   alt="A member presenting slides to the audience"
                 />
               </div>
@@ -2041,6 +2081,13 @@
             <div class="frame">
               <img
                 src="images/hero-section/PXL_20250923_124703509.MP.jpg"
+                srcset="
+                  images/hero-section/PXL_20250923_124703509.MP-480.webp 480w,
+                  images/hero-section/PXL_20250923_124703509.MP-800.webp 800w,
+                  images/hero-section/PXL_20250923_124703509.MP-1200.webp 1200w,
+                  images/hero-section/PXL_20250923_124703509.MP.jpg 1600w
+                "
+                sizes="(max-width: 860px) 50vw, 40vw"
                 alt="Members coding together at a hackathon"
               />
             </div>
@@ -2049,6 +2096,13 @@
             <div class="frame">
               <img
                 src="images/hero-section/A6703510.jpg"
+                srcset="
+                  images/hero-section/A6703510-480.webp 480w,
+                  images/hero-section/A6703510-800.webp 800w,
+                  images/hero-section/A6703510-1200.webp 1200w,
+                  images/hero-section/A6703510.jpg 1600w
+                "
+                sizes="(max-width: 860px) 50vw, 40vw"
                 alt="A member pointing at a monitor while helping another with a 3D scene"
               />
             </div>
@@ -2580,7 +2634,7 @@
         <li class="event" style="--i: 5; --pos: 60% 55%">
           <img
             class="event-photo"
-            src="images/events-activities-section/PXL_20241001_133251242.MP(1).jpg"
+            src="images/events-activities-section/PXL_20241001_133251242.MP.jpg"
             alt="Members gathered around a table playing a board game, with more tables of players behind them"
             loading="lazy"
           />
