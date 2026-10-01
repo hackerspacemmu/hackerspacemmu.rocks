@@ -14,9 +14,28 @@
 /* Gentle stops so each "What do we do?" item and the landing get a moment on
    screen. "proximity" only pulls you in when you finish scrolling near a
    stop, so the rest of the page scrolls freely; "always" means a fast flick
-   halts at the next stop instead of skipping past it. */
-html {
-  scroll-snap-type: y proximity;
+   halts at the next stop instead of skipping past it.
+
+   Mouse only, on purpose. A wheel notch moves the page a little, so a stop
+   reads as a nudge. A thumb flick carries a screen or more of momentum, and
+   "always" cuts that dead at the very next stop, so swipe after swipe gets
+   caught and the page feels like it is pulling against you. Phones also keep
+   moving the stops: the address bar sliding away changes what vh means, so
+   the --at offsets shift mid-scroll and the page re-snaps to the new spot
+   with no input from the reader. Neither is fixable from here, so touch just
+   scrolls normally. */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}
+
+/* Snapping moves the page after the reader has stopped scrolling, which is
+   motion they did not ask for. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
 }
 
 .snap-stop {

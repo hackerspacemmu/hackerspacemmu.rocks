@@ -61,7 +61,7 @@
 
         --edge: clamp(12px, 2vw, 40px);
         --gap: clamp(8px, 1vw, 18px);
-        --tile-pad: clamp(8px, 1vw, 18px);
+        --tile-pad: clamp(2px, 0.25vw, 4.5px);
         --tile-radius: clamp(10px, 0.8vw, 16px);
         --img-radius: clamp(6px, 0.45vw, 9px);
 
@@ -1135,7 +1135,7 @@
          photo instead of rescaling it every frame. */
       .events-list {
         --open-w: calc(
-          (100cqw - 5 * var(--gap)) * var(--open) / (var(--open) + 5)
+          (100cqw - 4 * var(--gap)) * var(--open) / (var(--open) + 4)
         );
 
         container-type: inline-size;
@@ -2133,10 +2133,11 @@
             </div>
 
             <div class="wdwd-item" role="button" tabindex="0">
-              <h3>Share Tech News</h3>
+              <h3>Geek Out</h3>
               <p>
-                You can't help but be up to date on all the tech news.<br />
-                Especially on AMD's latest chip *cough* Shaun *cough*.
+                Chat about the latest in tech.<br />
+                You can be sure someone will admire your custom mechanical
+                keyboard or your VIM terminal setup.
               </p>
             </div>
 
@@ -2581,32 +2582,7 @@
           </div>
         </li>
 
-        <li class="event" style="--i: 3; --pos: 72% 50%">
-          <img
-            class="event-photo"
-            src="images/PhysicalSession_projectDemo.jpg"
-            alt="A member holding up a printout while talking to the room"
-            loading="lazy"
-          />
-          <button
-            class="event-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="event-ideas"
-            aria-labelledby="event-ideas-title"
-          >
-            <span class="event-label" aria-hidden="true">Idea Talks</span>
-          </button>
-          <div class="event-body" id="event-ideas">
-            <h3 id="event-ideas-title">Idea Talks</h3>
-            <p class="event-desc">
-              Pitch the idea you can’t stop thinking about and hear what
-              everyone else makes of it.
-            </p>
-          </div>
-        </li>
-
-        <li class="event" style="--i: 4; --pos: 35% 50%">
+        <li class="event" style="--i: 3; --pos: 35% 50%">
           <img
             class="event-photo"
             src="images/MamakSession2018.jpg"
@@ -2631,7 +2607,7 @@
           </div>
         </li>
 
-        <li class="event" style="--i: 5; --pos: 60% 55%">
+        <li class="event" style="--i: 4; --pos: 60% 55%">
           <img
             class="event-photo"
             src="images/events-activities-section/PXL_20241001_133251242.MP.jpg"

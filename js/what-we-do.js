@@ -7,7 +7,7 @@
 
   const items = [...section.querySelectorAll('.wdwd-item')];
   const astronaut = section.querySelector('.wdwd-spaceman');
-  // One per item: Build Projects, Share Tech News, Give Feedback.
+  // One per item: Build Projects, Geek Out, Give Feedback.
   const gear = ['hat', 'glasses', 'megaphone'];
   const poses = [
     { tilt: '-20deg', drift: '0px' },
