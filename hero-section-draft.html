@@ -109,7 +109,11 @@
         position: sticky;
         top: 0;
         z-index: 20;
-        background: var(--page-bg);
+        /* frosted glass: page content blurs through as it scrolls underneath */
+        background: rgba(10, 10, 10, 0.55);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        backdrop-filter: blur(18px) saturate(160%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         flex: none;
         display: flex;
         align-items: center;
@@ -119,6 +123,12 @@
         font-family: var(--font-body);
         opacity: 0;
         animation: fade-down 0.6s var(--ease-out) 0.05s forwards;
+      }
+
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .site-nav {
+          background: rgba(10, 10, 10, 0.92);
+        }
       }
 
       .brand {
@@ -241,7 +251,7 @@
         min-height: 0;
         margin: 0;
         overflow: hidden;
-        /* darker than the shared --tile-bg; scoped so other sections keep #333 */
+        /* only the text tile keeps this; every photo tile takes a red, blue or white frame */
         background: #222;
         border-radius: var(--tile-radius);
         opacity: 0;
@@ -1961,7 +1971,7 @@
       <main class="hero">
         <div class="hero-main">
           <div class="hero-row" style="--grow: 433">
-            <figure class="tile" style="--grow: 674; --i: 0">
+            <figure class="tile tile-blue" style="--grow: 674; --i: 0">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20230606_134556550.jpg"
@@ -2015,7 +2025,7 @@
                 >
               </div>
             </section>
-            <figure class="tile" style="--grow: 450; --i: 6; --pos: 62% 50%">
+            <figure class="tile tile-white" style="--grow: 450; --i: 6; --pos: 62% 50%">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20260330_134259803.jpg"
@@ -2027,7 +2037,7 @@
         </div>
 
         <div class="hero-side">
-          <figure class="tile" style="--grow: 631; --i: 2">
+          <figure class="tile tile-blue" style="--grow: 631; --i: 2">
             <div class="frame">
               <img
                 src="images/hero-section/PXL_20250923_124703509.MP.jpg"
