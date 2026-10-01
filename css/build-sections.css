@@ -35,14 +35,17 @@ html {
 /* The section is taller than the screen; .wdwd-pin sticks while you scroll
    through it and js/what-we-do.js highlights one item per stretch of scroll. */
 
+/* The top --sky-fade of the section eases in from the page colour above
+   (--page-bg; pages without one just start at #111111), so space fades in
+   instead of starting at a hard line. */
 #what-do-we-do {
+  --sky-fade: 35vh;
   position: relative;
   background-color: #111111;
+  background-image: linear-gradient(var(--page-bg, #111111), #111111 var(--sky-fade));
   color: #ffffff;
   height: 280vh;
 }
-
-/* Space backdrop: faint nebula glow (CSS) + starfield canvas (js/starfield.js) */
 
 #what-do-we-do .wdwd-pin {
   position: sticky;
@@ -52,6 +55,19 @@ html {
   align-items: center;
   padding: 96px 0;
   overflow: hidden;
+}
+
+/* Space backdrop: faint nebula glow (CSS) + starfield canvas (js/starfield.js).
+   The mask fades both in over the section's top --sky-fade; the canvas sticks
+   with .wdwd-pin, so js/starfield.js keeps --sky-top at where the section's
+   top edge is (0 until the pin sticks, then scrolling up and away). */
+#what-do-we-do .wdwd-stars {
+  --sky-top: 0px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   background:
     radial-gradient(
       ellipse 45% 40% at 85% 30%,
@@ -63,14 +79,14 @@ html {
       rgba(184, 208, 218, 0.08),
       transparent 70%
     );
-}
-
-#what-do-we-do .wdwd-stars {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+  -webkit-mask-image: linear-gradient(
+    transparent var(--sky-top),
+    #000 calc(var(--sky-top) + var(--sky-fade))
+  );
+  mask-image: linear-gradient(
+    transparent var(--sky-top),
+    #000 calc(var(--sky-top) + var(--sky-fade))
+  );
 }
 
 #what-do-we-do .grid-12 {
@@ -578,6 +594,22 @@ html {
 #why-build > .grid-12 {
   position: relative;
   z-index: 1;
+}
+
+/* The planet's lower part fades into the page colour (--page-bg; pages
+   without one keep the plain planet), so it runs into the next section
+   instead of ending at a hard line. Over the planet and craters, under the
+   text. */
+#why-build::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(220px, 60%);
+  background: linear-gradient(transparent, var(--page-bg, transparent));
+  pointer-events: none;
 }
 
 #why-build .why-build-title {

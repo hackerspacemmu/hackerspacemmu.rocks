@@ -32,6 +32,7 @@
   let running = false;
   let visible = false;
   let frame = null;
+  let skyTop = null;
 
   // Stars live in 0..1 coordinates, so a resize (e.g. a phone's address bar
   // hiding) just rescales them instead of scattering a new sky.
@@ -113,7 +114,16 @@
     const seconds = now / 1000;
     const still = reducedMotion.matches;
     // How far into the section we've scrolled drives the parallax.
-    const scrolled = -section.getBoundingClientRect().top;
+    const sectionTop = section.getBoundingClientRect().top;
+    const scrolled = -sectionTop;
+
+    // Keep the fade-in mask (CSS) on the section's top edge: it rides along
+    // with the canvas until the pin sticks, then scrolls up out of view.
+    const top = Math.round(sectionTop - canvas.getBoundingClientRect().top);
+    if (top !== skyTop) {
+      skyTop = top;
+      canvas.style.setProperty('--sky-top', `${top}px`);
+    }
     leanX += (mouseX - leanX) * 0.05;
     leanY += (mouseY - leanY) * 0.05;
 
