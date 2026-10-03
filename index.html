@@ -142,10 +142,14 @@
         text-decoration: none;
       }
 
+      /* Full-colour mark on a white badge; the height includes the padding */
       .brand img {
-        height: clamp(32px, 4.8vh, 48px);
+        height: clamp(38px, 5.4vh, 54px);
         width: auto;
         display: block;
+        padding: clamp(4px, 0.6vh, 6px) clamp(7px, 1vh, 10px);
+        background: #fff;
+        border-radius: var(--img-radius);
         /* Glow disabled for now. Dense white halo hugging the whole mark,
            like the original hsm_logo_ver_3.png (stacked shadows build on
            each other); the dark rim first keeps white letters from melting
@@ -1954,7 +1958,7 @@
   <body>
     <nav class="site-nav" aria-label="Main">
       <a href="index.html" class="brand">
-        <img src="icon/hackerspaceLogoWhite.svg" alt="Hackerspace MMU logo" />
+        <img src="images/brand/hackerspaceLogo.svg" alt="Hackerspace MMU logo" />
         <span>Hackerspace MMU</span>
       </a>
 
@@ -2597,8 +2601,8 @@
         <li class="event" style="--i: 3; --pos: 35% 50%">
           <img
             class="event-photo"
-            src="images/events-activities-section/MamakSession2018.jpg"
-            alt="Members sharing food and drinks at a mamak after a meetup"
+            src="images/events-activities-section/mamak_photo-web.jpg"
+            alt="A long table of members sharing food and drinks at a mamak after a meetup"
             loading="lazy"
           />
           <button
