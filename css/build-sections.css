@@ -1,0 +1,717 @@
+/* --- 12-COLUMN GRID (matches Figma: 1280 frame, 120 margin, 20 gutter) --- */
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 9.375vw, 120px);
+}
+
+/* --- SCROLL STOPS --- */
+
+/* Gentle stops so each "What do we do?" item and the landing get a moment on
+   screen. "proximity" only pulls you in when you finish scrolling near a
+   stop, so the rest of the page scrolls freely; "always" means a fast flick
+   halts at the next stop instead of skipping past it.
+
+   Mouse only, on purpose. A wheel notch moves the page a little, so a stop
+   reads as a nudge. A thumb flick carries a screen or more of momentum, and
+   "always" cuts that dead at the very next stop, so swipe after swipe gets
+   caught and the page feels like it is pulling against you. Phones also keep
+   moving the stops: the address bar sliding away changes what vh means, so
+   the --at offsets shift mid-scroll and the page re-snaps to the new spot
+   with no input from the reader. Neither is fixable from here, so touch just
+   scrolls normally. */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}
+
+/* Snapping moves the page after the reader has stopped scrolling, which is
+   motion they did not ask for. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
+.snap-stop {
+  position: absolute;
+  top: var(--at);
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* --- WHAT DO WE DO --- */
+
+/* The section is taller than the screen; .wdwd-pin sticks while you scroll
+   through it and js/what-we-do.js highlights one item per stretch of scroll. */
+
+/* The top --sky-fade of the section eases in from the page colour above
+   (--page-bg; pages without one just start at #111111), so space fades in
+   instead of starting at a hard line. */
+#what-do-we-do {
+  --sky-fade: 35vh;
+  position: relative;
+  background-color: #111111;
+  background-image: linear-gradient(var(--page-bg, #111111), #111111 var(--sky-fade));
+  color: #ffffff;
+  height: 280vh;
+}
+
+#what-do-we-do .wdwd-pin {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 96px 0;
+  overflow: hidden;
+}
+
+/* Space backdrop: faint nebula glow (CSS) + starfield canvas (js/starfield.js).
+   The mask fades both in over the section's top --sky-fade; the canvas sticks
+   with .wdwd-pin, so js/starfield.js keeps --sky-top at where the section's
+   top edge is (0 until the pin sticks, then scrolling up and away). */
+#what-do-we-do .wdwd-stars {
+  --sky-top: 0px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 45% 40% at 85% 30%,
+      rgba(127, 156, 197, 0.14),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 10% 85%,
+      rgba(184, 208, 218, 0.08),
+      transparent 70%
+    );
+  -webkit-mask-image: linear-gradient(
+    transparent var(--sky-top),
+    #000 calc(var(--sky-top) + var(--sky-fade))
+  );
+  mask-image: linear-gradient(
+    transparent var(--sky-top),
+    #000 calc(var(--sky-top) + var(--sky-fade))
+  );
+}
+
+#what-do-we-do .grid-12 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  align-items: center;
+}
+
+#what-do-we-do h2,
+#what-do-we-do h3,
+#why-build h2 {
+  font-family: 'Archivo', sans-serif;
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+#what-do-we-do .wdwd-content {
+  grid-column: 2 / 8;
+}
+
+#what-do-we-do .wdwd-title {
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+#what-do-we-do .wdwd-item {
+  position: relative;
+  max-width: 485px;
+  padding: 24px 0;
+}
+
+#what-do-we-do .wdwd-item h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+#what-do-we-do .wdwd-item p {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+#what-do-we-do .wdwd-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* The item for the current scroll position is highlighted; the others dim
+   but stay clickable (js/what-we-do.js). */
+#what-do-we-do .wdwd-item {
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+}
+
+#what-do-we-do .wdwd-item:hover {
+  opacity: 0.7;
+}
+
+#what-do-we-do .wdwd-item.is-active {
+  opacity: 1;
+}
+
+#what-do-we-do .wdwd-item h3 {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#what-do-we-do .wdwd-item.is-active h3 {
+  transform: translateX(8px);
+}
+
+#what-do-we-do .wdwd-item:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+#what-do-we-do .wdwd-astronaut {
+  grid-column: 9 / 12;
+  display: flex;
+  justify-content: center;
+  animation: wdwd-float 6s ease-in-out infinite;
+}
+
+.wdwd-spaceman {
+  position: relative;
+  width: 160px;
+  transform: rotate(var(--tilt, -20deg)) translateY(var(--drift, 0px));
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wdwd-spaceman img {
+  display: block;
+  width: 100%;
+}
+
+/* Gear: one accessory at a time, matching the item that just appeared */
+
+.wdwd-gear {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.wdwd-acc {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 0.3s ease,
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wdwd-hat {
+  transform: translateY(-80px) rotate(-12deg);
+}
+
+.wdwd-glasses {
+  transform: scale(0.4);
+}
+
+.wdwd-megaphone {
+  transform-origin: left center;
+  transform: scale(0.3) rotate(30deg);
+}
+
+.wdwd-spaceman[data-gear='hat'] .wdwd-hat,
+.wdwd-spaceman[data-gear='glasses'] .wdwd-glasses,
+.wdwd-spaceman[data-gear='megaphone'] .wdwd-megaphone {
+  opacity: 1;
+  transform: none;
+}
+
+/* Only pulse while the speaker is actually showing: SVG opacity animations
+   run on the main thread, so an always-on loop costs work every frame even
+   when hidden. */
+.wdwd-spaceman[data-gear='megaphone'] .wdwd-waves path {
+  animation: wdwd-wave 1.2s ease-out infinite;
+}
+
+.wdwd-spaceman[data-gear='megaphone'] .wdwd-waves path:last-child {
+  animation-delay: 0.2s;
+}
+
+/* Hidden while his copy lands on the moon (js/landing.js); also stops his
+   loops so nothing animates while he's invisible. */
+#what-do-we-do .wdwd-astronaut.is-away {
+  visibility: hidden;
+  animation: none;
+}
+
+#what-do-we-do .wdwd-astronaut.is-away .wdwd-waves path {
+  animation: none;
+}
+
+@keyframes wdwd-wave {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes wdwd-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+
+@media (max-width: 991px) {
+  #what-do-we-do .wdwd-content,
+  #what-do-we-do .wdwd-astronaut {
+    grid-column: 1 / -1;
+  }
+
+  #what-do-we-do .wdwd-astronaut {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  #what-do-we-do .wdwd-pin {
+    padding: 64px 0;
+  }
+}
+
+/* Too short to pin the whole section: scroll normally and highlight the item
+   nearest the middle of the screen instead. */
+@media (max-height: 699px) {
+  #what-do-we-do {
+    height: auto;
+  }
+
+  #what-do-we-do .snap-stop {
+    display: none;
+  }
+
+  #what-do-we-do .wdwd-pin {
+    position: relative;
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #what-do-we-do .wdwd-astronaut,
+  .wdwd-spaceman .wdwd-waves path {
+    animation: none;
+  }
+
+  .wdwd-spaceman,
+  .wdwd-acc,
+  #what-do-we-do .wdwd-item,
+  #what-do-we-do .wdwd-item h3 {
+    transition: none;
+  }
+}
+
+/* --- WHY BUILD --- */
+
+/* Moon scene: #why-build pins with its top halfway down the screen (leaving
+   room above the horizon for the astronaut) and fills the rest, so the next
+   section stays hidden. The 100vh spacer after it is the scroll it stays
+   pinned for: stop 1 arrive, stop 2 land (+50vh), stop 3 hold (+100vh). The
+   space above the horizon is a static CSS starfield once "What do we do?" and
+   its twinkling stars have scrolled away. The planet is wider than the page
+   for a gentle curve, so the sides are clipped ("clip", not "hidden", which
+   would stop #why-build from pinning). */
+.moon-scene {
+  position: relative;
+  overflow-x: clip;
+  background-color: #111111;
+  background-image:
+    radial-gradient(1px 1px at 23px 41px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 97px 130px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 151px 67px, rgba(184, 208, 218, 0.9), transparent),
+    radial-gradient(1px 1px at 190px 180px, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 60px 210px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 210px 20px, rgba(255, 255, 255, 0.7), transparent);
+  background-size: 240px 240px;
+}
+
+/* A spacer, not padding: a sticky element can only travel within its
+   parent's content box */
+.moon-scene::after {
+  content: '';
+  display: block;
+  height: 100vh;
+}
+
+#why-build {
+  position: sticky;
+  top: 50vh;
+  min-height: 50vh;
+  isolation: isolate;
+  color: #f2f2f2;
+  padding: 56px 0;
+  --horizon: 90px;
+}
+
+/* The section is a planet: one shape (curved top + body) so there are no
+   seams, rising out of the starfield above. Width is 130% so the curve is
+   gentle; .planet-surface maps back to the viewport for placing craters. */
+#why-build .planet {
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--horizon));
+  bottom: 0;
+  left: -15%;
+  right: -15%;
+  overflow: hidden;
+  border-radius: 50% 50% 0 0 / var(--horizon) var(--horizon) 0 0;
+  background: radial-gradient(
+    ellipse 55% 160% at 50% 0%,
+    #4a4a4a 0%,
+    #3e3e3e 45%,
+    #303030 100%
+  );
+  /* Rim light along the horizon; a top border follows the curve and tapers
+     off at the sides (an inset shadow leaves a straight seam instead). */
+  border-top: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Atmosphere: only the curved cap glows, and the planet covers its lower
+   half, so the glow can't bleed onto the section. */
+#why-build .planet-glow {
+  position: absolute;
+  z-index: -2;
+  top: calc(-1 * var(--horizon));
+  height: calc(2 * var(--horizon));
+  left: -15%;
+  right: -15%;
+  border-radius: 50% 50% 0 0 / var(--horizon) var(--horizon) 0 0;
+  box-shadow:
+    0 -4px 24px rgba(200, 200, 200, 0.25),
+    0 -16px 80px rgba(150, 150, 150, 0.18);
+  pointer-events: none;
+}
+
+#why-build .planet-surface {
+  position: absolute;
+  inset: 0 11.5385%;
+}
+
+#why-build .crater {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background-color: #353535;
+  box-shadow:
+    inset 3px 4px 0 rgba(0, 0, 0, 0.35),
+    inset -2px -3px 0 rgba(255, 255, 255, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translate(-50%, -50%) scaleY(var(--squash));
+}
+
+/* Landing: a copy of the astronaut that takes over from the floating one and
+   touches down on the horizon as you scroll (js/landing.js). Its feet sit
+   just below the curve at columns 9-11. */
+#why-build .landing {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + var(--horizon) - 12px);
+  pointer-events: none;
+}
+
+/* He's ~1.62x as tall as he is wide. On shorter screens he shrinks so his
+   helmet stays below the nav: the crest of the horizon is 50vh - 78px down
+   the screen, less ~80px for the nav and a little breathing room. */
+#why-build .landing-spot {
+  grid-column: 9 / 12;
+  justify-self: center;
+  position: relative;
+  width: clamp(110px, calc((50vh - 160px) / 1.62), 160px);
+  visibility: hidden;
+}
+
+#why-build .landing-spot.is-flying,
+#why-build .landing-spot.is-landed {
+  visibility: visible;
+}
+
+#why-build .landing-spot .wdwd-spaceman {
+  width: 100%;
+  transition: none;
+}
+
+/* Squash from the boots (the in-flight tilt pivots around the middle, to
+   match the floating astronaut) */
+#why-build .landing-spot.is-landed .wdwd-spaceman {
+  transform-origin: 50% 100%;
+  animation: landing-squash 0.5s ease-out;
+}
+
+@keyframes landing-squash {
+  0% {
+    transform: scale(1.06, 0.9);
+  }
+  45% {
+    transform: scale(0.97, 1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Moon dust kicked up either side of the boots */
+#why-build .landing-dust::before,
+#why-build .landing-dust::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  width: 44px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: rgba(150, 150, 150, 0.9);
+  opacity: 0;
+}
+
+#why-build .landing-dust::before {
+  left: 18%;
+}
+
+#why-build .landing-dust::after {
+  right: 18%;
+}
+
+#why-build .landing-spot.is-landed .landing-dust::before {
+  animation: landing-dust-left 0.8s ease-out;
+}
+
+#why-build .landing-spot.is-landed .landing-dust::after {
+  animation: landing-dust-right 0.8s ease-out;
+}
+
+@keyframes landing-dust-left {
+  0% {
+    opacity: 0.9;
+    transform: translateX(0) scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-36px, -10px) scale(1.5);
+  }
+}
+
+@keyframes landing-dust-right {
+  0% {
+    opacity: 0.9;
+    transform: translateX(0) scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(36px, -10px) scale(1.5);
+  }
+}
+
+/* Flag: drops in just after touchdown and plants beside him. The pole runs
+   down the image's left edge, so it pivots and wobbles from the base. */
+#why-build .landing-flag {
+  position: absolute;
+  left: calc(100% + 4px);
+  bottom: -10px;
+  width: 57.5%;
+  transform-origin: 3% 97%;
+  opacity: 0;
+}
+
+#why-build .landing-spot.is-landed .landing-flag {
+  animation: landing-flag-plant 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s
+    both;
+}
+
+@keyframes landing-flag-plant {
+  0% {
+    opacity: 0;
+    transform: translateY(-160px) rotate(-10deg);
+  }
+  45% {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+  60% {
+    transform: rotate(7deg);
+  }
+  78% {
+    transform: rotate(-3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* No astronaut on smaller screens, and no room to pin on short ones: skip the
+   moon scene and let "Why Build?" scroll like a normal section. */
+@media (max-width: 991px), (max-height: 699px) {
+  .moon-scene::after {
+    display: none;
+  }
+
+  .moon-scene .snap-stop,
+  #why-build .landing {
+    display: none;
+  }
+
+  #why-build {
+    position: relative;
+    top: auto;
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #why-build .landing-spot.is-landed .wdwd-spaceman,
+  #why-build .landing-spot.is-landed .landing-dust::before,
+  #why-build .landing-spot.is-landed .landing-dust::after {
+    animation: none;
+  }
+
+  #why-build .landing-spot.is-landed .landing-flag {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+#why-build > .grid-12 {
+  position: relative;
+  z-index: 1;
+}
+
+/* The planet's lower part fades into the page colour (--page-bg; pages
+   without one keep the plain planet), so it runs into the next section
+   instead of ending at a hard line. Over the planet and craters, under the
+   text. */
+#why-build::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(220px, 60%);
+  background: linear-gradient(transparent, var(--page-bg, transparent));
+  pointer-events: none;
+}
+
+#why-build .why-build-title {
+  grid-column: 2 / 4;
+  font-size: 40px;
+  line-height: 1.2;
+}
+
+#why-build .why-build-body {
+  grid-column: 4 / 13;
+  padding-left: 48px;
+}
+
+#why-build p {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.45;
+  text-align: justify;
+  margin-bottom: 12px;
+}
+
+#why-build p:last-child {
+  margin-bottom: 0;
+}
+
+/* Highlighter sweep: the blue fills in left to right when it scrolls into
+   view (js/why-build.js adds .is-highlighted). */
+#why-build mark {
+  color: inherit;
+  font-weight: 600;
+  padding: 2px 6px;
+  background-color: transparent;
+  background-image: linear-gradient(#1d4ae0, #1d4ae0);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-size 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+}
+
+#why-build mark.is-highlighted {
+  background-size: 100% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #why-build mark {
+    transition: none;
+  }
+}
+
+@media (max-width: 991px) {
+  #why-build .why-build-title,
+  #why-build .why-build-body {
+    grid-column: 1 / -1;
+  }
+
+  #why-build .why-build-title {
+    margin-bottom: 24px;
+  }
+
+  #why-build .why-build-body {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  #what-do-we-do .wdwd-title,
+  #why-build .why-build-title {
+    font-size: 32px;
+  }
+
+  #why-build {
+    --horizon: 40px;
+  }
+
+  /* Fewer craters on small screens so they stay clear of the text */
+  #why-build .crater:nth-child(n + 5) {
+    display: none;
+  }
+
+  #why-build p {
+    text-align: left;
+  }
+}
+
