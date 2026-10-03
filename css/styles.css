@@ -20,7 +20,7 @@ h1 {
 /* --- HEADER SECTION --- */
 
 #above-the-fold {
-  background: url('../images/hackerspace-header-v2.jpg');
+  background: url('../images/archive/hackerspace-header-v2.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -223,7 +223,7 @@ h1 {
 /* --- HACKING TOGETHER --- */
 
 #hacking-together {
-  background: url('../images/Hacking-together-background.jpg');
+  background: url('../images/archive/Hacking-together-background.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -399,7 +399,7 @@ h1 {
 /* --- REGISTRATION --- */
 
 #registration {
-  background: url('../images/space-background.jpg');
+  background: url('../images/archive/space-background.jpg');
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;

@@ -2,190 +2,2125 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-      crossorigin="anonymous"
-    />
-
     <title>Hackerspace MMU</title>
+    <link rel="icon" type="image/png" href="images/brand/hsm_logo_ver_3-96.png" />
+
     <link
-      rel="shortcut icon"
-      type="image/png"
-      href="images/hsm_logo_ver_3.png"
+      rel="preload"
+      href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="vendor/main-fonts/Jost-VariableFont_wght.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&display=swap"
+      rel="stylesheet"
+    />
     <link href="css/build-sections.css" rel="stylesheet" />
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Ubuntu"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Jost:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
+    <style>
+      @font-face {
+        font-family: 'Special Gothic Expanded One';
+        src:
+          url('vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2') format('woff2'),
+          url('vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
 
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+      @font-face {
+        font-family: 'Jost';
+        src:
+          url('vendor/main-fonts/Jost-VariableFont_wght.woff2') format('woff2'),
+          url('vendor/main-fonts/Jost-VariableFont_wght.ttf') format('truetype');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --page-bg: #000;
+        --tile-bg: #333;
+        --text: #fff;
+        --text-muted: #dcdcdc;
+
+        --font-body: 'Jost', system-ui, sans-serif;
+        --font-display: 'Special Gothic Expanded One', 'Jost', sans-serif;
+
+        --edge: clamp(12px, 2vw, 40px);
+        --gap: clamp(8px, 1vw, 18px);
+        --tile-pad: clamp(2px, 0.25vw, 4.5px);
+        --tile-radius: clamp(10px, 0.8vw, 16px);
+        --img-radius: clamp(6px, 0.45vw, 9px);
+
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        --stagger: 90ms;
+
+        /* kept in sync with the sticky nav's real height by JS */
+        --nav-h: 64px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+      }
+
+      html {
+        scroll-padding-top: var(--nav-h);
+      }
+
+      body {
+        background: var(--page-bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-synthesis: none;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .hero-screen {
+        height: calc(100vh - var(--nav-h));
+        height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ---------- NAV ---------- */
+
+      .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        /* frosted glass: page content blurs through as it scrolls underneath */
+        background: rgba(10, 10, 10, 0.55);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        backdrop-filter: blur(18px) saturate(160%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: clamp(10px, 1.6vh, 18px) var(--edge);
+        font-family: var(--font-body);
+        opacity: 0;
+        animation: fade-down 0.6s var(--ease-out) 0.05s forwards;
+      }
+
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .site-nav {
+          background: rgba(10, 10, 10, 0.92);
+        }
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .brand img {
+        height: clamp(32px, 4.8vh, 48px);
+        width: auto;
+        display: block;
+        /* Glow disabled for now. Dense white halo hugging the whole mark,
+           like the original hsm_logo_ver_3.png (stacked shadows build on
+           each other); the dark rim first keeps white letters from melting
+           into it.
+        filter:
+          drop-shadow(0 0 0.5px #000)
+          drop-shadow(0 0 0.5px #000)
+          drop-shadow(0 0 0.5px #fff)
+          drop-shadow(0 0 0.5px #fff)
+          drop-shadow(0 0 1px #fff)
+          drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
+        */
+      }
+
+      .brand span {
+        font-family: var(--font-display);
+        font-size: clamp(16px, 1.35vw, 22px);
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(16px, 2.4vw, 40px);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: clamp(14px, 1vw, 17px);
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+      }
+
+      .nav-links a:hover {
+        opacity: 0.7;
+      }
+
+      .nav-links .nav-cta {
+        display: inline-block;
+        padding: 0.65em 1.5em;
+        border: 1px solid #fff;
+        border-radius: 999px;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+
+      .nav-links .nav-cta:hover {
+        background: #fff;
+        color: #000;
+        opacity: 1;
+      }
+
+      .nav-toggle {
+        display: none;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .nav-toggle svg {
+        display: block;
+        margin: auto;
+      }
+
+      /* ---------- HERO LAYOUT ---------- */
+
+      .hero {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        gap: var(--gap);
+        padding: 0 var(--edge) var(--edge);
+      }
+
+      .hero-main {
+        flex: 1153 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      .hero-side {
+        flex: 615 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      .hero-row {
+        flex: var(--grow) 1 0;
+        min-height: 0;
+        display: flex;
+        gap: var(--gap);
+      }
+
+      /* the text row may grow to fit its copy; photo rows absorb the difference */
+      .hero-row.row-text {
+        min-height: auto;
+      }
+
+      .tile {
+        position: relative;
+        flex: var(--grow) 1 0;
+        min-width: 0;
+        min-height: 0;
+        margin: 0;
+        overflow: hidden;
+        /* only the text tile keeps this; every photo tile takes a red, blue or white frame */
+        background: #222;
+        border-radius: var(--tile-radius);
+        opacity: 0;
+        transform: translateY(16px) scale(0.965);
+        animation: tile-in 0.7s var(--ease-out) forwards;
+        animation-delay: calc(150ms + var(--i) * var(--stagger));
+      }
+
+      /* accent frames in the stat/quote red and blue */
+      .tile-red {
+        background: #c4291e;
+      }
+      .tile-blue {
+        background: #1d4ae0;
+      }
+      .tile-white {
+        background: #fff;
+      }
+
+      /* ---------- PHOTO LOAD-IN ---------- */
+
+      .tile::before {
+        content: '';
+        position: absolute;
+        inset: var(--tile-pad);
+        border-radius: var(--img-radius);
+        background: linear-gradient(
+            100deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.06) 50%,
+            transparent 70%
+          )
+          #3b3b3b;
+        background-size: 250% 100%;
+        animation: shimmer 1.4s linear infinite;
+        transition: opacity 0.4s;
+      }
+
+      .tile.is-loaded::before {
+        opacity: 0;
+        animation: none;
+      }
+
+      .frame {
+        position: absolute;
+        inset: var(--tile-pad);
+        overflow: hidden;
+        border-radius: var(--img-radius);
+        clip-path: inset(100% 0 0 0 round var(--img-radius));
+        transition: clip-path 0.9s var(--ease-in-out) var(--reveal-delay, 0ms);
+      }
+
+      .frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+        display: block;
+        transform: scale(1.18);
+        filter: brightness(1.6) saturate(0.4);
+        transition:
+          transform 1.6s var(--ease-out) var(--reveal-delay, 0ms),
+          filter 1.2s var(--ease-out) var(--reveal-delay, 0ms);
+      }
+
+      .tile.is-loaded .frame {
+        clip-path: inset(0 0 0 0 round var(--img-radius));
+      }
+
+      .tile.is-loaded .frame img {
+        transform: none;
+        filter: none;
+      }
+
+      /* ---------- TEXT TILE ---------- */
+
+      .tile-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(14px, 3vh, 44px) clamp(16px, 2.2vw, 44px);
+      }
+
+      .tile-text::before {
+        content: none;
+      }
+
+      .tile-text > * {
+        opacity: 0;
+        transform: translateY(12px);
+        animation: fade-up 0.7s var(--ease-out) forwards;
+      }
+
+      .tile-text > :nth-child(1) {
+        animation-delay: 0.75s;
+      }
+      .tile-text > :nth-child(2) {
+        animation-delay: 0.85s;
+      }
+      .tile-text > :nth-child(3) {
+        animation-delay: 0.95s;
+      }
+
+      .tile-text h1 {
+        margin: 0 0 clamp(8px, 1.6vh, 18px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(20px, min(2.95vw, 5.4vh), 58px);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+      }
+
+      .tile-text p {
+        margin: 0 0 clamp(12px, 2.6vh, 32px);
+        font-size: clamp(13px, min(1.24vw, 2.2vh), 23px);
+        line-height: 1.45;
+        letter-spacing: 0.02em;
+        text-align: justify;
+        color: var(--text-muted);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px clamp(14px, 1.3vw, 24px);
+      }
+
+      .btn-signup {
+        display: inline-block;
+        padding: 0.78em 2.9em;
+        border-radius: 999px;
+        background: #fff;
+        color: #000;
+        font-weight: 600;
+        font-size: clamp(13px, min(1.08vw, 2vh), 21px);
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+          transform 0.2s var(--ease-out),
+          background 0.2s;
+      }
+
+      .btn-signup:hover {
+        background: #e8e8e8;
+        transform: translateY(-1px);
+      }
+
+      .link-why {
+        font-size: clamp(13px, min(1.08vw, 2vh), 21px);
+        text-underline-offset: 3px;
+        white-space: nowrap;
+      }
+
+      .link-why:hover {
+        color: var(--text-muted);
+      }
+
+      /* ---------- STATS ---------- */
+
+      .stats {
+        --stat-blue: #1d4ae0;
+        --stat-red: #c4291e;
+
+        height: calc(100vh - var(--nav-h));
+        height: calc(100dvh - var(--nav-h));
+        min-height: 540px;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(20px, 4.5vh, 56px) clamp(12px, 8.25vw, 170px)
+          clamp(20px, 6vh, 90px);
+      }
+
+      .stats h2 {
+        flex: none;
+        margin: 0 0 clamp(16px, 5vh, 68px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(24px, min(2.9vw, 4.4vh), 60px);
+        line-height: 1.1;
+        text-align: center;
+      }
+
+      .stats-grid {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        max-width: 1680px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+      }
+
+      .stats-row {
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+        gap: var(--gap);
+      }
+
+      .stat {
+        position: relative;
+        flex: var(--grow, 1) 1 0;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--tile-radius);
+        background: var(--tile-bg);
+        /* text inside sizes itself against the tile via cqw/cqh */
+        container-type: size;
+      }
+
+      .stat-text {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        line-height: 1.25;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .stat-text > span {
+        display: block;
+      }
+
+      .count {
+        display: inline-block;
+        text-align: right;
+      }
+
+      /* Numbers that share a line with their label: digits here vary in width,
+         so mid-count values can be wider than the final one. rtl pins the right
+         edge so any overflow spills left, away from the word. */
+      .stat-updates .count,
+      .stat-hackathons .count {
+        direction: rtl;
+        margin-right: 0.15em;
+      }
+
+      /* photo tiles */
+      .stat-photo {
+        overflow: hidden;
+      }
+
+      .stat-photo img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+      }
+
+      .stat-photo::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: var(--shade, rgba(0, 0, 0, 0.42));
+      }
+
+      /* the numbers and labels are sized off each tile's mockup proportions */
+      .stat-members {
+        --pos: 50% 42%;
+        --shade: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0.25) 75%
+        );
+        align-items: flex-start;
+      }
+
+      .stat-members .stat-text {
+        padding-left: 11cqw;
+        text-align: left;
+        font-size: min(19.6cqh, 8cqw);
+      }
+
+      .stat-days {
+        background: #fff;
+        color: var(--stat-blue);
+      }
+
+      .stat-days .stat-text {
+        font-size: min(22.4cqh, 9.4cqw);
+      }
+
+      .stat-meetups {
+        background: var(--stat-blue);
+      }
+
+      .stat-meetups .stat-text {
+        font-size: min(19.7cqh, 13.4cqw);
+      }
+
+      /* the member cut-out pokes out over the top edge, so no clipping here */
+      .stat-updates {
+        background: var(--stat-red);
+        align-items: flex-end;
+      }
+
+      .stat-updates .stat-text {
+        margin-right: 67cqh;
+        padding-left: 5cqw;
+        /* the line is the number (--count-em, set by JS once it's known) plus
+           ~6.2em of gap and "UPDATES"; scale it to fit beside the cut-out */
+        font-size: min(
+          26.4cqh,
+          calc((95cqw - 67cqh) / (var(--count-em, 2.9) + 6.2))
+        );
+      }
+
+      .stat-person {
+        position: absolute;
+        right: 1%;
+        bottom: 0;
+        z-index: 1;
+        height: 112%;
+        width: auto;
+        pointer-events: none;
+      }
+
+      .stat-hackathons {
+        --pos: 50% 44%;
+      }
+
+      .stat-hackathons .stat-text {
+        font-size: min(30cqh, 9.4cqw);
+      }
+
+      /* tiles rise in once the section scrolls into view (JS adds these) */
+      .stats.is-armed .stat {
+        opacity: 0;
+        transform: translateY(16px) scale(0.965);
+      }
+
+      .stats.is-armed.is-in .stat {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+        transition-delay: calc(var(--i) * var(--stagger));
+      }
+
+      /* ---------- LEGACY ---------- */
+
+      .legacy {
+        --legacy-red: #c4291e;
+        --legacy-blue: #1d4ae0;
+        --legacy-inset: clamp(12px, 8.25vw, 170px);
+        --card-h: clamp(150px, 28vh, 340px);
+        --lane-h: 40px;
+        --rocket-w: clamp(56px, 4.4vw, 76px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(28px, 6vh, 72px);
+        padding: clamp(40px, 8vh, 110px) 0;
+        overflow: hidden;
+      }
+
+      .legacy-intro {
+        padding-inline: var(--legacy-inset);
+      }
+
+      .legacy h2 {
+        margin: 0 0 clamp(12px, 2.4vh, 24px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(28px, min(3.4vw, 6vh), 68px);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+      }
+
+      .legacy-intro > p {
+        max-width: 40ch;
+        margin: 0 0 clamp(20px, 4vh, 44px);
+        font-size: clamp(14px, min(1.1vw, 2vh), 20px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        color: #a8a8a8;
+      }
+
+      /* year readout + one tick per year, so there are no gaps to explain */
+      .timeline {
+        display: flex;
+        align-items: center;
+        gap: clamp(14px, 1.6vw, 28px);
+        margin-bottom: 22px;
+        padding-top: var(--lane-h);
+      }
+
+      .timeline-now {
+        flex: none;
+        min-width: 4.6ch;
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(20px, min(1.9vw, 3.4vh), 36px);
+        line-height: 1;
+        color: var(--now-accent, #fff);
+        transition: color 0.3s;
+      }
+
+      /* drag the rocket (or anywhere along the rail) to scrub through the
+         years; pan-y leaves vertical page scrolling to the browser */
+      .timeline-rail {
+        position: relative;
+        flex: 0 1 clamp(200px, 26vw, 460px);
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* the rocket flies in a lane above the ticks; JS positions it */
+      .timeline-flight {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 100%;
+        height: var(--lane-h);
+        cursor: grab;
+      }
+
+      .timeline-rail.is-scrubbing,
+      .timeline-rail.is-scrubbing * {
+        cursor: grabbing;
+      }
+
+      .timeline-trail {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 2px;
+        margin-top: -1px;
+        border-radius: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.35) 40%,
+          var(--now-accent, #fff)
+        );
+        transform-origin: 0 50%;
+      }
+
+      .timeline-rocket {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: var(--rocket-w);
+        height: auto;
+        display: block;
+        will-change: transform, opacity;
+        -webkit-user-drag: none;
+      }
+
+      .timeline-ticks {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .tick {
+        position: relative;
+        display: block;
+        width: 14px;
+        height: 28px;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+      }
+
+      .tick::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 2px;
+        height: 10px;
+        border-radius: 1px;
+        background: #555;
+        translate: -50% 0;
+        transition:
+          height 0.3s var(--ease-out),
+          background 0.3s;
+      }
+
+      .tick.is-passed::before {
+        height: 14px;
+        background: #bdbdbd;
+      }
+
+      .tick:hover::before {
+        height: 15px;
+        background: #999;
+      }
+
+      .tick[aria-current='true']::before {
+        height: 26px;
+        background: var(--now-accent, #fff);
+      }
+
+      .tick:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+        border-radius: 3px;
+      }
+
+      .timeline-ends {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: #8a8a8a;
+      }
+
+      .timeline-pause {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid #555;
+        border-radius: 50%;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+
+      .timeline-pause:hover,
+      .timeline-pause:focus-visible {
+        border-color: #fff;
+      }
+
+      .timeline-pause .icon-play,
+      .legacy.is-paused .timeline-pause .icon-pause {
+        display: none;
+      }
+
+      .legacy.is-paused .timeline-pause .icon-play {
+        display: block;
+      }
+
+      /* the reel drifts on its own; JS moves the track and loops it */
+      .reel {
+        --fade: clamp(24px, 6vw, 120px);
+
+        cursor: grab;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 var(--fade),
+          #000 calc(100% - var(--fade)),
+          transparent
+        );
+        mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 var(--fade),
+          #000 calc(100% - var(--fade)),
+          transparent
+        );
+      }
+
+      .reel.is-dragging {
+        cursor: grabbing;
+      }
+
+      .reel-track {
+        position: relative;
+        display: flex;
+        gap: var(--gap);
+        width: max-content;
+        padding-left: var(--legacy-inset);
+        will-change: transform;
+      }
+
+      .year-card {
+        flex: none;
+        width: calc(var(--card-h) * var(--ar, 4 / 3));
+        margin: 0;
+      }
+
+      .year-photo {
+        height: var(--card-h);
+        overflow: hidden;
+        border-radius: var(--img-radius);
+        background: #262626;
+      }
+
+      .year-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+        display: block;
+        pointer-events: none;
+        -webkit-user-drag: none;
+      }
+
+      .year-photo.is-placeholder {
+        display: grid;
+        place-items: center;
+        background: repeating-linear-gradient(
+          135deg,
+          #242424 0 12px,
+          #292929 12px 24px
+        );
+      }
+
+      .year-photo.is-placeholder span {
+        font-family: var(--font-display);
+        font-size: calc(var(--card-h) * 0.2);
+        color: rgba(255, 255, 255, 0.07);
+      }
+
+      .year-card figcaption {
+        display: flex;
+        align-items: baseline;
+        gap: 0.8em;
+        margin-top: 12px;
+        font-size: clamp(13px, 0.95vw, 16px);
+        letter-spacing: 0.02em;
+        color: #a8a8a8;
+      }
+
+      .year-card figcaption b {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(16px, 1.35vw, 24px);
+        color: var(--accent, #fff);
+      }
+
+      .legacy.is-armed .legacy-intro > *,
+      .legacy.is-armed .reel {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .legacy.is-armed.is-in .legacy-intro > *,
+      .legacy.is-armed.is-in .reel {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .legacy.is-in .legacy-intro > :nth-child(2) {
+        transition-delay: 90ms;
+      }
+      .legacy.is-in .legacy-intro > :nth-child(3) {
+        transition-delay: 180ms;
+      }
+      .legacy.is-in .reel {
+        transition-delay: 270ms;
+      }
+
+      /* ---------- QUOTE ---------- */
+
+      .quote {
+        --quote-red: #c4291e;
+        --quote-blue: #1d4ae0;
+        --quote-inset: clamp(20px, 13.75vw, 280px);
+        /* how far each line stops short of its open end */
+        --quote-gap: clamp(10px, 6.7vw, 140px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-block: clamp(60px, 12vh, 160px);
+        overflow: hidden;
+      }
+
+      /* spans the full width so the lines can run off the page edges; its
+         font-size is the quote's, so the lines can sit in em */
+      .quote figure {
+        position: relative;
+        margin: 0;
+        padding-inline: var(--quote-inset);
+        font-size: clamp(26px, min(2.35vw, 4.6vh), 52px);
+      }
+
+      /* red cuts through the first line's capitals, blue sits on its
+         baseline; they run off opposite edges */
+      .quote-line {
+        position: absolute;
+        height: 1px;
+        pointer-events: none;
+      }
+
+      /* rounded to whole pixels, or a 1px line smears grey over two rows */
+      .quote-line-red {
+        top: 0.35em;
+        top: round(0.35em, 1px);
+        left: var(--quote-gap);
+        right: 0;
+        background: var(--quote-red);
+        transform-origin: right;
+      }
+
+      .quote-line-blue {
+        top: 0.89em;
+        top: round(0.89em, 1px);
+        left: 0;
+        right: var(--quote-gap);
+        background: var(--quote-blue);
+        transform-origin: left;
+      }
+
+      .quote blockquote {
+        position: relative;
+        max-width: min(14.8em, 100%);
+        margin: 0;
+      }
+
+      .quote blockquote p {
+        margin: 0;
+        font-family: 'Archivo', var(--font-display);
+        font-stretch: 125%;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+      }
+
+      .quote figcaption {
+        position: relative;
+        margin-top: 0.9em;
+        font-size: clamp(13px, 0.9vw, 17px);
+        letter-spacing: 0.02em;
+      }
+
+      /* lighter than the line red so small text stays readable */
+      .quote figcaption a {
+        color: #e5584b;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.25em;
+        transition: color 0.2s;
+      }
+
+      .quote figcaption a:hover,
+      .quote figcaption a:focus-visible {
+        color: #ff8a7f;
+      }
+
+      .quote.is-armed .quote-line {
+        transform: scaleX(0);
+      }
+
+      .quote.is-armed blockquote,
+      .quote.is-armed figcaption {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .quote.is-armed.is-in .quote-line {
+        transform: none;
+        transition: transform 1.2s var(--ease-in-out);
+      }
+
+      .quote.is-armed.is-in .quote-line-blue {
+        transition-delay: 120ms;
+      }
+
+      .quote.is-armed.is-in blockquote,
+      .quote.is-armed.is-in figcaption {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.8s var(--ease-out) 450ms,
+          transform 0.8s var(--ease-out) 450ms;
+      }
+
+      .quote.is-armed.is-in figcaption {
+        transition-delay: 600ms;
+      }
+
+      /* ---------- EVENTS ---------- */
+
+      .events {
+        --events-blue: #1d4ae0;
+        /* the open panel's share of the row, against 1 per closed panel */
+        --open: 3.4;
+        --panel-pad: clamp(12px, 1.2vw, 22px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(20px, 4vh, 48px);
+        padding: clamp(40px, 8vh, 110px) var(--edge);
+      }
+
+      .events-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: var(--gap) clamp(20px, 4vw, 80px);
+      }
+
+      .events h2 {
+        margin: 0 0 clamp(10px, 2vh, 20px);
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(28px, min(3.4vw, 6vh), 68px);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+      }
+
+      .events-head p {
+        max-width: 44ch;
+        margin: 0;
+        font-size: clamp(14px, min(1.1vw, 2vh), 20px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        color: #a8a8a8;
+      }
+
+      .next-meetup {
+        min-width: clamp(220px, 19vw, 340px);
+        padding: clamp(14px, 1.4vw, 24px) clamp(16px, 1.6vw, 28px);
+        border-radius: var(--tile-radius);
+        background: var(--events-blue);
+      }
+
+      .next-meetup p {
+        margin: 0;
+        max-width: none;
+        color: #fff;
+      }
+
+      .next-meetup .next-label {
+        font-weight: 500;
+        font-size: clamp(13px, 0.9vw, 16px);
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .next-meetup .next-date {
+        margin: 0.35em 0 0.3em;
+        font-family: var(--font-display);
+        font-size: clamp(22px, min(2.2vw, 4vh), 40px);
+        line-height: 1.1;
+        letter-spacing: 0;
+      }
+
+      .next-meetup .next-time {
+        font-size: clamp(14px, 1vw, 18px);
+      }
+
+      /* Accordion: one panel open at a time. Photos are sized to the open
+         panel's width up front, so opening a panel only uncovers more of the
+         photo instead of rescaling it every frame. */
+      .events-list {
+        --open-w: calc(
+          (100cqw - 4 * var(--gap)) * var(--open) / (var(--open) + 4)
+        );
+
+        container-type: inline-size;
+        display: flex;
+        gap: var(--gap);
+        height: clamp(360px, 54vh, 600px);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .event {
+        position: relative;
+        isolation: isolate;
+        flex: 1 1 0;
+        min-width: 0;
+        overflow: hidden;
+        border-radius: var(--tile-radius);
+        background: var(--tile-bg);
+        transition: flex-grow 0.45s var(--ease-in-out);
+      }
+
+      .event.is-open {
+        flex-grow: var(--open);
+      }
+
+      /* below the dimmer and scrim (the panel isolates its own stacking) */
+      .event-photo {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 50%;
+        width: max(100%, var(--open-w));
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        object-position: var(--pos, 50% 50%);
+        translate: -50% 0;
+      }
+
+      /* closed panels sit dimmed; the scrim keeps text readable on any photo */
+      .event::before,
+      .event::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .event::before {
+        background: rgba(0, 0, 0, 0.5);
+        transition: opacity 0.5s var(--ease-out);
+      }
+
+      .event:hover::before {
+        opacity: 0.55;
+      }
+
+      .event.is-open::before {
+        opacity: 0;
+      }
+
+      .event::after {
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 0, 0, 0.45) 38%,
+          transparent 64%
+        );
+      }
+
+      .event-toggle {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        border-radius: inherit;
+        background: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .event.is-open .event-toggle {
+        cursor: default;
+      }
+
+      .event-toggle:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: -4px;
+      }
+
+      .event-label {
+        position: absolute;
+        left: var(--panel-pad);
+        right: var(--panel-pad);
+        bottom: var(--panel-pad);
+        font-weight: 500;
+        font-size: clamp(12px, 1vw, 16px);
+        line-height: 1.25;
+        letter-spacing: 0.02em;
+        text-align: left;
+        transition: opacity 0.3s var(--ease-out) 0.25s;
+      }
+
+      .event.is-open .event-label {
+        opacity: 0;
+        transition-delay: 0s;
+      }
+
+      /* fixed to the open width so the copy never reflows mid-animation */
+      .event-body {
+        position: absolute;
+        z-index: 1;
+        left: var(--panel-pad);
+        bottom: var(--panel-pad);
+        width: calc(var(--open-w) - 2 * var(--panel-pad));
+        opacity: 0;
+        translate: 0 12px;
+        pointer-events: none;
+        transition:
+          opacity 0.3s var(--ease-out),
+          translate 0.3s var(--ease-out);
+      }
+
+      .event.is-open .event-body {
+        opacity: 1;
+        translate: none;
+        transition-duration: 0.4s;
+        transition-delay: 0.15s;
+      }
+
+      .event-body h3 {
+        margin: 0 0 0.45em;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(22px, min(2vw, 3.6vh), 38px);
+        line-height: 1.1;
+      }
+
+      .event-when {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2em 1.2em;
+        margin: 0 0 0.7em;
+        font-weight: 500;
+        font-size: clamp(13px, 0.95vw, 17px);
+        letter-spacing: 0.02em;
+      }
+
+      .event-when span + span {
+        color: #bdbdbd;
+      }
+
+      .event-desc {
+        max-width: 40ch;
+        margin: 0;
+        font-size: clamp(14px, 1vw, 18px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        color: var(--text-muted);
+      }
+
+      .events.is-armed .events-head > *,
+      .events.is-armed .event {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      .events.is-armed .event-photo {
+        scale: 1.12;
+      }
+
+      .events.is-armed.is-in .events-head > * {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
+      }
+
+      .events.is-in .events-head > :nth-child(2) {
+        transition-delay: 90ms;
+      }
+
+      /* restates the open/close transitions, which this rule would override */
+      .events.is-armed.is-in .event {
+        --delay: calc(180ms + var(--i) * var(--stagger));
+
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 0.7s var(--ease-out) var(--delay),
+          transform 0.7s var(--ease-out) var(--delay),
+          flex-grow 0.45s var(--ease-in-out),
+          height 0.7s var(--ease-in-out);
+      }
+
+      .events.is-armed.is-in .event-photo {
+        scale: 1;
+        transition: scale 1.6s var(--ease-out) var(--delay);
+      }
+
+      /* ---------- JOIN ---------- */
+
+      /* Shown on a projector as often as on a laptop, so the QR is sized off
+         the viewport height and kept on a plain light card with a full quiet
+         zone. Controls are pills like the nav CTA; the QR card is an image. */
+      .join {
+        --join-blue: #1d4ae0;
+        --join-focus: #93a5ff;
+        --join-error: #ff8a7f;
+        /* outer size of the light card the code sits on */
+        --qr-size: clamp(220px, min(48vh, 34vw), 580px);
+
+        min-height: calc(100vh - var(--nav-h));
+        min-height: calc(100dvh - var(--nav-h));
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: clamp(32px, 6vw, 120px);
+        padding: clamp(40px, 8vh, 110px) clamp(12px, 8.25vw, 170px);
+      }
+
+      .join h2 {
+        max-width: 8.5em;
+        margin: 0 0 0.4em;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(34px, min(4.8vw, 8.5vh), 104px);
+        line-height: 1.02;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+      }
+
+      .join-lede {
+        max-width: 36ch;
+        margin: 0 0 clamp(24px, 5vh, 56px);
+        font-size: clamp(15px, min(1.25vw, 2.3vh), 22px);
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-wrap: pretty;
+        color: #a8a8a8;
+      }
+
+      .join-form {
+        max-width: 560px;
+      }
+
+      .join-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 500;
+        font-size: clamp(13px, 0.9vw, 16px);
+        letter-spacing: 0.02em;
+        color: var(--text-muted);
+      }
+
+      .join-field {
+        display: flex;
+        gap: 10px;
+      }
+
+      .join-field input,
+      .join-field button {
+        height: clamp(48px, 6vh, 60px);
+        border-radius: 999px;
+        font: inherit;
+        font-size: clamp(15px, 1.05vw, 18px);
+      }
+
+      .join-field input {
+        flex: 1;
+        min-width: 0;
+        padding: 0 1.3em;
+        border: 1px solid #555;
+        background: #262626;
+        color: var(--text);
+        transition: border-color 0.2s;
+      }
+
+      .join-field input::placeholder {
+        color: #999;
+      }
+
+      .join-field input:hover {
+        border-color: #777;
+      }
+
+      .join-field input:focus-visible {
+        outline: 2px solid var(--join-focus);
+        outline-offset: 2px;
+        border-color: var(--join-focus);
+      }
+
+      .join-field input[aria-invalid='true'] {
+        border-color: var(--join-error);
+      }
+
+      .join-field button {
+        flex: none;
+        padding: 0 1.6em;
+        border: 0;
+        background: var(--join-blue);
+        color: #fff;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s var(--ease-out);
+      }
+
+      .join-field button:hover {
+        background: #3060f5;
+      }
+
+      .join-field button:active {
+        transform: scale(0.98);
+      }
+
+      .join-field button:focus-visible {
+        outline: 2px solid var(--join-focus);
+        outline-offset: 3px;
+      }
+
+      .join-hint,
+      .join-error {
+        margin: 12px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        letter-spacing: 0.02em;
+      }
+
+      .join-hint {
+        color: #a8a8a8;
+      }
+
+      /* space is held for the message so the QR tile doesn't jump */
+      .join-error {
+        min-height: 1.4em;
+        margin-top: 6px;
+        color: var(--join-error);
+      }
+
+      .join-qr {
+        display: grid;
+        gap: clamp(14px, 2.2vh, 26px);
+        margin: 0;
+        padding: clamp(14px, 1.4vw, 26px);
+        border-radius: var(--tile-radius);
+        background: var(--join-blue);
+      }
+
+      .qr-card {
+        width: var(--qr-size);
+        aspect-ratio: 1;
+        /* ≥ 4 modules of quiet zone around the 29-module code */
+        padding: calc(var(--qr-size) * 0.11);
+        border-radius: var(--img-radius);
+        background: #f4f4f4;
+        cursor: zoom-in;
+      }
+
+      .qr-card img,
+      .qr-dialog img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .join-qr figcaption {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        padding-inline: 4px;
+      }
+
+      .qr-title {
+        display: block;
+        font-family: var(--font-display);
+        font-size: clamp(20px, min(1.9vw, 3.4vh), 36px);
+        line-height: 1.1;
+      }
+
+      .qr-url {
+        display: block;
+        margin-top: 0.3em;
+        font-size: clamp(14px, 1vw, 18px);
+        letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .qr-enlarge,
+      .qr-close {
+        flex: none;
+        padding: 0.55em 1.3em;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 999px;
+        background: transparent;
+        color: #fff;
+        font: inherit;
+        font-weight: 500;
+        font-size: clamp(13px, 0.9vw, 16px);
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+      }
+
+      .qr-enlarge:hover,
+      .qr-close:hover {
+        border-color: #fff;
+        background: #fff;
+        color: #141414;
+      }
+
+      .qr-enlarge:focus-visible,
+      .qr-close:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+      }
+
+      /* fills the screen so the code reads from the back of a lecture hall */
+      .qr-dialog {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        padding: 4vmin;
+        border: 0;
+        background: var(--page-bg);
+        color: var(--text);
+      }
+
+      .qr-dialog[open] {
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 3vh;
+      }
+
+      .qr-dialog .qr-card {
+        --qr-size: min(80vh, 88vw);
+        cursor: zoom-out;
+      }
+
+      .qr-dialog p {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(20px, 3.4vh, 44px);
+      }
+
+      .qr-close {
+        position: absolute;
+        top: clamp(12px, 3vmin, 32px);
+        right: clamp(12px, 3vmin, 32px);
+      }
+
+      html:has(.qr-dialog[open]) {
+        overflow: hidden;
+      }
+
+      /* ---------- KEYFRAMES ---------- */
+
+      @keyframes tile-in {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes fade-up {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes fade-down {
+        from {
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes shimmer {
+        from {
+          background-position: 100% 0;
+        }
+        to {
+          background-position: -150% 0;
+        }
+      }
+
+      /* ---------- SMALL SCREENS: stack & scroll ---------- */
+
+      @media (max-width: 860px) {
+        .hero-screen {
+          height: auto;
+          min-height: calc(100dvh - var(--nav-h));
+        }
+
+        .nav-toggle {
+          display: block;
+        }
+
+        .nav-links {
+          position: absolute;
+          top: 100%;
+          left: var(--edge);
+          right: var(--edge);
+          z-index: 10;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 4px;
+          padding: 10px;
+          background: #262626;
+          border: 1px solid #3d3d3d;
+          border-radius: var(--tile-radius);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+          display: none;
+        }
+
+        .site-nav.is-open .nav-links {
+          display: flex;
+        }
+
+        .nav-links a {
+          display: block;
+          padding: 12px 14px;
+          font-size: 16px;
+        }
+
+        .nav-links .nav-cta {
+          display: block;
+          text-align: center;
+          margin-top: 6px;
+        }
+
+        .hero {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-auto-flow: row dense;
+          align-content: start;
+        }
+
+        .hero-main,
+        .hero-side,
+        .hero-row {
+          display: contents;
+        }
+
+        .tile {
+          aspect-ratio: 4 / 3;
+        }
+
+        .tile-text {
+          order: -1;
+          grid-column: 1 / -1;
+          aspect-ratio: auto;
+        }
+
+        .tile-wide {
+          grid-column: 1 / -1;
+          aspect-ratio: 16 / 7;
+        }
+
+        .tile-text h1 {
+          font-size: clamp(24px, 6.4vw, 40px);
+        }
+
+        .tile-text p {
+          font-size: 15px;
+          text-align: left;
+        }
+
+        .btn-signup,
+        .link-why {
+          font-size: 15px;
+        }
+      }
+
+      /* phones and portrait tablets: one tile per row, still filling the screen */
+      @media (max-width: 640px),
+        (max-width: 1024px) and (orientation: portrait) {
+        .stats {
+          height: auto;
+          min-height: calc(100vh - var(--nav-h));
+          min-height: calc(100dvh - var(--nav-h));
+          padding-inline: var(--edge);
+        }
+
+        .stats h2 {
+          font-size: clamp(24px, 6.4vw, 44px);
+        }
+
+        .stats-row {
+          display: contents;
+        }
+
+        .stat {
+          flex: 1 0 0;
+          min-height: clamp(96px, 13vh, 180px);
+        }
+
+        .legacy {
+          --legacy-inset: var(--edge);
+          --card-h: clamp(170px, 48vw, 300px);
+        }
+
+        .legacy h2 {
+          font-size: clamp(28px, 7.4vw, 48px);
+        }
+
+        .legacy-intro > p {
+          font-size: 15px;
+        }
+
+        .timeline-rail {
+          flex: 1 1 auto;
+        }
+
+        .reel {
+          --fade: 16px;
+        }
+
+        .quote {
+          --quote-inset: calc(var(--edge) * 2);
+          --quote-gap: var(--edge);
+        }
+
+        .quote figure {
+          font-size: clamp(24px, 7vw, 40px);
+        }
+
+        .quote figcaption {
+          font-size: 14px;
+        }
+      }
+
+      /* below laptop width the event panels stack and open downwards */
+      @media (max-width: 1023px),
+        (max-width: 1180px) and (orientation: portrait) {
+        .events-head {
+          grid-template-columns: minmax(0, 1fr);
+          align-items: start;
+          row-gap: clamp(16px, 4vw, 28px);
+        }
+
+        .next-meetup {
+          justify-self: start;
+        }
+
+        .events h2 {
+          font-size: clamp(28px, 7.4vw, 48px);
+        }
+
+        .events-head p {
+          font-size: 15px;
+        }
+
+        .events-list {
+          --open-h: clamp(300px, 88vw, 460px);
+
+          flex-direction: column;
+          height: auto;
+        }
+
+        .event {
+          flex: none;
+          height: clamp(64px, 9vw, 80px);
+          transition: height 0.7s var(--ease-in-out);
+        }
+
+        .event.is-open {
+          height: var(--open-h);
+        }
+
+        .event-photo {
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: var(--open-h);
+          translate: 0 -50%;
+        }
+
+        .event-label {
+          top: 0;
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+        }
+
+        .event-body {
+          right: var(--panel-pad);
+          width: auto;
+        }
+      }
+
+      /* copy on top, QR tile underneath */
+      @media (max-width: 1023px),
+        (max-width: 1180px) and (orientation: portrait) {
+        .join {
+          --qr-size: clamp(200px, 52vw, 400px);
+
+          grid-template-columns: minmax(0, 1fr);
+          align-content: center;
+          padding-inline: var(--edge);
+        }
+
+        .join h2 {
+          font-size: clamp(32px, 8vw, 64px);
+        }
+
+        .join-qr {
+          justify-self: start;
+        }
+      }
+
+      /* a phone is already on the site, so the code has nothing to offer */
+      @media (max-width: 560px) {
+        .join {
+          min-height: 0;
+        }
+
+        .join-qr {
+          display: none;
+        }
+
+        .join-field {
+          flex-direction: column;
+        }
+
+        .join-field input {
+          flex: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .brand span {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .site-nav,
+        .tile,
+        .tile-text > *,
+        .tile::before {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+
+        .frame,
+        .frame img {
+          clip-path: none;
+          transform: none;
+          filter: none;
+        }
+
+        .frame {
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+
+        .tile.is-loaded .frame {
+          opacity: 1;
+        }
+
+        .stats.is-armed .stat,
+        .legacy.is-armed .legacy-intro > *,
+        .legacy.is-armed .reel,
+        .quote.is-armed .quote-line,
+        .quote.is-armed blockquote,
+        .quote.is-armed figcaption {
+          opacity: 1;
+          transform: none;
+        }
+
+        .event,
+        .event::before,
+        .event-label,
+        .event-body {
+          transition: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header>
-      <div
-        id="above-the-fold"
-        class="d-flex flex-column justify-content-center min-vh-100"
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html" class="brand">
+        <img src="icon/hackerspaceLogoWhite.svg" alt="Hackerspace MMU logo" />
+        <span>Hackerspace MMU</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-controls="nav-links"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <nav id="header-nav" class="navbar navbar-expand-lg w-100">
-          <div class="container-fluid nav-container d-flex align-items-center">
-            <a href="index.html" class="navbar-brand d-flex align-items-center">
-              <img
-                src="images/hsm_logo_ver_3.png"
-                width="85"
-                alt="Hackerspace Logo"
-              />
-              <span class="nav-logo-text">Hackerspace MMU</span>
-            </a>
+        <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+          <path
+            d="M1 1h20M1 8h20M1 15h20"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
 
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span
-                class="navbar-toggler-icon"
-                style="
-                  background-image: url(&quot;data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E&quot;);
-                "
-              ></span>
-            </button>
-            <div
-              class="collapse navbar-collapse flex-row-reverse"
-              id="navbarSupportedContent"
-            >
-              <ul id="nav-list" class="navbar-nav">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#about-us"> ABOUT US</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#events-and-activities">
-                    EVENTS & ACTIVITIES</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link action-button" href="#registration-form">
-                    JOIN US NOW
-                  </a>
-                </li>
-              </ul>
-            </div>
+      <ul id="nav-links" class="nav-links">
+        <li><a href="#what-do-we-do">About Us</a></li>
+        <li><a href="#legacy">History</a></li>
+        <li><a href="#events-and-activities">Events &amp; Activities</a></li>
+        <li><a class="nav-cta" href="#registration">Join Us Now</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-screen">
+      <main class="hero">
+        <div class="hero-main">
+          <div class="hero-row" style="--grow: 433">
+            <figure class="tile tile-blue" style="--grow: 674; --i: 0">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20230606_134556550.jpg"
+                  srcset="
+                    images/hero-section/PXL_20230606_134556550-480.webp 480w,
+                    images/hero-section/PXL_20230606_134556550-800.webp 800w,
+                    images/hero-section/PXL_20230606_134556550-1200.webp 1200w,
+                    images/hero-section/PXL_20230606_134556550.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="Members working on laptops around a long table"
+                />
+              </div>
+            </figure>
+            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 55% 50%">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20240908_112450591.MP.jpg"
+                  srcset="
+                    images/hero-section/PXL_20240908_112450591.MP-480.webp 480w,
+                    images/hero-section/PXL_20240908_112450591.MP-800.webp 800w,
+                    images/hero-section/PXL_20240908_112450591.MP-1200.webp 1200w,
+                    images/hero-section/PXL_20240908_112450591.MP.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="A member presenting a Pomato Timer app on a large screen"
+                />
+              </div>
+            </figure>
           </div>
-        </nav>
 
-        <div
-          id="header-container"
-          class="container-fluid position-relative d-flex flex-row justify-content-center align-items-center flex-grow-1"
-        >
-          <div class="row w-100 align-items-center pr-0">
-            <div
-              id="header-side"
-              data-aos="fade-right"
-              data-aos-delay="300"
-              class="col-12 col-lg-6"
-            >
-              <h1 id="header-title">
-                Grow with <br /><span>Hackerspace MMU</span>
-              </h1>
-              <p id="header-content">
-                We're a bunch of coders building things together. Not
-                (necessarily) hacking into things. Find a community to support
-                your learning and learn from what others share!
+          <div class="hero-row" style="--grow: 318">
+            <figure class="tile tile-white" style="--grow: 394; --i: 3">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20230530_125505518.jpg"
+                  srcset="
+                    images/hero-section/PXL_20230530_125505518-480.webp 480w,
+                    images/hero-section/PXL_20230530_125505518-800.webp 800w,
+                    images/hero-section/PXL_20230530_125505518-1200.webp 1200w,
+                    images/hero-section/PXL_20230530_125505518.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="Members gathered around tables in a seminar room"
+                />
+              </div>
+            </figure>
+            <figure class="tile tile-wide tile-blue" style="--grow: 742; --i: 4">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20260330_125931505.PANO.jpg"
+                  srcset="
+                    images/hero-section/PXL_20260330_125931505.PANO-480.webp 480w,
+                    images/hero-section/PXL_20260330_125931505.PANO-800.webp 800w,
+                    images/hero-section/PXL_20260330_125931505.PANO-1200.webp 1200w,
+                    images/hero-section/PXL_20260330_125931505.PANO-1600.webp 1600w,
+                    images/hero-section/PXL_20260330_125931505.PANO.jpg 2200w
+                  "
+                  sizes="(max-width: 860px) 145vw, 45vw"
+                  alt="Panorama of a full room of members celebrating with cakes"
+                />
+              </div>
+            </figure>
+          </div>
+
+          <div class="hero-row row-text" style="--grow: 379">
+            <section class="tile tile-text" style="--grow: 684; --i: 5">
+              <h1>Hackerspace MMU</h1>
+              <p>
+                We're a bunch of problem solvers building things together. Not
+                (necessarily) hacking into things. We support each other’s
+                learning and learn from what others share!
               </p>
-              <br />
-              <div class="btn-grp d-flex flex-column flex-sm-row gap-2">
-                <a
-                  class="join-us-btn d-flex flex-row align-items-center justify-content-center gap-2"
-                  href="#registration-form"
+              <div class="actions">
+                <a class="btn-signup" href="#registration-form"
+                  >Sign Up</a
                 >
-                  <span>Join Us</span>
-                  <img class="join-us-btn-icon" src="/icon/right-arrow.svg" />
-                </a>
-                <a class="why-btn" href="#what-do-we-do">Why should I join?</a>
+                <a class="link-why" href="legacy-site.html#about-us"
+                  >Why should I join?</a
+                >
               </div>
-            </div>
-            <div
-              id="header-img"
-              data-aos="fade-left"
-              data-aos-delay="300"
-              class="col-12 col-lg-6 d-none d-lg-flex justify-self-end w-50 h-100"
-            >
-              <img src="images/hsm_logo_ver_3.png" alt="Hackerspace Logo" />
-            </div>
+            </section>
+            <figure class="tile tile-white" style="--grow: 450; --i: 6; --pos: 62% 50%">
+              <div class="frame">
+                <img
+                  src="images/hero-section/PXL_20260330_134259803.jpg"
+                  srcset="
+                    images/hero-section/PXL_20260330_134259803-480.webp 480w,
+                    images/hero-section/PXL_20260330_134259803-800.webp 800w,
+                    images/hero-section/PXL_20260330_134259803-1200.webp 1200w,
+                    images/hero-section/PXL_20260330_134259803.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="A member presenting slides to the audience"
+                />
+              </div>
+            </figure>
           </div>
         </div>
-      </div>
-    </header>
 
-    <div id="about-us">
-      <div class="container-fluid">
-        <div class="row">
-          <div data-aos="zoom-in" data-aos-delay="100" class="col-12 col-lg-4">
-            <span>Achieve more with us </span>
-            <h1 class="achievement-title">
-              Open and endless <br />conversations about <br />tech and more
-            </h1>
-          </div>
-          <div
-            class="col-12 col-lg-8 d-flex flex-column flex-md-row mt-4 mt-lg-0"
-          >
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="150"
-              class="col-12 col-md-6 d-flex flex-row align-items-start"
-            >
-              <div class="icon left-icon col-auto">
-                <img src="/icon/user 6.svg" />
-              </div>
-              <div class="content col">
-                <h1 class="content-title">Take the first step</h1>
-                <p>
-                  If you're taking your baby steps, there's a lot of peer
-                  experience you can draw on. We're all self-learners, but we
-                  can point you in the right direction. It's a lot easier to
-                  walk the path when you know it's not one you have to walk
-                  alone!
-                </p>
-              </div>
+        <div class="hero-side">
+          <figure class="tile tile-blue" style="--grow: 631; --i: 2">
+            <div class="frame">
+              <img
+                src="images/hero-section/PXL_20250923_124703509.MP.jpg"
+                srcset="
+                  images/hero-section/PXL_20250923_124703509.MP-480.webp 480w,
+                  images/hero-section/PXL_20250923_124703509.MP-800.webp 800w,
+                  images/hero-section/PXL_20250923_124703509.MP-1200.webp 1200w,
+                  images/hero-section/PXL_20250923_124703509.MP.jpg 1600w
+                "
+                sizes="(max-width: 860px) 50vw, 40vw"
+                alt="Members coding together at a hackathon"
+              />
             </div>
-
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="200"
-              class="col-12 col-md-6 d-flex flex-row align-items-start"
-            >
-              <div class="icon right-icon col-auto">
-                <img src="/icon/user 6.svg" />
-              </div>
-              <div class="content col">
-                <h1 class="content-title">Reach the next level</h1>
-                <p>
-                  If you're already taking freelance projects and contributing
-                  to open source projects, then we're a community who can
-                  appreciate your work and provide you both the peer pressure
-                  you need to keep it up, and the peer support to get you to the
-                  next level!
-                </p>
-              </div>
+          </figure>
+          <figure class="tile tile-red" style="--grow: 505; --i: 7; --pos: 45% 50%">
+            <div class="frame">
+              <img
+                src="images/hero-section/A6703510.jpg"
+                srcset="
+                  images/hero-section/A6703510-480.webp 480w,
+                  images/hero-section/A6703510-800.webp 800w,
+                  images/hero-section/A6703510-1200.webp 1200w,
+                  images/hero-section/A6703510.jpg 1600w
+                "
+                sizes="(max-width: 860px) 50vw, 40vw"
+                alt="A member pointing at a monitor while helping another with a 3D scene"
+              />
             </div>
-          </div>
+          </figure>
         </div>
-      </div>
+      </main>
     </div>
 
     <section id="what-do-we-do">
@@ -230,12 +2165,12 @@
 
           <div class="wdwd-astronaut" aria-hidden="true">
             <div class="wdwd-spaceman" data-gear="hat">
-              <img src="images/pngkey 13.png" alt="" />
+              <img src="images/what-do-we-do-section/pngkey 13.png" alt="" />
               <!-- Gear drawn in the image's own coordinates (282 x 458) -->
               <svg class="wdwd-gear" viewBox="0 0 282 458">
                 <g class="wdwd-acc wdwd-hat">
                   <image
-                    href="images/builder%20hat.svg"
+                    href="images/what-do-we-do-section/builder%20hat.svg"
                     x="4"
                     y="-28"
                     width="250"
@@ -246,7 +2181,7 @@
 
                 <g class="wdwd-acc wdwd-glasses">
                   <image
-                    href="images/glasses.svg"
+                    href="images/what-do-we-do-section/glasses.svg"
                     x="33"
                     y="143"
                     width="169"
@@ -257,7 +2192,7 @@
                 <g class="wdwd-acc wdwd-megaphone">
                   <g transform="rotate(-24 185 300)">
                     <image
-                      href="images/speaker.svg"
+                      href="images/what-do-we-do-section/speaker.svg"
                       x="159"
                       y="209"
                       width="180"
@@ -310,7 +2245,7 @@
           <div class="grid-12">
             <div class="landing-spot">
               <span class="landing-dust"></span>
-              <img class="landing-flag" src="images/flag.svg" alt="" />
+              <img class="landing-flag" src="images/why-build-section/flag.svg" alt="" />
             </div>
           </div>
         </div>
@@ -333,368 +2268,1161 @@
       </section>
     </div>
 
-    <div id="statistics">
-      <div class="container-fluid">
-        <div class="top-title" data-aos="fade-up">
-          <div class="top-line"></div>
-          <h1 class="text-center">STATISTICS</h1>
-          <div class="bottom-line"></div>
-        </div>
-        <br />
-        <div class="row text-center">
-          <div
-            data-aos="flip-left"
-            data-aos-delay="500"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/checked-thicker 1.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="days-active"></div>
-              <div class="card-body">Days Active</div>
-            </div>
-          </div>
-          <div
-            data-aos="flip-left"
-            data-aos-delay="300"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/user 6.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="active-members"></div>
-              <div class="card-body">Active Members</div>
-            </div>
-          </div>
-          <div
-            data-aos="flip-left"
-            data-aos-delay="600"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/Vector.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="meetups"></div>
-              <div class="card-body">Meetups</div>
-            </div>
-          </div>
-          <div
-            data-aos="flip-left"
-            data-aos-delay="400"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/Group.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="project-updates"></div>
-              <div class="card-body">Project Updates</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <section class="stats" aria-labelledby="stats-heading">
+      <h2 id="stats-heading">We have had...</h2>
 
-    <div id="separator-3" class="text-center">
-      <div class="container-fluid">
-        <div class="sep-3-container" data-aos="fade-up">
-          <h4>
-            "I hear and I forget. I see and I remember. I do and I understand."
-          </h4>
-          <p>
-            -
-            <a
-              href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
-              >Not</a
-            >
-            Confucius
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div id="events-and-activities">
-      <div
-        class="container-fluid d-flex flex-column w-full justify-content-center align-items-center"
-      >
-        <div class="top-title" data-aos="fade-up">
-          <div class="top-line"></div>
-          <h1 class="text-center">EVENTS AND ACTIVITIES</h1>
-          <div class="bottom-line"></div>
-        </div>
-
-        <div
-          class="row g-4 d-flex flex-column flex-sm-row justify-content-center align-items-center"
-        >
-          <div data-aos="zoom-in" class="mx-auto col-lg-4 col-sm-6 col-12">
-            <div class="card h-100">
-              <img
-                class="card-img-top"
-                src="images/meetups-events.jpg"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Weekly Meetups</h5>
-                <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />Every
-                  Tuesday<br />
-                  <img class="events-icon" src="/icon/time.svg" />8.00pm -
-                  10.00pm
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            data-aos="zoom-in"
-            data-aos-delay="300"
-            class="mx-auto col-lg-4 col-sm-6 col-12"
-          >
-            <div class="card h-100">
-              <img
-                src="images/hackathon-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Hackathon</h5>
-                <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />Every
-                  Trimester<br />
-                  <img class="events-icon" src="/icon/time.svg" />9am - 10pm
-                </p>
-              </div>
-            </div>
-          </div>
-          <div data-aos="zoom-in" class="mx-auto col-lg-4 col-sm-6 col-12">
-            <div class="card h-100">
-              <img
-                src="images/idea-talk-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Idea Talk</h5>
-              </div>
-            </div>
-          </div>
-          <div data-aos="zoom-in" class="mx-auto col-lg-4 col-sm-6 col-12">
-            <div class="card h-100">
-              <img
-                src="images/presentation-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Progress Presentation</h5>
-              </div>
-            </div>
-          </div>
-
-          <div
-            data-aos="zoom-in"
-            data-aos-delay="300"
-            class="mx-auto col-lg-4 col-sm-6 col-12"
-          >
-            <div class="card h-100">
-              <img
-                src="images/anniversary-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">200th Meetup Anniversary</h5>
-              </div>
-            </div>
-          </div>
-          <div
-            data-aos="zoom-in"
-            data-aos-delay="300"
-            class="mx-auto col-lg-4 col-sm-6 col-12"
-          >
-            <div class="card h-100">
-              <img
-                src="images/mamak-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Mamak Session</h5>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="registration">
-      <div id="footer">
-        <div class="qrcode-and-form">
-          <div class="qr-code">
-            <h1 style="font-weight: bold; text-align: center">Scan here!</h1>
-            <img src="./images/hackerspace_qr.png" alt="QR Code" />
-          </div>
-          <form
-            id="registration-form"
-            action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
-            target="_blank"
-          >
-            <div class="form-title"><h1>REGISTER HERE</h1></div>
-            <br />
-            <div class="row">
-              <input
-                type="email"
-                class="form-control mb-4 rounded"
-                id="mmuEmail"
-                placeholder="Enter your MMU email address."
-              />
-              <button
-                type="submit"
-                id="registration-submit-button"
-                class="submit-button btn"
+      <div class="stats-grid">
+        <div class="stats-row">
+          <div class="stat stat-photo stat-members" style="--i: 0">
+            <img
+              src="images/statistic-section/active_member-web.jpg"
+              alt="Members watching a talk"
+              loading="lazy"
+            />
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="73" data-endpoint="members"
+                  >73</span
+                ></span
               >
-                Submit
-              </button>
-            </div>
-            <br />
-            <div id="emailHelp" class="form-text">
-              *Please use your MMU email to get registration form. <br />
-              Hackerspace MMU is only open for MMU student and staff.
-            </div>
-          </form>
+              <span>Active Members</span>
+            </p>
+          </div>
+          <div class="stat stat-days" style="--i: 1">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="5574" data-since="2011-06-09"
+                  >5574</span
+                ></span
+              >
+              <span>DAYS ACTIVE</span>
+            </p>
+          </div>
         </div>
 
-        <div class="space-img">
-          <img src="images/pngkey 13.png" alt="" />
-        </div>
-        <div
-          class="footer-links d-flex flex-column w-full justify-content-center align-items-center"
-        >
-          <p class="welcome-word welcome-word-title">
-            Welcome aboard, explorer
-          </p>
-          <p class="welcome-word">
-            Join us, and explore your creativity like never before!
-          </p>
-          <br />
-          <br />
-          <br />
-          <div
-            class="social-media-wrapper d-flex flex-column w-100 justify-content-center align-items-center"
-          >
-            <div
-              class="social-media-container d-flex flex-row w-100 justify-content-center align-items-center"
-            >
-              <div class="social-media-info d-flex flex-row w-100">
-                <div class="footer-icon-wrapper">
-                  <img class="footer-icon" src="/icon/location.svg" alt="" />
-                </div>
-                Multimedia University Cyberjaya
-              </div>
-            </div>
-
-            <div
-              class="social-media-container d-flex flex-row w-100 justify-content-center align-items-center"
-            >
-              <div class="social-media-info d-flex flex-row w-100">
-                <div class="footer-icon-wrapper">
-                  <img class="footer-icon" src="/icon/github.svg" alt="" />
-                </div>
-                <a
-                  href="https://github.com/hackerspacemmu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-white text-decoration-none"
-                  title="Check out our GitHub"
-                  >github.com/hackerspacemmu</a
+        <div class="stats-row">
+          <div class="stat stat-meetups" style="--grow: 508; --i: 2">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="539" data-endpoint="meetups"
+                  >539</span
+                ></span
+              >
+              <span>MEETUPS</span>
+            </p>
+          </div>
+          <div class="stat stat-updates" style="--grow: 1135; --i: 3">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="2179" data-endpoint="updates"
+                  >2179</span
                 >
-              </div>
-            </div>
+                UPDATES</span
+              >
+            </p>
+            <img
+              class="stat-person"
+              src="images/statistic-section/update_photo-web.png"
+              alt="A member smiling behind a sticker-covered laptop"
+              loading="lazy"
+            />
+          </div>
+        </div>
 
-            <div
-              class="social-media-container d-flex flex-row w-100 justify-content-center align-items-center"
-            >
-              <div class="social-media-info d-flex flex-row w-100">
-                <div class="footer-icon-wrapper">
-                  <img class="footer-icon" src="/icon/email2.svg" alt="" />
-                </div>
-                hackerspacemmu@gmail.com
-              </div>
-            </div>
+        <div class="stats-row">
+          <div class="stat stat-photo stat-hackathons" style="--i: 4">
+            <img
+              src="images/statistic-section/hackathon-web.jpg"
+              alt="Members coding at laptops during a hackathon"
+              loading="lazy"
+            />
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="67">67</span> Hackathons</span
+              >
+            </p>
           </div>
         </div>
       </div>
-    </div>
-
-    <section class="animation">
-      <div class="content-box-1">Take your coding skills</div>
-      <div class="content-box-2"><p>To the next level</p></div>
-      <img class="rocket" src="images/rocket.png" alt="rocket" />
     </section>
 
-    <div class="black-bar sticky-bottom">
-      <p>© Copyright Hackerspace MMU</p>
-    </div>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.js"
-      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-      crossorigin="anonymous"
-    ></script>
+    <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
+      <div class="legacy-intro">
+        <h2 id="legacy-heading">Since 2011,<br />still building.</h2>
+        <p>
+          Hackathons, weekly meetups, mamak runs and plenty of late nights.
+          Here's every year of Hackerspace MMU so far.
+        </p>
+        <div class="timeline">
+          <p class="timeline-now" aria-hidden="true">2011</p>
+          <div class="timeline-rail">
+            <div class="timeline-flight" aria-hidden="true">
+              <span class="timeline-trail"></span>
+              <img
+                class="timeline-rocket"
+                src="images/legacy-section/rocket%203.svg"
+                alt=""
+                draggable="false"
+              />
+            </div>
+            <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
+            <div class="timeline-ends" aria-hidden="true">
+              <span></span><span></span>
+            </div>
+          </div>
+          <button
+            class="timeline-pause"
+            type="button"
+            aria-label="Pause slideshow"
+          >
+            <svg class="icon-pause" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor" />
+            </svg>
+            <svg class="icon-play" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2.5 1v10l8.5-5z" fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+      <!--
+        One card per year; add more cards with the same data-year for extra
+        photos. To swap in a photo, replace the placeholder div with:
+          <div class="year-photo">
+            <img src="images/legacy-section/2011.jpg" alt="..." loading="lazy" />
+          </div>
+        Cards are 4:3 by default; set --ar (e.g. 3 / 2) to change the shape.
+      -->
+      <div
+        class="reel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Hackerspace MMU photos by year"
+      >
+        <div class="reel-track">
+          <figure class="year-card" data-year="2011">
+            <div class="year-photo is-placeholder"><span>2011</span></div>
+            <figcaption><b>2011</b> Where it all began</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2012</span></div>
+            <figcaption><b>2012</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2013">
+            <div class="year-photo is-placeholder"><span>2013</span></div>
+            <figcaption><b>2013</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2014">
+            <div class="year-photo is-placeholder"><span>2014</span></div>
+            <figcaption><b>2014</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2015</span></div>
+            <figcaption><b>2015</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2016">
+            <div class="year-photo is-placeholder"><span>2016</span></div>
+            <figcaption><b>2016</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2017">
+            <div class="year-photo is-placeholder"><span>2017</span></div>
+            <figcaption><b>2017</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2018</span></div>
+            <figcaption><b>2018</b> Hackathon crew</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2019">
+            <div class="year-photo is-placeholder"><span>2019</span></div>
+            <figcaption><b>2019</b> Trimester hackathon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2020">
+            <div class="year-photo is-placeholder"><span>2020</span></div>
+            <figcaption><b>2020</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2021</span></div>
+            <figcaption><b>2021</b> Meet &amp; greet</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2022">
+            <div class="year-photo is-placeholder"><span>2022</span></div>
+            <figcaption><b>2022</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2023">
+            <div class="year-photo is-placeholder"><span>2023</span></div>
+            <figcaption><b>2023</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
+            <div class="year-photo is-placeholder"><span>2024</span></div>
+            <figcaption><b>2024</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2025">
+            <div class="year-photo is-placeholder"><span>2025</span></div>
+            <figcaption><b>2025</b> Coming soon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2026">
+            <div class="year-photo is-placeholder"><span>2026</span></div>
+            <figcaption><b>2026</b> Coming soon</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <section class="quote" aria-label="Quote">
+      <figure>
+        <span class="quote-line quote-line-red" aria-hidden="true"></span>
+        <span class="quote-line quote-line-blue" aria-hidden="true"></span>
+        <blockquote>
+          <p>
+            “I hear and I forget. I see and I remember. I do and I
+            understand.”
+          </p>
+        </blockquote>
+        <figcaption>
+          <a
+            href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
+            >Not Confucius</a
+          >
+        </figcaption>
+      </figure>
+    </section>
+
+    <section
+      id="events-and-activities"
+      class="events"
+      aria-labelledby="events-heading"
+    >
+      <div class="events-head">
+        <div>
+          <h2 id="events-heading">What’s on?</h2>
+          <p>
+            A weekly meetup, a hackathon every trimester, and a few traditions
+            picked up along the way.
+          </p>
+        </div>
+        <!-- JS swaps "Every Tuesday" for the actual next date -->
+        <div class="next-meetup">
+          <p class="next-label">Next meetup</p>
+          <p class="next-date">Every Tuesday</p>
+          <p class="next-time">8.00pm - 10.00pm</p>
+        </div>
+      </div>
+
+      <!-- One panel per event; the first one starts open. Only events with a
+           fixed schedule get an .event-when line. -->
+      <ul class="events-list">
+        <li class="event is-open" style="--i: 0">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/PhysicalSession.jpg"
+            alt="Members with laptops around a long table at a weekly meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="event-meetups"
+            aria-labelledby="event-meetups-title"
+          >
+            <span class="event-label" aria-hidden="true">Weekly Meetups</span>
+          </button>
+          <div class="event-body" id="event-meetups">
+            <h3 id="event-meetups-title">Weekly Meetups</h3>
+            <p class="event-when">
+              <span>Every Tuesday</span><span>8.00pm - 10.00pm</span>
+            </p>
+            <p class="event-desc">
+              Bring your laptop and whatever you’re working on. Share progress,
+              get unstuck and catch up on tech news.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 1; --pos: 50% 45%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/PXL_20240421_085808057.jpg"
+            alt="A hackathon team coding on laptops around a shared table"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-hackathons"
+            aria-labelledby="event-hackathons-title"
+          >
+            <span class="event-label" aria-hidden="true">Hackathons</span>
+          </button>
+          <div class="event-body" id="event-hackathons">
+            <h3 id="event-hackathons-title">Hackathons</h3>
+            <p class="event-when">
+              <span>Every trimester</span><span>9.00am - 10.00pm</span>
+            </p>
+            <p class="event-desc">
+              One long day of building something from scratch. Start with an
+              idea in the morning, demo it by night.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 2; --pos: 40% 50%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/PhysicalSession_presentation_Anonoz.jpg"
+            alt="A member pointing at code projected on a screen"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-progress"
+            aria-labelledby="event-progress-title"
+          >
+            <span class="event-label" aria-hidden="true"
+              >Progress Presentations</span
+            >
+          </button>
+          <div class="event-body" id="event-progress">
+            <h3 id="event-progress-title">Progress Presentations</h3>
+            <p class="event-desc">
+              Show the room what you’ve built since your last update. Wins, bugs
+              and all.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 3; --pos: 35% 50%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/MamakSession2018.jpg"
+            alt="Members sharing food and drinks at a mamak after a meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-mamak"
+            aria-labelledby="event-mamak-title"
+          >
+            <span class="event-label" aria-hidden="true">Mamak Sessions</span>
+          </button>
+          <div class="event-body" id="event-mamak">
+            <h3 id="event-mamak-title">Mamak Sessions</h3>
+            <p class="event-desc">
+              When the meetup wraps up, the conversation carries on over teh
+              tarik at the mamak.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 4; --pos: 60% 55%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/PXL_20241001_133251242.MP.jpg"
+            alt="Members gathered around a table playing a board game, with more tables of players behind them"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-games"
+            aria-labelledby="event-games-title"
+          >
+            <span class="event-label" aria-hidden="true">Game Nights</span>
+          </button>
+          <div class="event-body" id="event-games">
+            <h3 id="event-games-title">Game Nights</h3>
+            <p class="event-desc">
+              When study week hits, we trade keyboards for dice and board games
+              to take a break before the finals.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="registration" class="join" aria-labelledby="join-heading">
+      <div class="join-copy">
+        <h2 id="join-heading">Come build with us.</h2>
+        <p class="join-lede">
+          Open to every MMU student and staff member. Enter your MMU email and
+          we’ll take you to the sign-up form.
+        </p>
+        <!-- validated in the script below before the Google Form opens -->
+        <form
+          id="registration-form"
+          class="join-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
+          target="_blank"
+          novalidate
+        >
+          <label for="mmuEmail">MMU email</label>
+          <div class="join-field">
+            <input
+              id="mmuEmail"
+              type="email"
+              autocomplete="email"
+              spellcheck="false"
+              placeholder="you@student.mmu.edu.my"
+              aria-describedby="join-hint join-error"
+            />
+            <button id="registration-submit-button" type="submit">
+              Join Us Now
+            </button>
+          </div>
+          <p id="join-hint" class="join-hint">
+            Student and staff addresses ending in mmu.edu.my.
+          </p>
+          <p id="join-error" class="join-error" role="alert"></p>
+        </form>
+      </div>
+
+      <figure class="join-qr">
+        <!-- the Enlarge button is the keyboard route to the same dialog -->
+        <div class="qr-card">
+          <img
+            src="images/join-section/join-qr.svg"
+            alt="QR code linking to hackerspacemmu.rocks"
+            width="29"
+            height="29"
+          />
+        </div>
+        <figcaption>
+          <div>
+            <span class="qr-title">Scan to join</span>
+            <span class="qr-url">hackerspacemmu.rocks</span>
+          </div>
+          <button class="qr-enlarge" type="button" aria-haspopup="dialog">
+            Enlarge
+          </button>
+        </figcaption>
+      </figure>
+
+      <dialog class="qr-dialog" aria-label="QR code, enlarged">
+        <div class="qr-card">
+          <img
+            src="images/join-section/join-qr.svg"
+            alt="QR code linking to hackerspacemmu.rocks"
+            width="29"
+            height="29"
+          />
+        </div>
+        <p>hackerspacemmu.rocks</p>
+        <button class="qr-close" type="button">Close</button>
+      </dialog>
+    </section>
+
+    <script src="js/config.js"></script>
     <script>
-      AOS.init();
+      const nav = document.querySelector('.site-nav');
+      const toggle = nav.querySelector('.nav-toggle');
+      toggle.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      // picking a section from the mobile menu closes it
+      nav.querySelector('.nav-links').addEventListener('click', (e) => {
+        if (!e.target.closest('a')) return;
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+
+      // Sections size themselves to the viewport minus the sticky nav.
+      new ResizeObserver(([entry]) => {
+        const h = entry.borderBoxSize[0].blockSize;
+        document.documentElement.style.setProperty('--nav-h', `${h}px`);
+      }).observe(nav);
+
+      // Reveal each photo on its own schedule, but never before its tile has
+      // animated in — late-loading images reveal as soon as they arrive.
+      const start = performance.now();
+      document.querySelectorAll('.frame img').forEach((img) => {
+        const tile = img.closest('.tile');
+        const i = Number(tile.style.getPropertyValue('--i'));
+        const revealAt = 450 + i * 90;
+
+        const reveal = () => {
+          const wait = Math.max(0, revealAt - (performance.now() - start));
+          tile.style.setProperty('--reveal-delay', `${wait}ms`);
+          tile.classList.add('is-loaded');
+        };
+
+        img
+          .decode()
+          .catch(() => {})
+          .then(reveal);
+      });
+
+      // ---------- STATS ----------
+
+      const stats = document.querySelector('.stats');
+      const counters = [...stats.querySelectorAll('.count')];
+      const COUNT_MS = 1100;
+      // a cold-starting API shouldn't hold up the count-up; past this we
+      // count to the numbers baked into the markup instead
+      const API_WAIT_MS = 2500;
+
+      // Days active is derived from the founding date, same as index.html.
+      counters.forEach((el) => {
+        if (el.dataset.since) {
+          const ms = Date.now() - new Date(el.dataset.since);
+          el.dataset.count = Math.ceil(ms / (24 * 60 * 60 * 1000));
+        }
+      });
+
+      // Write the final numbers and let the tiles size their text to them.
+      const showFinal = () => {
+        counters.forEach((el) => (el.textContent = el.dataset.count));
+        counters.forEach((el) => {
+          const style = getComputedStyle(el);
+          const em = parseFloat(style.width) / parseFloat(style.fontSize);
+          el.closest('.stat-text').style.setProperty('--count-em', em);
+        });
+      };
+      showFinal();
+
+      // Members, meetups and updates come from the same API as index.html.
+      // Values that land after the count-up has started are dropped.
+      let countStarted = false;
+      const liveCounts = Promise.all(
+        counters
+          .filter((el) => el.dataset.endpoint)
+          .map((el) =>
+            fetch(`${CONFIG.API_BASE_URL}/api/v1/${el.dataset.endpoint}/count`)
+              .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+              .then(({ total }) => {
+                if (!countStarted && Number.isFinite(total)) {
+                  el.dataset.count = total;
+                }
+              })
+              .catch((err) => console.error(err)),
+          ),
+      );
+
+      const countUp = (el) => {
+        const target = Number(el.dataset.count);
+        const i = Number(el.closest('.stat').style.getPropertyValue('--i'));
+
+        // Lock the box to the final number's width (in em, so it survives a
+        // resize) so the surrounding text doesn't shuffle as digits change.
+        // Computed width is the untransformed layout width; the tile is still
+        // mid scale-in here, so getBoundingClientRect() would come up short.
+        const style = getComputedStyle(el);
+        el.style.width = `${parseFloat(style.width) / parseFloat(style.fontSize)}em`;
+        el.textContent = '0';
+
+        setTimeout(
+          () => {
+            const start = performance.now();
+            const tick = (now) => {
+              const t = Math.min(1, (now - start) / COUNT_MS);
+              const eased = t === 1 ? 1 : 1 - 2 ** (-10 * t); // ease-out expo
+              el.textContent = Math.round(target * eased);
+              if (t < 1) requestAnimationFrame(tick);
+              else el.style.width = '';
+            };
+            requestAnimationFrame(tick);
+          },
+          150 + i * 90,
+        );
+      };
+
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        stats.classList.add('is-armed');
+        counters.forEach((el) => (el.textContent = '0'));
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            io.disconnect();
+            stats.classList.add('is-in');
+            // measure final widths only once the display font and the live
+            // numbers are in
+            const apiWait = new Promise((r) => setTimeout(r, API_WAIT_MS));
+            Promise.all([
+              document.fonts.ready,
+              Promise.race([liveCounts, apiWait]),
+            ]).then(() => {
+              countStarted = true;
+              showFinal();
+              counters.forEach(countUp);
+            });
+          },
+          { threshold: 0.25 },
+        );
+        io.observe(stats.querySelector('.stats-grid'));
+      } else {
+        liveCounts.then(showFinal);
+      }
+
+      // ---------- LEGACY ----------
+
+      const legacy = document.querySelector('.legacy');
+      const reel = legacy.querySelector('.reel');
+      const track = reel.querySelector('.reel-track');
+      const cards = [...track.children];
+      const nowLabel = legacy.querySelector('.timeline-now');
+      const pauseBtn = legacy.querySelector('.timeline-pause');
+
+      const DRIFT = 60; // px per second
+      const IDLE_MS = 1000; // how long drift waits after the user takes over
+      const GLIDE_MS = 900;
+
+      const accentFor = (year) => `var(--legacy-${year % 2 ? 'blue' : 'red'})`;
+      cards.forEach((card) =>
+        card.style.setProperty('--accent', accentFor(card.dataset.year)),
+      );
+
+      // One tick per year, built from the cards, so adding a year only means
+      // adding a card.
+      const years = [...new Set(cards.map((card) => card.dataset.year))];
+      const ticks = years.map((year) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tick';
+        btn.setAttribute('aria-label', `Show ${year}`);
+        btn.addEventListener('click', () => goTo(year));
+        li.append(btn);
+        legacy.querySelector('.timeline-ticks').append(li);
+        return btn;
+      });
+      const [firstEnd, lastEnd] = legacy.querySelectorAll(
+        '.timeline-ends span',
+      );
+      firstEnd.textContent = years[0];
+      lastEnd.textContent = years.at(-1);
+
+      const rail = legacy.querySelector('.timeline-rail');
+      const rocket = rail.querySelector('.timeline-rocket');
+      const trail = rail.querySelector('.timeline-trail');
+      const yearOf = cards.map((card) => years.indexOf(card.dataset.year));
+      const LEVEL = 31.7; // the artwork climbs at ~32°; this turns it to face right
+      const LAUNCH = 0.55; // share of the last-year → first-year gap spent lifting off
+      let tickX = [];
+
+      // The track holds the real cards followed by enough inert copies to
+      // cover the viewport, so wrapping the offset by one set's width is
+      // seamless.
+      let setW = 0;
+      let lefts = [];
+
+      const measure = () => {
+        track.querySelectorAll('[data-clone]').forEach((node) => node.remove());
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        const first = cards[0];
+        const last = cards.at(-1);
+        const oldW = setW;
+        setW = last.offsetLeft + last.offsetWidth + gap - first.offsetLeft;
+        lefts = cards.map((card) => card.offsetLeft - first.offsetLeft);
+
+        tickX = ticks.map((tick) => tick.offsetLeft + tick.offsetWidth / 2);
+        trail.style.left = `${tickX[0]}px`;
+        trail.style.width = `${tickX.at(-1) - tickX[0]}px`;
+
+        const copies = Math.ceil(reel.clientWidth / setW);
+        for (let n = 0; n < copies; n++) {
+          cards.forEach((card) => {
+            const clone = card.cloneNode(true);
+            clone.dataset.clone = '';
+            clone.setAttribute('aria-hidden', 'true');
+            clone.inert = true;
+            track.append(clone);
+          });
+        }
+        if (oldW) x = (x / oldW) * setW;
+      };
+
+      let x = 0; // track offset in px; may run past setW, wrapped on render
+      let glide = null;
+      let drag = null;
+      let scrub = null; // dragging the rocket along the timeline
+      let hovered = false;
+      let paused = reduceMotion.matches;
+      let holdUntil = 0;
+      let visible = false;
+      let running = false;
+      let lastFrame = 0;
+      let activeYear = null;
+
+      const wrap = (v) => ((v % setW) + setW) % setW;
+      // signed shortest distance from a to b around the loop
+      const loopDelta = (a, b) => wrap(b - a + setW / 2) - setW / 2;
+      const easeInOut = (t) =>
+        t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+      const easeOut = (t) => 1 - (1 - t) ** 3;
+      const clamp01 = (t) => Math.min(1, Math.max(0, t));
+
+      const setActive = (pos) => {
+        // the card whose left edge sits closest to the intro's left edge
+        const dist = (i) => Math.abs(loopDelta(pos, lefts[i]));
+        let best = 0;
+        lefts.forEach((_, i) => {
+          if (dist(i) < dist(best)) best = i;
+        });
+        const year = cards[best].dataset.year;
+        if (year === activeYear) return;
+        activeYear = year;
+        nowLabel.textContent = year;
+        legacy.style.setProperty('--now-accent', accentFor(year));
+        ticks.forEach((tick, i) =>
+          tick.setAttribute('aria-current', String(years[i] === year)),
+        );
+      };
+
+      // The rocket is driven by the reel's position rather than a clock, so
+      // dragging backwards (or pausing mid-launch) just works.
+      const fly = (pos) => {
+        let i = lefts.length - 1;
+        while (i > 0 && lefts[i] > pos) i--;
+        const next = lefts[i + 1] ?? setW;
+        const frac = (pos - lefts[i]) / (next - lefts[i]);
+        const start = tickX[0];
+        const end = tickX.at(-1);
+
+        let rx;
+        let ry = 0;
+        let tilt = LEVEL;
+        let scale = 1;
+        let alpha = 1;
+        let trailAlpha = 1;
+
+        if (i < lefts.length - 1) {
+          // cruising between two years
+          const a = tickX[yearOf[i]];
+          const b = tickX[yearOf[i + 1]];
+          rx = a + (b - a) * frac;
+        } else if (frac < LAUNCH) {
+          // past the last year: pitch up and blast off into the open space
+          const t = frac / LAUNCH;
+          const e = t * t;
+          rx = end + 320 * e;
+          ry = -260 * e;
+          tilt = LEVEL - 45 * easeOut(clamp01(t / 0.4));
+          scale = 1 - 0.35 * e;
+          alpha = 1 - clamp01((t - 0.6) / 0.4);
+          trailAlpha = 1 - t;
+        } else {
+          // back round to the start: glide in from the left onto the first year
+          const e = easeOut((frac - LAUNCH) / (1 - LAUNCH));
+          rx = start - 70 * (1 - e);
+          alpha = e;
+          trailAlpha = 0;
+        }
+
+        rocket.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) rotate(${tilt}deg) scale(${scale})`;
+        rocket.style.opacity = alpha;
+        trail.style.transform = `scaleX(${(Math.min(rx, end) - start) / (end - start)})`;
+        trail.style.opacity = trailAlpha;
+        ticks.forEach((tick, j) =>
+          tick.classList.toggle(
+            'is-passed',
+            trailAlpha > 0 && tickX[j] <= rx + 0.5,
+          ),
+        );
+      };
+
+      const render = () => {
+        const pos = wrap(x);
+        track.style.transform = `translate3d(${-pos}px, 0, 0)`;
+        setActive(pos);
+        fly(pos);
+      };
+
+      const frame = (now) => {
+        const dt = Math.min(64, now - lastFrame) / 1000;
+        lastFrame = now;
+
+        if (glide) {
+          const t = Math.min(1, (now - glide.start) / glide.dur);
+          x = glide.from + (glide.to - glide.from) * easeInOut(t);
+          if (t === 1) glide = null;
+        } else if (!drag && !scrub && !paused && !hovered && now > holdUntil) {
+          x = wrap(x) + DRIFT * dt;
+        }
+
+        render();
+        if (visible) requestAnimationFrame(frame);
+        else running = false;
+      };
+
+      const run = () => {
+        if (running || !visible) return;
+        running = true;
+        lastFrame = performance.now();
+        requestAnimationFrame(frame);
+      };
+
+      const hold = () => (holdUntil = performance.now() + IDLE_MS);
+
+      const goTo = (year) => {
+        const pos = wrap(x);
+        const target = lefts[cards.findIndex((c) => c.dataset.year === year)];
+        // Fly straight along the rail; only carry on round the loop when
+        // already mid-launch and heading back to the start.
+        let d = target - pos;
+        if (pos > lefts.at(-1) && Math.abs(d + setW) < Math.abs(d)) d += setW;
+        glide = {
+          from: pos,
+          to: pos + d,
+          start: performance.now(),
+          dur: reduceMotion.matches ? 1 : GLIDE_MS,
+        };
+        holdUntil = glide.start + GLIDE_MS + IDLE_MS;
+        run();
+      };
+
+      pauseBtn.addEventListener('click', () => {
+        paused = !paused;
+        legacy.classList.toggle('is-paused', paused);
+        pauseBtn.setAttribute(
+          'aria-label',
+          paused ? 'Play slideshow' : 'Pause slideshow',
+        );
+      });
+      legacy.classList.toggle('is-paused', paused);
+      if (paused) pauseBtn.setAttribute('aria-label', 'Play slideshow');
+
+      reel.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'mouse') hovered = true;
+      });
+      reel.addEventListener('pointerleave', () => (hovered = false));
+
+      // The reverse of fly()'s cruising stretch: a point on the rail → the
+      // reel position that puts the rocket there. Cards sharing a year have
+      // no rail between them, so they're skipped over.
+      const posAt = (px) => {
+        if (px <= tickX[0]) return 0;
+        for (let i = 0; i < lefts.length - 1; i++) {
+          const a = tickX[yearOf[i]];
+          const b = tickX[yearOf[i + 1]];
+          if (b > a && px <= b) {
+            return lefts[i] + ((px - a) / (b - a)) * (lefts[i + 1] - lefts[i]);
+          }
+        }
+        return lefts.at(-1);
+      };
+
+      // Grab the rocket (or anywhere on the rail) and drag to scrub through
+      // the years; the reel follows. Letting go settles on the nearest card.
+      // A plain tap on a tick is left to its click handler.
+      let scrubbed = false;
+      const railX = (e) => e.clientX - rail.getBoundingClientRect().left;
+
+      rail.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        const at = railX(e);
+        const box = rocket.getBoundingClientRect();
+        const rx = (box.left + box.right) / 2 - rail.getBoundingClientRect().left;
+        // grabbing the rocket itself keeps it under the finger instead of
+        // jumping its centre to the pointer
+        const onRocket = Math.abs(rx - at) < box.width / 2;
+        scrub = {
+          id: e.pointerId,
+          startX: e.clientX,
+          offset: onRocket ? rx - at : 0,
+          moved: false,
+        };
+        scrubbed = false;
+      });
+
+      rail.addEventListener('pointermove', (e) => {
+        if (!scrub || e.pointerId !== scrub.id) return;
+        if (!scrub.moved) {
+          if (Math.abs(e.clientX - scrub.startX) <= 4) return;
+          scrub.moved = true;
+          rail.setPointerCapture(e.pointerId);
+          rail.classList.add('is-scrubbing');
+          glide = null;
+        }
+        x = posAt(railX(e) + scrub.offset);
+        run();
+      });
+
+      const endScrub = (e) => {
+        if (!scrub || e.pointerId !== scrub.id) return;
+        const { moved } = scrub;
+        scrub = null;
+        if (!moved) return;
+        scrubbed = true;
+        rail.classList.remove('is-scrubbing');
+        const pos = wrap(x);
+        const nearest = lefts.reduce((best, left) =>
+          Math.abs(left - pos) < Math.abs(best - pos) ? left : best,
+        );
+        glide = {
+          from: pos,
+          to: nearest,
+          start: performance.now(),
+          dur: reduceMotion.matches ? 1 : 400,
+        };
+        holdUntil = glide.start + 400 + IDLE_MS;
+        run();
+      };
+      rail.addEventListener('pointerup', endScrub);
+      rail.addEventListener('pointercancel', endScrub);
+      // Firefox ignores -webkit-user-drag and starts a native image drag,
+      // which cancels the pointer stream mid-scrub
+      rail.addEventListener('dragstart', (e) => e.preventDefault());
+      // a drag that ends over a tick shouldn't also count as clicking it
+      rail.addEventListener(
+        'click',
+        (e) => {
+          if (!scrubbed) return;
+          scrubbed = false;
+          e.stopPropagation();
+          e.preventDefault();
+        },
+        true,
+      );
+
+      // Drag / swipe to scrub. touch-action: pan-y leaves vertical page
+      // scrolling to the browser.
+      reel.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        drag = { id: e.pointerId, startX: e.clientX, from: x, moved: false };
+        glide = null;
+      });
+
+      reel.addEventListener('pointermove', (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        const dx = e.clientX - drag.startX;
+        if (!drag.moved && Math.abs(dx) > 4) {
+          drag.moved = true;
+          reel.setPointerCapture(e.pointerId);
+          reel.classList.add('is-dragging');
+        }
+        if (drag.moved) x = drag.from - dx;
+      });
+
+      const endDrag = (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        drag = null;
+        reel.classList.remove('is-dragging');
+        hold();
+      };
+      reel.addEventListener('pointerup', endDrag);
+      reel.addEventListener('pointercancel', endDrag);
+
+      // horizontal trackpad / shift-wheel scrolling
+      reel.addEventListener(
+        'wheel',
+        (e) => {
+          if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+          e.preventDefault();
+          glide = null;
+          x += e.deltaX;
+          hold();
+        },
+        { passive: false },
+      );
+
+      measure();
+      render();
+      const resizer = new ResizeObserver(() => {
+        measure();
+        render();
+      });
+      resizer.observe(reel);
+      resizer.observe(rail);
+
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        run();
+      }).observe(reel);
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        legacy.classList.add('is-armed');
+        const legacyIo = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            legacyIo.disconnect();
+            legacy.classList.add('is-in');
+          },
+          { threshold: 0.2 },
+        );
+        legacyIo.observe(legacy);
+      }
+
+      // ---------- QUOTE ----------
+
+      const quote = document.querySelector('.quote');
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        quote.classList.add('is-armed');
+        const quoteIo = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            quoteIo.disconnect();
+            quote.classList.add('is-in');
+          },
+          { threshold: 0.5 },
+        );
+        quoteIo.observe(quote.querySelector('figure'));
+      }
+
+      // ---------- EVENTS ----------
+
+      const events = document.querySelector('.events');
+      const eventItems = [...events.querySelectorAll('.event')];
+      const eventToggles = eventItems.map((li) =>
+        li.querySelector('.event-toggle'),
+      );
+      // same query as the CSS breakpoint where the panels stack
+      const eventsStacked = matchMedia(
+        '(max-width: 1023px), (max-width: 1180px) and (orientation: portrait)',
+      );
+
+      const openEvent = (i) => {
+        eventItems.forEach((li, j) => {
+          const isOpen = i === j;
+          li.classList.toggle('is-open', isOpen);
+          eventToggles[j].setAttribute('aria-expanded', String(isOpen));
+          li.querySelector('.event-body').setAttribute(
+            'aria-hidden',
+            String(!isOpen),
+          );
+        });
+      };
+      openEvent(0);
+
+      eventToggles.forEach((btn, i) => {
+        btn.addEventListener('click', () => openEvent(i));
+        btn.addEventListener('keydown', (e) => {
+          const last = eventToggles.length - 1;
+          const to = {
+            ArrowRight: Math.min(last, i + 1),
+            ArrowLeft: Math.max(0, i - 1),
+            Home: 0,
+            End: last,
+          }[e.key];
+          if (to === undefined) return;
+          e.preventDefault();
+          eventToggles[to].focus();
+          openEvent(to);
+        });
+      });
+
+      // Sweeping the mouse along the row opens whichever panel it settles
+      // on. Stacked panels only open on tap, or the page would jump around
+      // under the pointer.
+      let hoverTimer = 0;
+      eventItems.forEach((li, i) => {
+        li.addEventListener('pointerenter', (e) => {
+          if (e.pointerType !== 'mouse' || eventsStacked.matches) return;
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(() => openEvent(i), 60);
+        });
+        li.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
+      });
+
+      // Meetups run on Malaysian time, so work the next one out in that
+      // timezone whatever the visitor's clock says.
+      const nextMeetup = events.querySelector('.next-meetup');
+      const kl = Object.fromEntries(
+        new Intl.DateTimeFormat('en-US', {
+          timeZone: 'Asia/Kuala_Lumpur',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          weekday: 'short',
+          hour: 'numeric',
+          hourCycle: 'h23',
+        })
+          .formatToParts(new Date())
+          .map(({ type, value }) => [type, value]),
+      );
+      const klDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(
+        kl.weekday,
+      );
+      const klHour = Number(kl.hour);
+      const MEETUP_DAY = 2; // Tuesday
+      const daysAway =
+        klDay === MEETUP_DAY && klHour < 22 ? 0 : (MEETUP_DAY - klDay + 7) % 7 || 7;
+      const meetupDate = new Date(
+        Date.UTC(Number(kl.year), kl.month - 1, Number(kl.day) + daysAway),
+      );
+
+      if (daysAway === 0 && klHour >= 20) {
+        nextMeetup.querySelector('.next-label').textContent = 'Weekly meetup';
+        nextMeetup.querySelector('.next-date').textContent = 'On right now';
+      } else {
+        nextMeetup.querySelector('.next-date').textContent =
+          daysAway === 0
+            ? 'Tonight'
+            : daysAway === 1
+              ? 'Tomorrow'
+              : meetupDate.toLocaleDateString('en-GB', {
+                  timeZone: 'UTC',
+                  weekday: 'short',
+                  day: 'numeric',
+                  month: 'short',
+                });
+      }
+
+      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
+        events.classList.add('is-armed');
+        const eventsIo = new IntersectionObserver(
+          (entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            eventsIo.disconnect();
+            events.classList.add('is-in');
+          },
+          { threshold: 0.2 },
+        );
+        eventsIo.observe(events.querySelector('.events-list'));
+      }
+
+      // ---------- JOIN ----------
+
+      const join = document.querySelector('.join');
+      const joinForm = join.querySelector('.join-form');
+      const joinEmail = joinForm.querySelector('#mmuEmail');
+      const joinError = joinForm.querySelector('.join-error');
+      // student.mmu.edu.my, mmu.edu.my and any other MMU subdomain
+      const MMU_EMAIL = /^[^\s@]+@(?:[a-z0-9-]+\.)*mmu\.edu\.my$/i;
+
+      const setJoinError = (message) => {
+        joinError.textContent = message;
+        joinEmail.setAttribute('aria-invalid', String(Boolean(message)));
+      };
+
+      joinForm.addEventListener('submit', (e) => {
+        const value = joinEmail.value.trim();
+        const message = !value
+          ? 'Enter your MMU email first.'
+          : MMU_EMAIL.test(value)
+            ? ''
+            : 'That isn’t an MMU address. It should end in mmu.edu.my.';
+        setJoinError(message);
+        if (message) {
+          e.preventDefault();
+          joinEmail.focus();
+        }
+      });
+
+      // clear the complaint as soon as they start fixing it
+      joinEmail.addEventListener('input', () => {
+        if (joinError.textContent) setJoinError('');
+      });
+
+      const qrDialog = join.querySelector('.qr-dialog');
+      const openQr = () => qrDialog.showModal();
+      join.querySelector('.qr-enlarge').addEventListener('click', openQr);
+      join.querySelector('.join-qr .qr-card').addEventListener('click', openQr);
+      // a click anywhere, the Close button included, dismisses it
+      qrDialog.addEventListener('click', () => qrDialog.close());
     </script>
-
-    <script src="/js/config.js"></script>
-    <script src="/js/script.js"></script>
-
-    <script src="/js/email-validation.js"></script>
-    <script src="/js/what-we-do.js"></script>
-    <script src="/js/starfield.js"></script>
-    <script src="/js/landing.js"></script>
-    <script src="/js/why-build.js"></script>
-
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"
-      integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"
-      integrity="sha512-5/OHwmQzDSBS0Ous4/hlYoWLHd06/d2r7LdKZQVBXOA6PvOqWVXtdboiLTU7lQTGyVoKVTNkwi0ol4gHGlw5ww=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenLite.min.js"
-      integrity="sha512-pvDW4tehKKsohH97164HwKwRGFpzayEFWTVbk8HuUoLIQ7Jp+WLN5XYokVuoCj2aT6dy8ihbW8SRTG1k0W4mSQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TimelineLite.min.js"
-      integrity="sha512-tSIDeirKC6suYILHqqPuZH3s0MvD4a5vCHXhBIcdmq4gQXZ2IB3fEYA5x2f3D2p/CbSqzKEvuTEVbS5VZ2u+ew=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/CSSPlugin.min.js"
-      integrity="sha512-ocsFo48WU8Xq6Y1Lwi7psXRAujG9E4TKNR4q1DbrKzaaxOMTEoao/a+mDoB+cYzY4lwbyxvqjkp/ZA1/MNlfsg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/BezierPlugin.min.js"
-      integrity="sha512-plyexAULVlTExvDn2yUZFJV9F8q+53MC/GpU9dEuNGXmrrI3J8Rcffjvxg3OOBALBvF+UILPLIBEoCeF2maqTQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="js/rocket.js"></script>
+    <script src="js/what-we-do.js"></script>
+    <script src="js/starfield.js"></script>
+    <script src="js/landing.js"></script>
+    <script src="js/why-build.js"></script>
   </body>
 </html>
