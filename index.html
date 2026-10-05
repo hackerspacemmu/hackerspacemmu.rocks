@@ -60,6 +60,11 @@
         --font-display: 'Special Gothic Expanded One', 'Jost', sans-serif;
 
         --edge: clamp(12px, 2vw, 40px);
+        /* the left/right inset section content lines up on, below the hero */
+        --inset: clamp(12px, 8.25vw, 170px);
+        /* the same space above and below every section, so the gaps between
+           them match */
+        --section-space: clamp(80px, 15vh, 180px);
         --gap: clamp(8px, 1vw, 18px);
         --tile-pad: clamp(2px, 0.25vw, 4.5px);
         --tile-radius: clamp(10px, 0.8vw, 16px);
@@ -86,19 +91,6 @@
 
       html {
         scroll-padding-top: var(--nav-h);
-      }
-
-      /* Scroll stops: each full-screen section settles just under the nav
-         when you finish scrolling near its top. Snapping itself only runs
-         for mouse users (css/build-sections.css). Unlike the stops inside
-         "What do we do?", a fast scroll can carry on past these. */
-      .hero-screen,
-      .stats,
-      .legacy,
-      .quote,
-      .events,
-      .join {
-        scroll-snap-align: start;
       }
 
       body {
@@ -130,7 +122,6 @@
         background: rgba(10, 10, 10, 0.55);
         -webkit-backdrop-filter: blur(18px) saturate(160%);
         backdrop-filter: blur(18px) saturate(160%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         flex: none;
         display: flex;
         align-items: center;
@@ -269,7 +260,8 @@
         min-height: 0;
         margin: 0;
         overflow: hidden;
-        /* only the text tile keeps this; every photo tile takes a red, blue or white frame */
+        /* only the text tile keeps this; every photo tile starts as a red, blue
+           or white block that its photo then covers */
         background: #222;
         border-radius: var(--tile-radius);
         opacity: 0;
@@ -278,7 +270,8 @@
         animation-delay: calc(150ms + var(--i) * var(--stagger));
       }
 
-      /* accent frames in the stat/quote red and blue */
+      /* accent colours in the stat/quote red and blue, seen while the photos
+         load in */
       .tile-red {
         background: #c4291e;
       }
@@ -287,6 +280,19 @@
       }
       .tile-white {
         background: #fff;
+      }
+
+      /* once the photo has covered it, drop the colour so it can't show as
+         a hairline round the rounded corners */
+      .tile-red,
+      .tile-blue,
+      .tile-white {
+        transition: background-color 0.2s linear
+          calc(var(--reveal-delay, 0ms) + 1300ms);
+      }
+
+      .tile.is-loaded:is(.tile-red, .tile-blue, .tile-white) {
+        background-color: transparent;
       }
 
       /* ---------- PHOTO LOAD-IN ---------- */
@@ -319,7 +325,11 @@
         overflow: hidden;
         border-radius: var(--img-radius);
         clip-path: inset(100% 0 0 0 round var(--img-radius));
-        transition: clip-path 0.9s var(--ease-in-out) var(--reveal-delay, 0ms);
+        transition:
+          clip-path 0.9s var(--ease-in-out) var(--reveal-delay, 0ms),
+          inset 0.6s var(--ease-in-out) calc(var(--reveal-delay, 0ms) + 700ms),
+          border-radius 0.6s var(--ease-in-out)
+            calc(var(--reveal-delay, 0ms) + 700ms);
       }
 
       .frame img {
@@ -335,8 +345,12 @@
           filter 1.2s var(--ease-out) var(--reveal-delay, 0ms);
       }
 
+      /* the photo wipes up over its colour block, then grows to cover the
+         thin coloured edge so no border is left */
       .tile.is-loaded .frame {
-        clip-path: inset(0 0 0 0 round var(--img-radius));
+        inset: 0;
+        border-radius: var(--tile-radius);
+        clip-path: inset(0 0 0 0 round var(--tile-radius));
       }
 
       .tile.is-loaded .frame img {
@@ -387,7 +401,7 @@
         font-size: clamp(13px, min(1.24vw, 2.2vh), 23px);
         line-height: 1.45;
         letter-spacing: 0.02em;
-        text-align: justify;
+        text-align: left;
         color: var(--text-muted);
       }
 
@@ -434,13 +448,18 @@
         --stat-blue: #1d4ae0;
         --stat-red: #c4291e;
 
-        height: calc(100vh - var(--nav-h));
-        height: calc(100dvh - var(--nav-h));
-        min-height: 540px;
+        /* The tiles fill whatever height is left inside, so the shared
+           section spacing is added on top of the screen-sized box (less the
+           padding it used to have) rather than taken out of the tiles. */
+        --stats-box: calc(
+          100dvh - var(--nav-h) - clamp(20px, 4.5vh, 56px) - clamp(20px, 6vh, 90px)
+        );
+
+        height: calc(var(--stats-box) + 2 * var(--section-space));
+        min-height: calc(500px + 2 * var(--section-space));
         display: flex;
         flex-direction: column;
-        padding: clamp(20px, 4.5vh, 56px) clamp(12px, 8.25vw, 170px)
-          clamp(20px, 6vh, 90px);
+        padding: var(--section-space) var(--inset);
       }
 
       .stats h2 {
@@ -626,18 +645,15 @@
       .legacy {
         --legacy-red: #c4291e;
         --legacy-blue: #1d4ae0;
-        --legacy-inset: clamp(12px, 8.25vw, 170px);
+        --legacy-inset: var(--inset);
         --card-h: clamp(150px, 28vh, 340px);
         --lane-h: 40px;
         --rocket-w: clamp(56px, 4.4vw, 76px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
         display: flex;
         flex-direction: column;
-        justify-content: center;
         gap: clamp(28px, 6vh, 72px);
-        padding: clamp(40px, 8vh, 110px) 0;
+        padding: var(--section-space) 0;
         overflow: hidden;
       }
 
@@ -954,12 +970,7 @@
       .quote {
         --quote-inset: clamp(20px, 13.75vw, 280px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding-block: clamp(60px, 12vh, 160px);
+        padding-block: var(--section-space);
         overflow: hidden;
       }
 
@@ -1062,20 +1073,10 @@
         --open: 3.4;
         --panel-pad: clamp(12px, 1.2vw, 22px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
         display: flex;
         flex-direction: column;
-        justify-content: center;
         gap: clamp(20px, 4vh, 48px);
-        padding: clamp(40px, 8vh, 110px) var(--edge);
-      }
-
-      .events-head {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: var(--gap) clamp(20px, 4vw, 80px);
+        padding: var(--section-space) var(--inset);
       }
 
       .events h2 {
@@ -1097,35 +1098,55 @@
         color: #a8a8a8;
       }
 
-      .next-meetup {
-        min-width: clamp(220px, 19vw, 340px);
-        padding: clamp(14px, 1.4vw, 24px) clamp(16px, 1.6vw, 28px);
-        border-radius: var(--tile-radius);
-        background: var(--events-blue);
-      }
-
-      .next-meetup p {
-        margin: 0;
+      /* a status line under the intro, not a card, so it can't outrank the
+         heading */
+      .events-head .next-meetup {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25em 0.85em;
         max-width: none;
-        color: #fff;
+        margin-top: clamp(16px, 2.8vh, 28px);
+        padding: 0.6em 1.3em 0.6em 1em;
+        border-radius: 999px;
+        background: #cfcfcf;
+        /* about the subtitle's size, so the tag inside stays legible */
+        font-size: clamp(14px, min(1.05vw, 1.9vh), 19px);
+        line-height: 1.4;
+        letter-spacing: 0.01em;
+        color: #4a4a4a;
       }
 
+      /* three tiers: a small tag, then the date, then the time */
       .next-meetup .next-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
         font-weight: 500;
-        font-size: clamp(13px, 0.9vw, 16px);
-        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.8em;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #545454;
+      }
+
+      .next-meetup .next-flag {
+        flex: none;
+        width: 1.8em;
+        height: 1.8em;
+        color: #111;
+      }
+
+      .next-meetup .next-sep {
+        align-self: stretch;
+        width: 1px;
+        margin-block: 0.15em;
+        background: rgba(0, 0, 0, 0.15);
       }
 
       .next-meetup .next-date {
-        margin: 0.35em 0 0.3em;
-        font-family: var(--font-display);
-        font-size: clamp(22px, min(2.2vw, 4vh), 40px);
-        line-height: 1.1;
-        letter-spacing: 0;
-      }
-
-      .next-meetup .next-time {
-        font-size: clamp(14px, 1vw, 18px);
+        margin-right: 0.4em;
+        font-weight: 600;
+        color: #111;
       }
 
       /* Accordion: one panel open at a time. Photos are sized to the open
@@ -1322,6 +1343,10 @@
         transition-delay: 90ms;
       }
 
+      .events.is-in .events-head > :nth-child(3) {
+        transition-delay: 180ms;
+      }
+
       /* restates the open/close transitions, which this rule would override */
       .events.is-armed.is-in .event {
         --delay: calc(180ms + var(--i) * var(--stagger));
@@ -1352,13 +1377,11 @@
         /* outer size of the light card the code sits on */
         --qr-size: clamp(220px, min(48vh, 34vw), 580px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
         gap: clamp(32px, 6vw, 120px);
-        padding: clamp(40px, 8vh, 110px) clamp(12px, 8.25vw, 170px);
+        padding: var(--section-space) var(--inset);
       }
 
       .join h2 {
@@ -1735,8 +1758,7 @@
         (max-width: 1024px) and (orientation: portrait) {
         .stats {
           height: auto;
-          min-height: calc(100vh - var(--nav-h));
-          min-height: calc(100dvh - var(--nav-h));
+          min-height: calc(var(--stats-box) + 2 * var(--section-space));
           padding-inline: var(--edge);
         }
 
@@ -1790,22 +1812,19 @@
       /* below laptop width the event panels stack and open downwards */
       @media (max-width: 1023px),
         (max-width: 1180px) and (orientation: portrait) {
-        .events-head {
-          grid-template-columns: minmax(0, 1fr);
-          align-items: start;
-          row-gap: clamp(16px, 4vw, 28px);
-        }
-
-        .next-meetup {
-          justify-self: start;
-        }
-
         .events h2 {
           font-size: clamp(28px, 7.4vw, 48px);
         }
 
         .events-head p {
           font-size: 15px;
+        }
+
+        /* keeps the pill on one line down to a 375px phone */
+        .events-head .next-meetup {
+          column-gap: 0.7em;
+          padding-inline: 0.9em 1.1em;
+          font-size: 13px;
         }
 
         .events-list {
@@ -1868,10 +1887,6 @@
 
       /* a phone is already on the site, so the code has nothing to offer */
       @media (max-width: 560px) {
-        .join {
-          min-height: 0;
-        }
-
         .join-qr {
           display: none;
         }
@@ -1963,6 +1978,103 @@
       #what-do-we-do,
       .moon-scene {
         background: none;
+      }
+
+      /* Line these two up with the rest of the page: full-width grid on the
+         shared inset, content from the first column. (build-sections.css
+         keeps the centred 1280px grid for legacy-site.html.) */
+      #what-do-we-do .grid-12,
+      #why-build .grid-12 {
+        max-width: none;
+        padding-inline: var(--inset);
+      }
+
+      #what-do-we-do .wdwd-content {
+        grid-column: 1 / 7;
+      }
+
+      #why-build .why-build-title {
+        grid-column: 1 / 3;
+      }
+
+      /* capped so the justified lines stay a readable length on wide
+         screens */
+      #why-build .why-build-body {
+        grid-column: 3 / 12;
+        max-width: 820px;
+      }
+
+      /* A planet behind the astronaut. It hangs off the pin rather than
+         .wdwd-astronaut, which hides while he's on the moon. Still between
+         items; each item gives it a new pose (below) and it springs there on
+         the same curve as his. */
+      .wdwd-planet {
+        --planet-x: 0px;
+        --planet-y: 0px;
+        --planet-spin: 0deg;
+
+        position: absolute;
+        z-index: 0;
+        top: 13%;
+        right: var(--inset);
+        width: clamp(150px, 15vw, 270px);
+        pointer-events: none;
+        transform: translate(var(--planet-x), var(--planet-y))
+          rotate(var(--planet-spin));
+        transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* Poses key off the gear js/what-we-do.js gives him for each item, so
+         the planet needs no script of its own. Build Projects (hat) is the
+         resting pose above. */
+      .wdwd-pin:has(.wdwd-spaceman[data-gear='glasses']) .wdwd-planet {
+        --planet-x: -64px;
+        --planet-y: 48px;
+        --planet-spin: -14deg;
+      }
+
+      .wdwd-pin:has(.wdwd-spaceman[data-gear='megaphone']) .wdwd-planet {
+        --planet-x: 32px;
+        --planet-y: 112px;
+        --planet-spin: 10deg;
+      }
+
+      @media (max-width: 991px) {
+        .wdwd-planet {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .wdwd-planet {
+          transition: none;
+        }
+      }
+
+      /* the first line of copy sits level with the top of the title */
+      #why-build .why-build-body p:first-child {
+        margin-top: 0;
+      }
+
+      @media (max-width: 991px) {
+        #what-do-we-do .wdwd-content,
+        #why-build .why-build-title,
+        #why-build .why-build-body {
+          grid-column: 1 / -1;
+        }
+      }
+
+      /* phones drop to the narrow edge, like the stats */
+      @media (max-width: 640px),
+        (max-width: 1024px) and (orientation: portrait) {
+        #what-do-we-do .grid-12,
+        #why-build .grid-12 {
+          padding-inline: var(--edge);
+        }
+
+        .events {
+          padding-inline: var(--edge);
+        }
       }
 
       /* Fade the planet out to show the stars, instead of into a solid
@@ -2165,6 +2277,37 @@
       <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
       <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
       <div class="wdwd-pin">
+        <!-- Flat blue planet: a thin shadow on the right edge, soft light
+             streaks and a swirl. It changes pose with the astronaut (see
+             .wdwd-planet in the styles). -->
+        <svg class="wdwd-planet" viewBox="0 0 240 240" aria-hidden="true">
+          <defs>
+            <clipPath id="planet-clip">
+              <circle cx="120" cy="120" r="90" />
+            </clipPath>
+          </defs>
+          <g clip-path="url(#planet-clip)" fill="none" stroke-linecap="round">
+            <!-- shadow colour underneath, lit side offset left -->
+            <circle cx="120" cy="120" r="90" fill="#4a6aad" />
+            <circle cx="111" cy="120" r="90" fill="#5b7ec2" />
+
+            <!-- faint bands -->
+            <path d="M30 60H210" stroke="#6283c6" stroke-width="12" />
+            <path d="M30 86H210" stroke="#587bbf" stroke-width="5" />
+            <path d="M30 182H210" stroke="#5679bd" stroke-width="10" />
+
+            <!-- light streaks, staggered so they don't line up -->
+            <g stroke="#83a0da">
+              <path d="M44 104H74" stroke-width="3.5" />
+              <path d="M174 126H190" stroke-width="3" />
+              <path d="M70 156H84" stroke-width="3" />
+            </g>
+
+            <!-- swirl, trailing off to the right -->
+            <ellipse cx="132" cy="144" rx="20" ry="5.5" fill="#5373b8" />
+            <path d="M110 148Q132 159 156 145Q166 139 178 141" stroke="#83a0da" stroke-width="3.5" />
+          </g>
+        </svg>
         <div class="grid-12">
           <div class="wdwd-content">
             <h2 class="wdwd-title">What do we do?</h2>
@@ -2303,7 +2446,7 @@
     </div>
 
     <section class="stats" aria-labelledby="stats-heading">
-      <h2 id="stats-heading">We have had...</h2>
+      <h2 id="stats-heading">Statistics</h2>
 
       <div class="stats-grid">
         <div class="stats-row">
@@ -2382,7 +2525,7 @@
 
     <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
       <div class="legacy-intro">
-        <h2 id="legacy-heading">Since 2011,<br />still building.</h2>
+        <h2 id="legacy-heading">Since 2011,<br />and still building.</h2>
         <p>
           Hackathons, weekly meetups, mamak runs and plenty of late nights.
           Here's every year of Hackerspace MMU so far.
@@ -2421,7 +2564,11 @@
 
       <!--
         One card per year; add more cards with the same data-year for extra
-        photos. To swap in a photo, replace the placeholder div with:
+        photos. The photos below are stand-ins from images/archive and
+        images/hero-section until each year has its own; swap the src (and
+        alt) to replace one. A card without a photo yet can use:
+          <div class="year-photo is-placeholder"><span>2011</span></div>
+        and a photo goes in as:
           <div class="year-photo">
             <img src="images/legacy-section/2011.jpg" alt="..." loading="lazy" />
           </div>
@@ -2435,68 +2582,100 @@
       >
         <div class="reel-track">
           <figure class="year-card" data-year="2011">
-            <div class="year-photo is-placeholder"><span>2011</span></div>
+            <div class="year-photo">
+              <img src="images/archive/HackathonOld.jpg" alt="Members hacking at laptops in a meeting room" loading="lazy" />
+            </div>
             <figcaption><b>2011</b> Where it all began</figcaption>
           </figure>
           <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2012</span></div>
-            <figcaption><b>2012</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/mamak-events.jpg" alt="Members at the mamak after a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2012</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2013">
-            <div class="year-photo is-placeholder"><span>2013</span></div>
-            <figcaption><b>2013</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/PhysicalSession_presentation.jpg" alt="A member presenting at a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2013</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2014">
-            <div class="year-photo is-placeholder"><span>2014</span></div>
-            <figcaption><b>2014</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/PhysicalSession_projectDemo.jpg" alt="A project demo at a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2014</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2015</span></div>
-            <figcaption><b>2015</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/Outing.jpg" alt="Members out for a meal together" loading="lazy" />
+            </div>
+            <figcaption><b>2015</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2016">
-            <div class="year-photo is-placeholder"><span>2016</span></div>
-            <figcaption><b>2016</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/200anniversary.jpg" alt="Members celebrating with a birthday cake" loading="lazy" />
+            </div>
+            <figcaption><b>2016</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2017">
-            <div class="year-photo is-placeholder"><span>2017</span></div>
-            <figcaption><b>2017</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/idea-talk-events.jpg" alt="A member giving a talk" loading="lazy" />
+            </div>
+            <figcaption><b>2017</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2018</span></div>
+            <div class="year-photo">
+              <img src="images/archive/Hackathon2018_selfie.jpg" alt="The 2018 hackathon crew" loading="lazy" />
+            </div>
             <figcaption><b>2018</b> Hackathon crew</figcaption>
           </figure>
           <figure class="year-card" data-year="2019">
-            <div class="year-photo is-placeholder"><span>2019</span></div>
+            <div class="year-photo">
+              <img src="images/archive/Hackathon2019.jpg" alt="The 2019 trimester hackathon" loading="lazy" />
+            </div>
             <figcaption><b>2019</b> Trimester hackathon</figcaption>
           </figure>
           <figure class="year-card" data-year="2020">
-            <div class="year-photo is-placeholder"><span>2020</span></div>
-            <figcaption><b>2020</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/VirtualSession_Game.jpg" alt="A virtual session game night" loading="lazy" />
+            </div>
+            <figcaption><b>2020</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2021</span></div>
+            <div class="year-photo">
+              <img src="images/archive/MeetAndGreet2021April.jpg" alt="The April 2021 meet and greet" loading="lazy" />
+            </div>
             <figcaption><b>2021</b> Meet &amp; greet</figcaption>
           </figure>
           <figure class="year-card" data-year="2022">
-            <div class="year-photo is-placeholder"><span>2022</span></div>
-            <figcaption><b>2022</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/meetups-events.jpg" alt="Members working at a weekly meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2022</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2023">
-            <div class="year-photo is-placeholder"><span>2023</span></div>
-            <figcaption><b>2023</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20230530_125505518-800.webp" alt="A 2023 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2023</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2024</span></div>
-            <figcaption><b>2024</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20240908_112450591.MP-800.webp" alt="A 2024 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2024</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2025">
-            <div class="year-photo is-placeholder"><span>2025</span></div>
-            <figcaption><b>2025</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20250923_124703509.MP-800.webp" alt="A 2025 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2025</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2026">
-            <div class="year-photo is-placeholder"><span>2026</span></div>
-            <figcaption><b>2026</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20260330_134259803-800.webp" alt="A 2026 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2026</b></figcaption>
           </figure>
         </div>
       </div>
@@ -2512,10 +2691,9 @@
           </p>
         </blockquote>
         <figcaption>
-          Often credited to Confucius.
           <a
             href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
-            >It wasn’t him.</a
+            >Not Confucius</a
           >
         </figcaption>
       </figure>
@@ -2527,19 +2705,32 @@
       aria-labelledby="events-heading"
     >
       <div class="events-head">
-        <div>
-          <h2 id="events-heading">What’s on?</h2>
-          <p>
-            A weekly meetup, a hackathon every trimester, and a few traditions
-            picked up along the way.
-          </p>
-        </div>
+        <h2 id="events-heading">What’s on?</h2>
+        <p>
+          A weekly meetup, a hackathon every trimester, and a few traditions
+          picked up along the way.
+        </p>
         <!-- JS swaps "Every Tuesday" for the actual next date -->
-        <div class="next-meetup">
-          <p class="next-label">Next meetup</p>
-          <p class="next-date">Every Tuesday</p>
-          <p class="next-time">8.00pm - 10.00pm</p>
-        </div>
+        <p class="next-meetup">
+          <span class="next-label">
+            <!-- a waving pennant with a half-moon cut from its hoist -->
+            <svg class="next-flag" viewBox="150 150 450 450" aria-hidden="true">
+              <path
+                d="M180 175L290 578"
+                stroke="currentColor"
+                stroke-width="26"
+                stroke-linecap="round"
+              />
+              <path
+                d="M205 218C250 205 290 172 340 178C380 183 395 215 415 235C440 255 520 245 585 225C560 300 520 375 440 395C400 405 385 395 380 375C377 358 360 357 335 365C300 375 275 395 255 408L245 368A58 58 0 0 0 218 255Z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>Next meetup</span>
+          </span>
+          <span class="next-sep" aria-hidden="true"></span>
+          <span><span class="next-date">Every Tuesday</span> 8.00pm - 10.00pm</span>
+        </p>
       </div>
 
       <!-- One panel per event; the first one starts open. Only events with a
@@ -3394,9 +3585,12 @@
       );
 
       if (daysAway === 0 && klHour >= 20) {
-        nextMeetup.querySelector('.next-label').textContent = 'Weekly meetup';
-        nextMeetup.querySelector('.next-date').textContent = 'On right now';
+        nextMeetup.querySelector('.next-label span').textContent =
+          'Weekly meetup';
+        nextMeetup.querySelector('.next-date').textContent = 'On now';
       } else {
+        // always a Tuesday, so the weekday is left off to keep the pill on
+        // one line on phones
         nextMeetup.querySelector('.next-date').textContent =
           daysAway === 0
             ? 'Tonight'
@@ -3404,7 +3598,6 @@
               ? 'Tomorrow'
               : meetupDate.toLocaleDateString('en-GB', {
                   timeZone: 'UTC',
-                  weekday: 'short',
                   day: 'numeric',
                   month: 'short',
                 });
