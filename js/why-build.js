@@ -15,8 +15,9 @@
         observer.disconnect();
       }
     },
-    // Once it's fully on screen (it sits low while the moon scene is pinned)
-    { threshold: 1 }
+    // Once it's fully on screen (it sits low while the moon scene is pinned).
+    // Just under 1: the tilted stamp's ratio tops out at 0.99999...
+    { threshold: 0.99 }
   );
   observer.observe(mark);
 })();
