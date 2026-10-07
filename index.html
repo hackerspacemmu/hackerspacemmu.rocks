@@ -27,7 +27,9 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&display=swap"
       rel="stylesheet"
     />
-    <link href="css/build-sections.css" rel="stylesheet" />
+    <!-- Local CSS and JS share one ?v=: bump it on every change to any of
+         them, so returning visitors don't mix cached and new files -->
+    <link href="css/build-sections.css?v=4" rel="stylesheet" />
 
     <style>
       @font-face {
@@ -66,12 +68,15 @@
            them match */
         --section-space: clamp(80px, 15vh, 180px);
         --gap: clamp(8px, 1vw, 18px);
-        --tile-pad: clamp(2px, 0.25vw, 4.5px);
+        --tile-pad: clamp(5px, 0.55vw, 10px);
         --tile-radius: clamp(10px, 0.8vw, 16px);
-        --img-radius: clamp(6px, 0.45vw, 9px);
+        /* concentric with the tile corner across the coloured edge */
+        --img-radius: max(4px, calc(var(--tile-radius) - var(--tile-pad)));
 
         --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        /* gentle start, long glide in: no sudden snap */
+        --ease-soft: cubic-bezier(0.45, 0, 0.2, 1);
         --stagger: 90ms;
         /* scroll reveals: quick, so a section is in place even when you
            scroll past it fast */
@@ -150,11 +155,16 @@
         text-decoration: none;
       }
 
-      /* Full-colour mark with white letters, straight on the dark nav */
+      /* Full-colour mark (black letters) on a white badge; the height is
+         the mark's, the padding adds the badge around it */
       .brand img {
-        height: clamp(26px, 3.8vh, 38px);
+        box-sizing: content-box;
+        height: clamp(24px, 3.4vh, 34px);
         width: auto;
         display: block;
+        padding: clamp(4px, 0.6vh, 6px) clamp(7px, 1vh, 10px);
+        background: #fff;
+        border-radius: var(--img-radius);
       }
 
       .brand span {
@@ -292,7 +302,7 @@
       .tile-blue,
       .tile-white {
         transition: background-color 0.2s linear
-          calc(var(--reveal-delay, 0ms) + 1300ms);
+          calc(var(--reveal-delay, 0ms) + 2500ms);
       }
 
       .tile.is-loaded:is(.tile-red, .tile-blue, .tile-white) {
@@ -329,11 +339,12 @@
         overflow: hidden;
         border-radius: var(--img-radius);
         clip-path: inset(100% 0 0 0 round var(--img-radius));
+        /* the wipe, then a slow, soft grow out over the coloured edge */
         transition:
-          clip-path 0.9s var(--ease-in-out) var(--reveal-delay, 0ms),
-          inset 0.6s var(--ease-in-out) calc(var(--reveal-delay, 0ms) + 700ms),
-          border-radius 0.6s var(--ease-in-out)
-            calc(var(--reveal-delay, 0ms) + 700ms);
+          clip-path 1.1s var(--ease-in-out) var(--reveal-delay, 0ms),
+          inset 1.4s var(--ease-soft) calc(var(--reveal-delay, 0ms) + 1000ms),
+          border-radius 1.4s var(--ease-soft)
+            calc(var(--reveal-delay, 0ms) + 1000ms);
       }
 
       .frame img {
@@ -345,8 +356,8 @@
         transform: scale(1.18);
         filter: brightness(1.6) saturate(0.4);
         transition:
-          transform 1.6s var(--ease-out) var(--reveal-delay, 0ms),
-          filter 1.2s var(--ease-out) var(--reveal-delay, 0ms);
+          transform 2.4s var(--ease-out) var(--reveal-delay, 0ms),
+          filter 1.6s var(--ease-out) var(--reveal-delay, 0ms);
       }
 
       /* the photo wipes up over its colour block, then grows to cover the
@@ -973,48 +984,13 @@
 
       /* ---------- QUOTE ---------- */
 
-      /* Pins like "What do we do?": taller than the screen, with .quote-pin
-         sticking while you scroll through three stops, one per sentence
-         (JS adds .is-shown to each as you reach it). "clip", not "hidden",
-         so the pin can stick. */
+      /* A plain section: all three lines showing, no pin or scroll steps */
       .quote {
         --quote-inset: clamp(20px, 13.75vw, 280px);
 
         position: relative;
-        height: 280vh;
+        padding-block: var(--section-space);
         overflow-x: clip;
-      }
-
-      .quote-pin {
-        position: sticky;
-        top: 0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        /* centred in what the fixed nav leaves showing */
-        padding: calc(var(--nav-h) + 24px) 0 24px;
-      }
-
-      .quote-pin figure {
-        width: 100%;
-      }
-
-      /* Too short to pin: scroll normally, everything showing */
-      @media (max-height: 699px) {
-        .quote {
-          height: auto;
-          padding-block: var(--section-space);
-        }
-
-        .quote .snap-stop {
-          display: none;
-        }
-
-        .quote-pin {
-          position: relative;
-          min-height: 0;
-          padding: 0;
-        }
       }
 
       /* spans the full width so the lines can run off the page edges; its
@@ -1080,248 +1056,6 @@
         color: #ff8a7f;
       }
 
-      /* Each sentence (and the caption, with the last) rises in at its stop
-         and stays; scrolling back up takes them away again */
-      .quote-step,
-      .quote figcaption {
-        transition:
-          opacity 0.5s var(--ease-out),
-          transform 0.5s var(--ease-out);
-      }
-
-      .quote.is-stepped .quote-step:not(.is-shown),
-      .quote.is-stepped:not(.is-done) figcaption {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-
-      /* "I hear": the line gives off sound. Wobbly arcs are born at the
-         line's top right corner, just after the full stop, and fan out up
-         and to the right, fading as they go, one after another. They stop
-         once the next line comes up (JS marks this line .is-past).
-         Absolutely placed so they don't push the lines apart; the source,
-         (0, 0) in the drawing, sits at the corner. 1em = 24 units. */
-      .quote-step {
-        position: relative;
-      }
-
-      .quote-waves {
-        position: absolute;
-        left: calc(100% + 0.06em - 8em / 24);
-        top: calc(0.2em - 40em / 24);
-        width: calc(48em / 24);
-        height: calc(48em / 24);
-        overflow: visible;
-        pointer-events: none;
-        transition: opacity 0.4s var(--ease-out);
-      }
-
-      .quote-waves path {
-        fill: none;
-        stroke: rgba(255, 255, 255, 0.7);
-        stroke-width: 2.5px;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        vector-effect: non-scaling-stroke;
-        /* spread from the source: view-box puts the origin at the drawing's
-           (0, 0), not its top left corner */
-        transform-box: view-box;
-        transform-origin: 0 0;
-        opacity: 0;
-        animation: quote-waves-emit 3.6s linear infinite;
-      }
-
-      .quote-waves path:nth-child(2) {
-        animation-delay: 1.2s;
-      }
-
-      .quote-waves path:nth-child(3) {
-        animation-delay: 2.4s;
-      }
-
-      /* steady outward drift with a soft fade in and out, so the three
-         overlap into one continuous ripple */
-      @keyframes quote-waves-emit {
-        0% {
-          opacity: 0;
-          transform: scale(0.15);
-          animation-timing-function: cubic-bezier(0.33, 0.6, 0.6, 1);
-        }
-        25% {
-          opacity: 0.9;
-        }
-        100% {
-          opacity: 0;
-          transform: scale(1.15);
-        }
-      }
-
-      /* nothing until the line is in */
-      .quote.is-stepped .quote-step:not(.is-shown) .quote-waves path {
-        animation: none;
-      }
-
-      .quote-step.is-past .quote-waves {
-        opacity: 0;
-      }
-
-      /* "I see": an eye that opens once the line is in, then blinks every
-         few seconds */
-      .quote-eye {
-        display: inline-block;
-        width: 1.5em;
-        height: 0.875em;
-        margin-left: 0.3em;
-        vertical-align: -0.02em;
-        overflow: visible;
-        transform-origin: 50% 50%;
-        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
-      }
-
-      .quote.is-stepped .quote-step:not(.is-shown) .quote-eye {
-        transform: scaleY(0.06);
-        transition: none;
-      }
-
-      .quote-eye-outline,
-      .quote-eye-iris {
-        fill: none;
-        stroke: rgba(255, 255, 255, 0.68);
-        stroke-width: 2.5px;
-        stroke-linejoin: round;
-        vector-effect: non-scaling-stroke;
-      }
-
-      .quote-eye-pupil {
-        fill: rgba(255, 255, 255, 0.68);
-      }
-
-      .quote-eye-lid {
-        transform-box: fill-box;
-        transform-origin: 50% 50%;
-        animation: quote-eye-blink 4.2s ease-in-out 1.4s infinite;
-      }
-
-      @keyframes quote-eye-blink {
-        0%,
-        90%,
-        100% {
-          transform: scaleY(1);
-        }
-        93% {
-          transform: scaleY(0.06);
-        }
-        96% {
-          transform: scaleY(1);
-        }
-      }
-
-      /* "I do": a lightbulb that flickers on once the line is in, then
-         settles into a warm glow. The lit layer sits behind the outline. */
-      .quote-bulb {
-        display: inline-block;
-        width: 0.76em;
-        height: 1.06em;
-        margin-left: 0.32em;
-        vertical-align: -0.1em;
-        overflow: visible;
-      }
-
-      .quote-bulb-glass,
-      .quote-bulb-filament,
-      .quote-bulb-base {
-        fill: none;
-        stroke: #fff;
-        stroke-width: 2.5px;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        vector-effect: non-scaling-stroke;
-      }
-
-      .quote-bulb-filament {
-        stroke-width: 1.6px;
-      }
-
-      .quote-bulb-fill {
-        fill: #ffd25a;
-      }
-
-      .quote-bulb-halo {
-        fill: url(#quote-bulb-halo);
-        transform-box: fill-box;
-        transform-origin: 50% 50%;
-        animation: quote-bulb-breathe 3.2s ease-in-out infinite;
-      }
-
-      .quote.is-stepped .quote-step:not(.is-shown) .quote-bulb-lit {
-        opacity: 0;
-      }
-
-      .quote.is-stepped .quote-step.is-shown .quote-bulb-lit {
-        /* steps: each frame holds, so it snaps on and off like a real bulb */
-        animation: quote-bulb-flicker 1.3s steps(1, end) 0.4s both;
-      }
-
-      /* a couple of false starts, then on for good */
-      @keyframes quote-bulb-flicker {
-        0%,
-        9%,
-        24%,
-        33%,
-        45% {
-          opacity: 0;
-        }
-        6%,
-        28%,
-        38% {
-          opacity: 1;
-        }
-        52% {
-          opacity: 0.5;
-        }
-        60%,
-        100% {
-          opacity: 1;
-        }
-      }
-
-      @keyframes quote-bulb-breathe {
-        50% {
-          opacity: 0.75;
-          transform: scale(0.92);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .quote-step,
-        .quote figcaption,
-        .quote-waves,
-        .quote-eye {
-          transition: none;
-        }
-
-        .quote-waves path,
-        .quote.is-stepped .quote-step:not(.is-shown) .quote-waves path {
-          animation: none;
-          opacity: 0.5;
-          transform: scale(0.45);
-        }
-
-        .quote-waves path:nth-child(2) {
-          transform: scale(0.75);
-        }
-
-        .quote-waves path:nth-child(3) {
-          transform: scale(1.05);
-        }
-
-        .quote-eye-lid,
-        .quote-bulb-halo,
-        .quote.is-stepped .quote-step.is-shown .quote-bulb-lit {
-          animation: none;
-        }
-      }
-
       /* ---------- EVENTS ---------- */
 
       .events {
@@ -1366,12 +1100,13 @@
         margin-top: clamp(16px, 2.8vh, 28px);
         padding: 0.6em 1.3em 0.6em 1em;
         border-radius: 999px;
-        background: #cfcfcf;
+        border: 1.5px solid rgba(255, 255, 255, 0.55);
+        background: transparent;
         /* about the subtitle's size, so the tag inside stays legible */
         font-size: clamp(14px, min(1.05vw, 1.9vh), 19px);
         line-height: 1.4;
         letter-spacing: 0.01em;
-        color: #4a4a4a;
+        color: #c4c4c4;
       }
 
       /* three tiers: a small tag, then the date, then the time */
@@ -1383,27 +1118,27 @@
         font-size: 0.8em;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #545454;
+        color: #a8a8a8;
       }
 
       .next-meetup .next-flag {
         flex: none;
         width: 1.8em;
         height: 1.8em;
-        color: #111;
+        color: #fff;
       }
 
       .next-meetup .next-sep {
         align-self: stretch;
         width: 1px;
         margin-block: 0.15em;
-        background: rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.25);
       }
 
       .next-meetup .next-date {
         margin-right: 0.4em;
         font-weight: 600;
-        color: #111;
+        color: #fff;
       }
 
       /* Accordion: one panel open at a time. Photos are sized to the open
@@ -2429,7 +2164,7 @@
 
     <nav class="site-nav" aria-label="Main">
       <a href="index.html" class="brand">
-        <img src="images/brand/hackerspaceLogoWhiteLetters.svg" alt="Hackerspace MMU logo" />
+        <img src="images/brand/hackerspaceLogo.svg" alt="Hackerspace MMU logo" />
         <span>Hackerspace MMU</span>
       </a>
 
@@ -2644,7 +2379,7 @@
               <svg class="wdwd-gear" viewBox="0 0 282 458">
                 <g class="wdwd-acc wdwd-hat">
                   <image
-                    href="images/what-do-we-do-section/builder%20hat.svg"
+                    href="images/what-do-we-do-section/builder%20hat.svg?v=2"
                     x="0.5"
                     y="-31.5"
                     width="257"
@@ -2980,57 +2715,12 @@
     </section>
 
     <section class="quote" aria-label="Quote">
-      <!-- Scroll stops: one in the middle of each sentence's stretch of
-           scroll (js below) -->
-      <span class="snap-stop" style="--at: 30vh" aria-hidden="true"></span>
-      <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
-      <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
-      <div class="quote-pin">
       <figure>
         <blockquote>
           <p>
-            <span class="quote-step">“I hear and I forget.<svg
-                class="quote-waves"
-                viewBox="-8 -40 48 48"
-                aria-hidden="true"
-              ><path d="M-5.1 -28.8 C-4.1 -28.8 -1.4 -28.8 0.5 -28.8 C2.4 -28.8 4.2 -28.9 6.1 -28.8 C8.0 -28.6 10.0 -28.6 11.9 -28.1 C13.8 -27.6 15.8 -26.9 17.4 -25.9 C19.1 -24.8 20.6 -23.3 21.8 -21.8 C23.0 -20.3 23.9 -18.4 24.7 -16.7 C25.5 -14.9 26.0 -13.1 26.6 -11.3 C27.2 -9.5 27.8 -7.8 28.3 -6.0 C28.9 -4.2 29.5 -2.4 29.9 -0.5 C30.2 1.4 30.4 4.4 30.4 5.4" /><path d="M-5.1 -29.1 C-4.2 -29.4 -1.4 -30.5 0.5 -30.7 C2.5 -30.9 4.6 -30.9 6.5 -30.5 C8.4 -30.1 10.3 -29.2 12.0 -28.2 C13.7 -27.2 15.1 -25.8 16.5 -24.5 C17.9 -23.2 19.1 -21.8 20.4 -20.4 C21.7 -19.0 22.9 -17.7 24.1 -16.3 C25.3 -14.8 26.7 -13.4 27.7 -11.8 C28.8 -10.1 29.8 -8.3 30.4 -6.5 C30.9 -4.6 31.2 -2.5 31.1 -0.5 C31.0 1.4 30.0 4.3 29.7 5.2" /><path d="M-5.4 -30.7 C-4.4 -30.7 -1.4 -30.8 0.5 -30.5 C2.5 -30.2 4.3 -29.4 6.1 -28.7 C7.9 -28.1 9.5 -27.3 11.3 -26.5 C13.0 -25.8 14.7 -25.1 16.4 -24.2 C18.0 -23.4 19.9 -22.6 21.4 -21.4 C23.0 -20.3 24.6 -19.0 25.8 -17.4 C27.0 -15.9 27.9 -14.0 28.5 -12.1 C29.1 -10.2 29.2 -8.2 29.3 -6.2 C29.4 -4.3 29.2 -2.4 29.0 -0.5 C28.9 1.4 28.5 4.1 28.4 5.0" /></svg
-              ></span>
-            <span class="quote-step">I see and I remember.<svg
-                class="quote-eye"
-                viewBox="0 0 48 28"
-                aria-hidden="true"
-              ><g class="quote-eye-lid"><path
-                    class="quote-eye-outline"
-                    d="M3 14 Q24 -5 45 14 Q24 33 3 14 Z"
-                  /><circle class="quote-eye-iris" cx="24" cy="14" r="7.5" /><circle
-                    class="quote-eye-pupil"
-                    cx="24"
-                    cy="14"
-                    r="3.2"
-                  /></g></svg
-              ></span>
-            <span class="quote-step quote-step-do">I do and I understand.”<svg
-                class="quote-bulb"
-                viewBox="0 0 30 42"
-                aria-hidden="true"
-              ><defs
-                  ><radialGradient id="quote-bulb-halo"
-                    ><stop offset="0" stop-color="rgba(255, 210, 90, 0.75)" /><stop
-                      offset="1"
-                      stop-color="rgba(255, 210, 90, 0)" /></radialGradient
-                ></defs
-                ><g class="quote-bulb-lit"
-                  ><circle class="quote-bulb-halo" cx="15" cy="15" r="32" /><path
-                    class="quote-bulb-fill"
-                    d="M15 2C7.3 2 2 7.8 2 14.6c0 4.8 2.6 7.8 5 10.4 1.6 1.8 2.6 3.4 2.6 5.5h10.8c0-2.1 1-3.7 2.6-5.5 2.4-2.6 5-5.6 5-10.4C28 7.8 22.7 2 15 2Z" /></g
-                ><path
-                  class="quote-bulb-glass"
-                  d="M15 2C7.3 2 2 7.8 2 14.6c0 4.8 2.6 7.8 5 10.4 1.6 1.8 2.6 3.4 2.6 5.5h10.8c0-2.1 1-3.7 2.6-5.5 2.4-2.6 5-5.6 5-10.4C28 7.8 22.7 2 15 2Z" /><path
-                  class="quote-bulb-filament"
-                  d="M11.6 30.5V22l1.6-4.4 1.8 4.4 1.8-4.4 1.6 4.4v8.5" /><path
-                  class="quote-bulb-base"
-                  d="M10 33.6h10M10.6 36.8h8.8M12.8 40h4.4" /></svg
-              ></span>
+            <span class="quote-step">“I hear and I forget.</span>
+            <span class="quote-step">I see and I remember.</span>
+            <span class="quote-step quote-step-do">I do and I understand.”</span>
           </p>
         </blockquote>
         <figcaption>
@@ -3040,7 +2730,6 @@
           >
         </figcaption>
       </figure>
-      </div>
     </section>
 
     <section
@@ -3286,7 +2975,7 @@
       </dialog>
     </section>
 
-    <script src="js/config.js"></script>
+    <script src="js/config.js?v=4"></script>
     <script>
       const nav = document.querySelector('.site-nav');
       const toggle = nav.querySelector('.nav-toggle');
@@ -3841,47 +3530,6 @@
 
       reveal(legacy, legacy);
 
-      // ---------- QUOTE ----------
-
-      const quote = document.querySelector('.quote');
-
-      // Pins while you scroll through it, like "What do we do?": each third
-      // of the pinned scroll brings in the next sentence (the first comes in
-      // just before the pin, as the quote arrives), and the caption comes
-      // with the last. Back up and they go again. On screens too short to
-      // pin, everything just shows.
-      const quoteSteps = [...quote.querySelectorAll('.quote-step')];
-      const quotePinned = matchMedia('(min-height: 700px)');
-      let quoteTicking = false;
-
-      const stepQuote = () => {
-        quoteTicking = false;
-        const pinned = quotePinned.matches;
-        quote.classList.toggle('is-stepped', pinned);
-        if (!pinned) return;
-        const travel = quote.offsetHeight - window.innerHeight;
-        const progress = -quote.getBoundingClientRect().top / travel;
-        quoteSteps.forEach((step, i) => {
-          step.classList.toggle(
-            'is-shown',
-            progress >= (i === 0 ? -0.15 : i / quoteSteps.length),
-          );
-          // the next line is in
-          step.classList.toggle('is-past', progress >= (i + 1) / quoteSteps.length);
-        });
-        quote.classList.toggle('is-done', progress >= 2 / 3);
-      };
-
-      const onQuoteScroll = () => {
-        if (!quoteTicking) {
-          quoteTicking = true;
-          requestAnimationFrame(stepQuote);
-        }
-      };
-      window.addEventListener('scroll', onQuoteScroll, { passive: true });
-      window.addEventListener('resize', onQuoteScroll);
-      stepQuote();
-
       // ---------- EVENTS ----------
 
       const events = document.querySelector('.events');
@@ -4025,9 +3673,9 @@
       // a click anywhere, the Close button included, dismisses it
       qrDialog.addEventListener('click', () => qrDialog.close());
     </script>
-    <script src="js/what-we-do.js"></script>
-    <script src="js/starfield.js"></script>
-    <script src="js/landing.js"></script>
-    <script src="js/why-build.js"></script>
+    <script src="js/what-we-do.js?v=4"></script>
+    <script src="js/starfield.js?v=4"></script>
+    <script src="js/landing.js?v=4"></script>
+    <script src="js/why-build.js?v=4"></script>
   </body>
 </html>

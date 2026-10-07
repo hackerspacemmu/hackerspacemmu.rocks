@@ -440,13 +440,13 @@
 
 /* Landing: a copy of the astronaut that takes over from the floating one and
    touches down on the horizon as you scroll (js/landing.js). Its feet sit
-   just below the curve at columns 9-11. */
+   well down on the surface, below the curve at columns 9-11. */
 #why-build .landing {
   position: absolute;
   z-index: 2;
   left: 0;
   right: 0;
-  bottom: calc(100% + var(--horizon) - 12px);
+  bottom: calc(100% + var(--horizon) - 96px);
   pointer-events: none;
 }
 
