@@ -169,8 +169,6 @@
         box-sizing: content-box;
         height: clamp(24px, 3.4vh, 34px);
         width: auto;
-        /* the SVG's own shape, so Safari can't size it from width alone */
-        aspect-ratio: 972 / 560;
         display: block;
         padding: clamp(4px, 0.6vh, 6px) clamp(7px, 1vh, 10px);
         background: #fff;
@@ -1069,8 +1067,11 @@
 
       /* A lane under the quote: the astronaut drifts in from the left and
          out past the right edge (.quote clips the overflow), rising a little
-         and slowly spinning. The negative delay puts him mid-crossing when
-         the page loads, so the lane is rarely empty when you scroll to it. */
+         and slowly spinning. He stays centred in the lane, which is at least
+         twice his width, so even mid-spin he never reaches past the
+         section's edges (iOS Safari clips those vertically too). The
+         negative delay puts him mid-crossing when the page loads, so the
+         lane is rarely empty when you scroll to it. */
       .quote-drift {
         --drift-size: clamp(56px, 6vw, 110px);
 
@@ -1096,10 +1097,10 @@
 
       @keyframes drift-across {
         from {
-          transform: translate(-150%, -20%);
+          transform: translate(-150%, -40%);
         }
         to {
-          transform: translate(calc(100vw + 50%), -80%);
+          transform: translate(calc(100vw + 50%), -60%);
         }
       }
 
@@ -1812,10 +1813,18 @@
       }
 
       /* phones: the intro card plus three photos (a pair over the panorama),
-         stretched to fill exactly one screen */
+         stretched to fill exactly one screen. Every row after the card
+         shares the height, so a tile added later still gets a row.
+
+         The gaps between sections even out at ~144px (twice
+         --section-space). "Why Build?" keeps its title snug under the
+         horizon, so the room goes above the moon instead, and its bottom
+         pads the same; the astronaut lane under the quote stands in for
+         most of its bottom padding instead of adding to it. */
       @media (max-width: 640px) {
         .hero {
-          grid-template-rows: auto minmax(120px, 1fr) minmax(120px, 1fr);
+          grid-template-rows: auto;
+          grid-auto-rows: minmax(120px, 1fr);
           min-height: calc(100dvh - var(--nav-h));
         }
 
@@ -1826,14 +1835,7 @@
         .hero .tile-extra {
           display: none;
         }
-      }
 
-      /* phones: even out the gaps between sections (~144px, twice
-         --section-space). "Why Build?" keeps its title snug under the
-         horizon, so the room goes above the moon instead; the astronaut
-         lane under the quote stands in for most of its bottom padding
-         instead of adding to it. */
-      @media (max-width: 640px) {
         .moon-scene {
           margin-top: 48px;
         }
@@ -3091,7 +3093,7 @@
       </dialog>
     </section>
 
-    <script src="js/config.js?v=4"></script>
+    <script src="js/config.js?v=5"></script>
     <script>
       const nav = document.querySelector('.site-nav');
       const toggle = nav.querySelector('.nav-toggle');
@@ -3789,9 +3791,9 @@
       // a click anywhere, the Close button included, dismisses it
       qrDialog.addEventListener('click', () => qrDialog.close());
     </script>
-    <script src="js/what-we-do.js?v=4"></script>
-    <script src="js/starfield.js?v=4"></script>
-    <script src="js/landing.js?v=4"></script>
-    <script src="js/why-build.js?v=4"></script>
+    <script src="js/what-we-do.js?v=5"></script>
+    <script src="js/starfield.js?v=5"></script>
+    <script src="js/landing.js?v=5"></script>
+    <script src="js/why-build.js?v=5"></script>
   </body>
 </html>
