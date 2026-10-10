@@ -344,12 +344,9 @@
    section stays hidden. The 100vh spacer after it is the scroll it stays
    pinned for: stop 1 arrive, stop 2 land (+50vh), stop 3 hold (+100vh). The
    space above the horizon is a static CSS starfield once "What do we do?" and
-   its twinkling stars have scrolled away. The planet is wider than the page
-   for a gentle curve, so the sides are clipped ("clip", not "hidden", which
-   would stop #why-build from pinning). */
+   its twinkling stars have scrolled away. */
 .moon-scene {
   position: relative;
-  overflow-x: clip;
   background-color: #111111;
   background-image:
     radial-gradient(1px 1px at 23px 41px, rgba(255, 255, 255, 0.8), transparent),
@@ -379,13 +376,28 @@
   --horizon: 90px;
 }
 
+/* The planet is wider than the page for a gentle curve, so this layer clips
+   its sides. It reaches well above the horizon so the curve and its glow
+   aren't cut off. (overflow-x: clip on .moon-scene did this before, but iOS
+   Safari also clipped the curve where the scene starts.) */
+#why-build .planet-clip {
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--horizon) - 120px);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 /* The section is a planet: one shape (curved top + body) so there are no
    seams, rising out of the starfield above. Width is 130% so the curve is
    gentle; .planet-surface maps back to the viewport for placing craters. */
 #why-build .planet {
   position: absolute;
   z-index: -1;
-  top: calc(-1 * var(--horizon));
+  top: 120px;
   bottom: 0;
   left: -15%;
   right: -15%;
@@ -407,7 +419,7 @@
 #why-build .planet-glow {
   position: absolute;
   z-index: -2;
-  top: calc(-1 * var(--horizon));
+  top: 120px;
   height: calc(2 * var(--horizon));
   left: -15%;
   right: -15%;

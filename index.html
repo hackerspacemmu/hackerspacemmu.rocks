@@ -29,7 +29,7 @@
     />
     <!-- Local CSS and JS share one ?v=: bump it on every change to any of
          them, so returning visitors don't mix cached and new files -->
-    <link href="css/build-sections.css?v=4" rel="stylesheet" />
+    <link href="css/build-sections.css?v=5" rel="stylesheet" />
 
     <style>
       @font-face {
@@ -85,6 +85,14 @@
 
         /* kept in sync with the sticky nav's real height by JS */
         --nav-h: 64px;
+      }
+
+      /* Phones: the desktop spacing (15vh a side) leaves ~245px between
+         sections on a tall phone, so use a tighter, fixed rhythm instead */
+      @media (max-width: 640px) {
+        :root {
+          --section-space: 72px;
+        }
       }
 
       *,
@@ -161,6 +169,8 @@
         box-sizing: content-box;
         height: clamp(24px, 3.4vh, 34px);
         width: auto;
+        /* the SVG's own shape, so Safari can't size it from width alone */
+        aspect-ratio: 972 / 560;
         display: block;
         padding: clamp(4px, 0.6vh, 6px) clamp(7px, 1vh, 10px);
         background: #fff;
@@ -215,6 +225,7 @@
 
       .nav-toggle {
         display: none;
+        flex: none;
         width: 40px;
         height: 40px;
         padding: 0;
@@ -1056,6 +1067,61 @@
         color: #ff8a7f;
       }
 
+      /* A lane under the quote: the astronaut drifts in from the left and
+         out past the right edge (.quote clips the overflow), rising a little
+         and slowly spinning. The negative delay puts him mid-crossing when
+         the page loads, so the lane is rarely empty when you scroll to it. */
+      .quote-drift {
+        --drift-size: clamp(56px, 6vw, 110px);
+
+        position: relative;
+        height: calc(var(--drift-size) * 2.4);
+        margin-top: clamp(24px, 5vh, 64px);
+        pointer-events: none;
+      }
+
+      .drift-x {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: var(--drift-size);
+        animation: drift-across 22s linear -9s infinite;
+      }
+
+      .drift-spin {
+        display: block;
+        width: 100%;
+        animation: drift-spin 9s linear infinite;
+      }
+
+      @keyframes drift-across {
+        from {
+          transform: translate(-150%, -20%);
+        }
+        to {
+          transform: translate(calc(100vw + 50%), -80%);
+        }
+      }
+
+      @keyframes drift-spin {
+        to {
+          rotate: 360deg;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .drift-x,
+        .drift-spin {
+          animation: none;
+        }
+
+        .drift-x {
+          left: auto;
+          right: var(--quote-inset);
+          transform: translateY(-50%) rotate(-20deg);
+        }
+      }
+
       /* ---------- EVENTS ---------- */
 
       .events {
@@ -1745,6 +1811,47 @@
         }
       }
 
+      /* phones: the intro card plus three photos (a pair over the panorama),
+         stretched to fill exactly one screen */
+      @media (max-width: 640px) {
+        .hero {
+          grid-template-rows: auto minmax(120px, 1fr) minmax(120px, 1fr);
+          min-height: calc(100dvh - var(--nav-h));
+        }
+
+        .hero .tile:not(.tile-text) {
+          aspect-ratio: auto;
+        }
+
+        .hero .tile-extra {
+          display: none;
+        }
+      }
+
+      /* phones: even out the gaps between sections (~144px, twice
+         --section-space). "Why Build?" keeps its title snug under the
+         horizon, so the room goes above the moon instead; the astronaut
+         lane under the quote stands in for most of its bottom padding
+         instead of adding to it. */
+      @media (max-width: 640px) {
+        .moon-scene {
+          margin-top: 48px;
+        }
+
+        #why-build {
+          padding-bottom: var(--section-space);
+        }
+
+        .quote {
+          padding-bottom: 8px;
+        }
+
+        .quote-drift {
+          height: calc(var(--drift-size) * 2);
+          margin-top: 8px;
+        }
+      }
+
       /* phones and portrait tablets: one tile per row, still filling the screen */
       @media (max-width: 640px),
         (max-width: 1024px) and (orientation: portrait) {
@@ -2212,25 +2319,25 @@
                 />
               </div>
             </figure>
-            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 55% 50%">
+            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 20% 50%">
               <div class="frame">
                 <img
-                  src="images/hero-section/PXL_20240908_112450591.MP.jpg"
+                  src="images/hero-section/A6703510.jpg"
                   srcset="
-                    images/hero-section/PXL_20240908_112450591.MP-480.webp 480w,
-                    images/hero-section/PXL_20240908_112450591.MP-800.webp 800w,
-                    images/hero-section/PXL_20240908_112450591.MP-1200.webp 1200w,
-                    images/hero-section/PXL_20240908_112450591.MP.jpg 1600w
+                    images/hero-section/A6703510-480.webp 480w,
+                    images/hero-section/A6703510-800.webp 800w,
+                    images/hero-section/A6703510-1200.webp 1200w,
+                    images/hero-section/A6703510.jpg 1600w
                   "
                   sizes="(max-width: 860px) 50vw, 40vw"
-                  alt="A member presenting a Pomato Timer app on a large screen"
+                  alt="A member pointing at a monitor while helping another with a 3D scene"
                 />
               </div>
             </figure>
           </div>
 
           <div class="hero-row" style="--grow: 318">
-            <figure class="tile tile-white" style="--grow: 394; --i: 3">
+            <figure class="tile tile-white tile-extra" style="--grow: 394; --i: 3">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20230530_125505518.jpg"
@@ -2280,7 +2387,7 @@
                 >
               </div>
             </section>
-            <figure class="tile tile-white" style="--grow: 450; --i: 6; --pos: 62% 50%">
+            <figure class="tile tile-white tile-extra" style="--grow: 450; --i: 6; --pos: 62% 50%">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20260330_134259803.jpg"
@@ -2299,7 +2406,7 @@
         </div>
 
         <div class="hero-side">
-          <figure class="tile tile-blue" style="--grow: 631; --i: 2">
+          <figure class="tile tile-blue tile-extra" style="--grow: 631; --i: 2">
             <div class="frame">
               <img
                 src="images/hero-section/PXL_20250923_124703509.MP.jpg"
@@ -2314,18 +2421,18 @@
               />
             </div>
           </figure>
-          <figure class="tile tile-red" style="--grow: 505; --i: 7; --pos: 45% 50%">
+          <figure class="tile tile-red tile-extra" style="--grow: 505; --i: 7; --pos: 55% 50%">
             <div class="frame">
               <img
-                src="images/hero-section/A6703510.jpg"
+                src="images/hero-section/PXL_20240908_112450591.MP.jpg"
                 srcset="
-                  images/hero-section/A6703510-480.webp 480w,
-                  images/hero-section/A6703510-800.webp 800w,
-                  images/hero-section/A6703510-1200.webp 1200w,
-                  images/hero-section/A6703510.jpg 1600w
+                  images/hero-section/PXL_20240908_112450591.MP-480.webp 480w,
+                  images/hero-section/PXL_20240908_112450591.MP-800.webp 800w,
+                  images/hero-section/PXL_20240908_112450591.MP-1200.webp 1200w,
+                  images/hero-section/PXL_20240908_112450591.MP.jpg 1600w
                 "
                 sizes="(max-width: 860px) 50vw, 40vw"
-                alt="A member pointing at a monitor while helping another with a 3D scene"
+                alt="A member presenting a Pomato Timer app on a large screen"
               />
             </div>
           </figure>
@@ -2434,19 +2541,21 @@
       <span class="snap-stop" style="--at: 0vh" aria-hidden="true"></span>
       <span class="snap-stop" style="--at: 50vh" aria-hidden="true"></span>
       <section id="why-build">
-        <div class="planet-glow" aria-hidden="true"></div>
-        <div class="planet" aria-hidden="true">
-          <div class="planet-surface">
-            <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
-            <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
-            <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
-            <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
-            <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
-            <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
-            <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
-            <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
-            <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
-            <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
+        <div class="planet-clip" aria-hidden="true">
+          <div class="planet-glow"></div>
+          <div class="planet">
+            <div class="planet-surface">
+              <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
+              <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
+              <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
+              <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
+              <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
+              <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
+              <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
+            </div>
           </div>
         </div>
         <!-- The astronaut from "What do we do?" lands here (js/landing.js) -->
@@ -2730,6 +2839,13 @@
           >
         </figcaption>
       </figure>
+
+      <!-- An astronaut tumbling across, like an ejected crewmate -->
+      <div class="quote-drift" aria-hidden="true">
+        <div class="drift-x">
+          <img class="drift-spin" src="images/what-do-we-do-section/pngkey 13.png" alt="" />
+        </div>
+      </div>
     </section>
 
     <section
