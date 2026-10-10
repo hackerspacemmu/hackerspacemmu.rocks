@@ -27,7 +27,9 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&display=swap"
       rel="stylesheet"
     />
-    <link href="css/build-sections.css" rel="stylesheet" />
+    <!-- Local CSS and JS share one ?v=: bump it on every change to any of
+         them, so returning visitors don't mix cached and new files -->
+    <link href="css/build-sections.css?v=5" rel="stylesheet" />
 
     <style>
       @font-face {
@@ -51,7 +53,7 @@
       }
 
       :root {
-        --page-bg: #000;
+        --page-bg: #111111;
         --tile-bg: #333;
         --text: #fff;
         --text-muted: #dcdcdc;
@@ -60,17 +62,37 @@
         --font-display: 'Special Gothic Expanded One', 'Jost', sans-serif;
 
         --edge: clamp(12px, 2vw, 40px);
+        /* the left/right inset section content lines up on, below the hero */
+        --inset: clamp(12px, 8.25vw, 170px);
+        /* the same space above and below every section, so the gaps between
+           them match */
+        --section-space: clamp(80px, 15vh, 180px);
         --gap: clamp(8px, 1vw, 18px);
-        --tile-pad: clamp(2px, 0.25vw, 4.5px);
+        --tile-pad: clamp(5px, 0.55vw, 10px);
         --tile-radius: clamp(10px, 0.8vw, 16px);
-        --img-radius: clamp(6px, 0.45vw, 9px);
+        /* concentric with the tile corner across the coloured edge */
+        --img-radius: max(4px, calc(var(--tile-radius) - var(--tile-pad)));
 
         --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        /* gentle start, long glide in: no sudden snap */
+        --ease-soft: cubic-bezier(0.45, 0, 0.2, 1);
         --stagger: 90ms;
+        /* scroll reveals: quick, so a section is in place even when you
+           scroll past it fast */
+        --reveal-dur: 0.45s;
+        --reveal-stagger: 50ms;
 
         /* kept in sync with the sticky nav's real height by JS */
         --nav-h: 64px;
+      }
+
+      /* Phones: the desktop spacing (15vh a side) leaves ~245px between
+         sections on a tall phone, so use a tighter, fixed rhythm instead */
+      @media (max-width: 640px) {
+        :root {
+          --section-space: 72px;
+        }
       }
 
       *,
@@ -117,7 +139,6 @@
         background: rgba(10, 10, 10, 0.55);
         -webkit-backdrop-filter: blur(18px) saturate(160%);
         backdrop-filter: blur(18px) saturate(160%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         flex: none;
         display: flex;
         align-items: center;
@@ -142,26 +163,16 @@
         text-decoration: none;
       }
 
-      /* Full-colour mark on a white badge; the height includes the padding */
+      /* Full-colour mark (black letters) on a white badge; the height is
+         the mark's, the padding adds the badge around it */
       .brand img {
-        height: clamp(38px, 5.4vh, 54px);
+        box-sizing: content-box;
+        height: clamp(24px, 3.4vh, 34px);
         width: auto;
         display: block;
         padding: clamp(4px, 0.6vh, 6px) clamp(7px, 1vh, 10px);
         background: #fff;
         border-radius: var(--img-radius);
-        /* Glow disabled for now. Dense white halo hugging the whole mark,
-           like the original hsm_logo_ver_3.png (stacked shadows build on
-           each other); the dark rim first keeps white letters from melting
-           into it.
-        filter:
-          drop-shadow(0 0 0.5px #000)
-          drop-shadow(0 0 0.5px #000)
-          drop-shadow(0 0 0.5px #fff)
-          drop-shadow(0 0 0.5px #fff)
-          drop-shadow(0 0 1px #fff)
-          drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
-        */
       }
 
       .brand span {
@@ -182,7 +193,7 @@
 
       .nav-links a {
         font-family: var(--font-body);
-        font-weight: 500;
+        font-weight: 400;
         font-size: clamp(14px, 1vw, 17px);
         letter-spacing: 0.08em;
         text-decoration: none;
@@ -212,6 +223,7 @@
 
       .nav-toggle {
         display: none;
+        flex: none;
         width: 40px;
         height: 40px;
         padding: 0;
@@ -271,7 +283,8 @@
         min-height: 0;
         margin: 0;
         overflow: hidden;
-        /* only the text tile keeps this; every photo tile takes a red, blue or white frame */
+        /* only the text tile keeps this; every photo tile starts as a red, blue
+           or white block that its photo then covers */
         background: #222;
         border-radius: var(--tile-radius);
         opacity: 0;
@@ -280,7 +293,8 @@
         animation-delay: calc(150ms + var(--i) * var(--stagger));
       }
 
-      /* accent frames in the stat/quote red and blue */
+      /* accent colours in the stat/quote red and blue, seen while the photos
+         load in */
       .tile-red {
         background: #c4291e;
       }
@@ -289,6 +303,19 @@
       }
       .tile-white {
         background: #fff;
+      }
+
+      /* once the photo has covered it, drop the colour so it can't show as
+         a hairline round the rounded corners */
+      .tile-red,
+      .tile-blue,
+      .tile-white {
+        transition: background-color 0.2s linear
+          calc(var(--reveal-delay, 0ms) + 2500ms);
+      }
+
+      .tile.is-loaded:is(.tile-red, .tile-blue, .tile-white) {
+        background-color: transparent;
       }
 
       /* ---------- PHOTO LOAD-IN ---------- */
@@ -321,7 +348,12 @@
         overflow: hidden;
         border-radius: var(--img-radius);
         clip-path: inset(100% 0 0 0 round var(--img-radius));
-        transition: clip-path 0.9s var(--ease-in-out) var(--reveal-delay, 0ms);
+        /* the wipe, then a slow, soft grow out over the coloured edge */
+        transition:
+          clip-path 1.1s var(--ease-in-out) var(--reveal-delay, 0ms),
+          inset 1.4s var(--ease-soft) calc(var(--reveal-delay, 0ms) + 1000ms),
+          border-radius 1.4s var(--ease-soft)
+            calc(var(--reveal-delay, 0ms) + 1000ms);
       }
 
       .frame img {
@@ -333,12 +365,16 @@
         transform: scale(1.18);
         filter: brightness(1.6) saturate(0.4);
         transition:
-          transform 1.6s var(--ease-out) var(--reveal-delay, 0ms),
-          filter 1.2s var(--ease-out) var(--reveal-delay, 0ms);
+          transform 2.4s var(--ease-out) var(--reveal-delay, 0ms),
+          filter 1.6s var(--ease-out) var(--reveal-delay, 0ms);
       }
 
+      /* the photo wipes up over its colour block, then grows to cover the
+         thin coloured edge so no border is left */
       .tile.is-loaded .frame {
-        clip-path: inset(0 0 0 0 round var(--img-radius));
+        inset: 0;
+        border-radius: var(--tile-radius);
+        clip-path: inset(0 0 0 0 round var(--tile-radius));
       }
 
       .tile.is-loaded .frame img {
@@ -389,7 +425,7 @@
         font-size: clamp(13px, min(1.24vw, 2.2vh), 23px);
         line-height: 1.45;
         letter-spacing: 0.02em;
-        text-align: justify;
+        text-align: left;
         color: var(--text-muted);
       }
 
@@ -436,13 +472,18 @@
         --stat-blue: #1d4ae0;
         --stat-red: #c4291e;
 
-        height: calc(100vh - var(--nav-h));
-        height: calc(100dvh - var(--nav-h));
-        min-height: 540px;
+        /* The tiles fill whatever height is left inside, so the shared
+           section spacing is added on top of the screen-sized box (less the
+           padding it used to have) rather than taken out of the tiles. */
+        --stats-box: calc(
+          100dvh - var(--nav-h) - clamp(20px, 4.5vh, 56px) - clamp(20px, 6vh, 90px)
+        );
+
+        height: calc(var(--stats-box) + 2 * var(--section-space));
+        min-height: calc(500px + 2 * var(--section-space));
         display: flex;
         flex-direction: column;
-        padding: clamp(20px, 4.5vh, 56px) clamp(12px, 8.25vw, 170px)
-          clamp(20px, 6vh, 90px);
+        padding: var(--section-space) var(--inset);
       }
 
       .stats h2 {
@@ -576,18 +617,13 @@
       /* the member cut-out pokes out over the top edge, so no clipping here */
       .stat-updates {
         background: var(--stat-red);
-        align-items: flex-end;
       }
 
+      /* centred across the whole tile, running over the cut-out */
       .stat-updates .stat-text {
-        margin-right: 67cqh;
-        padding-left: 5cqw;
         /* the line is the number (--count-em, set by JS once it's known) plus
-           ~6.2em of gap and "UPDATES"; scale it to fit beside the cut-out */
-        font-size: min(
-          26.4cqh,
-          calc((95cqw - 67cqh) / (var(--count-em, 2.9) + 6.2))
-        );
+           ~11.3em of gap and "PROJECT UPDATES"; scale it to fit the tile */
+        font-size: min(26.4cqh, calc(90cqw / (var(--count-em, 2.9) + 11.3)));
       }
 
       .stat-person {
@@ -618,9 +654,16 @@
         opacity: 1;
         transform: none;
         transition:
-          opacity 0.7s var(--ease-out),
-          transform 0.7s var(--ease-out);
-        transition-delay: calc(var(--i) * var(--stagger));
+          opacity var(--reveal-dur) var(--ease-out),
+          transform var(--reveal-dur) var(--ease-out);
+        transition-delay: calc(var(--i) * var(--reveal-stagger));
+      }
+
+      /* A section you've scrolled past (and come back up to) shows at once
+         rather than animating in (JS adds this for one frame) */
+      .is-armed.is-instant,
+      .is-armed.is-instant * {
+        transition: none !important;
       }
 
       /* ---------- LEGACY ---------- */
@@ -628,18 +671,15 @@
       .legacy {
         --legacy-red: #c4291e;
         --legacy-blue: #1d4ae0;
-        --legacy-inset: clamp(12px, 8.25vw, 170px);
+        --legacy-inset: var(--inset);
         --card-h: clamp(150px, 28vh, 340px);
         --lane-h: 40px;
         --rocket-w: clamp(56px, 4.4vw, 76px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
         display: flex;
         flex-direction: column;
-        justify-content: center;
         gap: clamp(28px, 6vh, 72px);
-        padding: clamp(40px, 8vh, 110px) 0;
+        padding: var(--section-space) 0;
         overflow: hidden;
       }
 
@@ -937,36 +977,29 @@
         opacity: 1;
         transform: none;
         transition:
-          opacity 0.7s var(--ease-out),
-          transform 0.7s var(--ease-out);
+          opacity var(--reveal-dur) var(--ease-out),
+          transform var(--reveal-dur) var(--ease-out);
       }
 
       .legacy.is-in .legacy-intro > :nth-child(2) {
-        transition-delay: 90ms;
+        transition-delay: 50ms;
       }
       .legacy.is-in .legacy-intro > :nth-child(3) {
-        transition-delay: 180ms;
+        transition-delay: 100ms;
       }
       .legacy.is-in .reel {
-        transition-delay: 270ms;
+        transition-delay: 150ms;
       }
 
       /* ---------- QUOTE ---------- */
 
+      /* A plain section: all three lines showing, no pin or scroll steps */
       .quote {
-        --quote-red: #c4291e;
-        --quote-blue: #1d4ae0;
         --quote-inset: clamp(20px, 13.75vw, 280px);
-        /* how far each line stops short of its open end */
-        --quote-gap: clamp(10px, 6.7vw, 140px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding-block: clamp(60px, 12vh, 160px);
-        overflow: hidden;
+        position: relative;
+        padding-block: var(--section-space);
+        overflow-x: clip;
       }
 
       /* spans the full width so the lines can run off the page edges; its
@@ -975,39 +1008,10 @@
         position: relative;
         margin: 0;
         padding-inline: var(--quote-inset);
-        font-size: clamp(26px, min(2.35vw, 4.6vh), 52px);
-      }
-
-      /* red cuts through the first line's capitals, blue sits on its
-         baseline; they run off opposite edges */
-      .quote-line {
-        position: absolute;
-        height: 1px;
-        pointer-events: none;
-      }
-
-      /* rounded to whole pixels, or a 1px line smears grey over two rows */
-      .quote-line-red {
-        top: 0.35em;
-        top: round(0.35em, 1px);
-        left: var(--quote-gap);
-        right: 0;
-        background: var(--quote-red);
-        transform-origin: right;
-      }
-
-      .quote-line-blue {
-        top: 0.89em;
-        top: round(0.89em, 1px);
-        left: 0;
-        right: var(--quote-gap);
-        background: var(--quote-blue);
-        transform-origin: left;
+        font-size: clamp(28px, min(4vw, 7.5vh), 80px);
       }
 
       .quote blockquote {
-        position: relative;
-        max-width: min(14.8em, 100%);
         margin: 0;
       }
 
@@ -1016,15 +1020,36 @@
         font-family: 'Archivo', var(--font-display);
         font-stretch: 125%;
         font-weight: 800;
-        line-height: 1.1;
+        line-height: 1.12;
         letter-spacing: -0.04em;
+      }
+
+      /* one sentence per line, brightening towards "do" */
+      .quote-step {
+        display: block;
+        width: fit-content;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* hang the opening quote mark so the words line up on the left */
+      .quote-step:first-child {
+        text-indent: -0.42em;
+      }
+
+      .quote-step:nth-child(2) {
+        color: rgba(255, 255, 255, 0.68);
+      }
+
+      .quote-step-do {
+        color: #fff;
       }
 
       .quote figcaption {
         position: relative;
-        margin-top: 0.9em;
-        font-size: clamp(13px, 0.9vw, 17px);
+        margin-top: clamp(28px, 4.5vh, 56px);
+        font-size: clamp(14px, 1.05vw, 19px);
         letter-spacing: 0.02em;
+        color: rgba(255, 255, 255, 0.6);
       }
 
       /* lighter than the line red so small text stays readable */
@@ -1040,36 +1065,62 @@
         color: #ff8a7f;
       }
 
-      .quote.is-armed .quote-line {
-        transform: scaleX(0);
+      /* A lane under the quote: the astronaut drifts in from the left and
+         out past the right edge (.quote clips the overflow), rising a little
+         and slowly spinning. He stays centred in the lane, which is at least
+         twice his width, so even mid-spin he never reaches past the
+         section's edges (iOS Safari clips those vertically too). The
+         negative delay puts him mid-crossing when the page loads, so the
+         lane is rarely empty when you scroll to it. */
+      .quote-drift {
+        --drift-size: clamp(56px, 6vw, 110px);
+
+        position: relative;
+        height: calc(var(--drift-size) * 2.4);
+        margin-top: clamp(24px, 5vh, 64px);
+        pointer-events: none;
       }
 
-      .quote.is-armed blockquote,
-      .quote.is-armed figcaption {
-        opacity: 0;
-        transform: translateY(16px);
+      .drift-x {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: var(--drift-size);
+        animation: drift-across 22s linear -9s infinite;
       }
 
-      .quote.is-armed.is-in .quote-line {
-        transform: none;
-        transition: transform 1.2s var(--ease-in-out);
+      .drift-spin {
+        display: block;
+        width: 100%;
+        animation: drift-spin 9s linear infinite;
       }
 
-      .quote.is-armed.is-in .quote-line-blue {
-        transition-delay: 120ms;
+      @keyframes drift-across {
+        from {
+          transform: translate(-150%, -40%);
+        }
+        to {
+          transform: translate(calc(100vw + 50%), -60%);
+        }
       }
 
-      .quote.is-armed.is-in blockquote,
-      .quote.is-armed.is-in figcaption {
-        opacity: 1;
-        transform: none;
-        transition:
-          opacity 0.8s var(--ease-out) 450ms,
-          transform 0.8s var(--ease-out) 450ms;
+      @keyframes drift-spin {
+        to {
+          rotate: 360deg;
+        }
       }
 
-      .quote.is-armed.is-in figcaption {
-        transition-delay: 600ms;
+      @media (prefers-reduced-motion: reduce) {
+        .drift-x,
+        .drift-spin {
+          animation: none;
+        }
+
+        .drift-x {
+          left: auto;
+          right: var(--quote-inset);
+          transform: translateY(-50%) rotate(-20deg);
+        }
       }
 
       /* ---------- EVENTS ---------- */
@@ -1080,20 +1131,10 @@
         --open: 3.4;
         --panel-pad: clamp(12px, 1.2vw, 22px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
         display: flex;
         flex-direction: column;
-        justify-content: center;
         gap: clamp(20px, 4vh, 48px);
-        padding: clamp(40px, 8vh, 110px) var(--edge);
-      }
-
-      .events-head {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: var(--gap) clamp(20px, 4vw, 80px);
+        padding: var(--section-space) var(--inset);
       }
 
       .events h2 {
@@ -1115,35 +1156,56 @@
         color: #a8a8a8;
       }
 
-      .next-meetup {
-        min-width: clamp(220px, 19vw, 340px);
-        padding: clamp(14px, 1.4vw, 24px) clamp(16px, 1.6vw, 28px);
-        border-radius: var(--tile-radius);
-        background: var(--events-blue);
+      /* a status line under the intro, not a card, so it can't outrank the
+         heading */
+      .events-head .next-meetup {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25em 0.85em;
+        max-width: none;
+        margin-top: clamp(16px, 2.8vh, 28px);
+        padding: 0.6em 1.3em 0.6em 1em;
+        border-radius: 999px;
+        border: 1.5px solid rgba(255, 255, 255, 0.55);
+        background: transparent;
+        /* about the subtitle's size, so the tag inside stays legible */
+        font-size: clamp(14px, min(1.05vw, 1.9vh), 19px);
+        line-height: 1.4;
+        letter-spacing: 0.01em;
+        color: #c4c4c4;
       }
 
-      .next-meetup p {
-        margin: 0;
-        max-width: none;
+      /* three tiers: a small tag, then the date, then the time */
+      .next-meetup .next-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        font-weight: 500;
+        font-size: 0.8em;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #a8a8a8;
+      }
+
+      .next-meetup .next-flag {
+        flex: none;
+        width: 1.8em;
+        height: 1.8em;
         color: #fff;
       }
 
-      .next-meetup .next-label {
-        font-weight: 500;
-        font-size: clamp(13px, 0.9vw, 16px);
-        color: rgba(255, 255, 255, 0.8);
+      .next-meetup .next-sep {
+        align-self: stretch;
+        width: 1px;
+        margin-block: 0.15em;
+        background: rgba(255, 255, 255, 0.25);
       }
 
       .next-meetup .next-date {
-        margin: 0.35em 0 0.3em;
-        font-family: var(--font-display);
-        font-size: clamp(22px, min(2.2vw, 4vh), 40px);
-        line-height: 1.1;
-        letter-spacing: 0;
-      }
-
-      .next-meetup .next-time {
-        font-size: clamp(14px, 1vw, 18px);
+        margin-right: 0.4em;
+        font-weight: 600;
+        color: #fff;
       }
 
       /* Accordion: one panel open at a time. Photos are sized to the open
@@ -1332,30 +1394,34 @@
         opacity: 1;
         transform: none;
         transition:
-          opacity 0.7s var(--ease-out),
-          transform 0.7s var(--ease-out);
+          opacity var(--reveal-dur) var(--ease-out),
+          transform var(--reveal-dur) var(--ease-out);
       }
 
       .events.is-in .events-head > :nth-child(2) {
-        transition-delay: 90ms;
+        transition-delay: 50ms;
+      }
+
+      .events.is-in .events-head > :nth-child(3) {
+        transition-delay: 100ms;
       }
 
       /* restates the open/close transitions, which this rule would override */
       .events.is-armed.is-in .event {
-        --delay: calc(180ms + var(--i) * var(--stagger));
+        --delay: calc(100ms + var(--i) * var(--reveal-stagger));
 
         opacity: 1;
         transform: none;
         transition:
-          opacity 0.7s var(--ease-out) var(--delay),
-          transform 0.7s var(--ease-out) var(--delay),
+          opacity var(--reveal-dur) var(--ease-out) var(--delay),
+          transform var(--reveal-dur) var(--ease-out) var(--delay),
           flex-grow 0.45s var(--ease-in-out),
           height 0.7s var(--ease-in-out);
       }
 
       .events.is-armed.is-in .event-photo {
         scale: 1;
-        transition: scale 1.6s var(--ease-out) var(--delay);
+        transition: scale 0.8s var(--ease-out) var(--delay);
       }
 
       /* ---------- JOIN ---------- */
@@ -1370,13 +1436,11 @@
         /* outer size of the light card the code sits on */
         --qr-size: clamp(220px, min(48vh, 34vw), 580px);
 
-        min-height: calc(100vh - var(--nav-h));
-        min-height: calc(100dvh - var(--nav-h));
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
         gap: clamp(32px, 6vw, 120px);
-        padding: clamp(40px, 8vh, 110px) clamp(12px, 8.25vw, 170px);
+        padding: var(--section-space) var(--inset);
       }
 
       .join h2 {
@@ -1748,13 +1812,54 @@
         }
       }
 
+      /* phones: the intro card plus three photos (a pair over the panorama),
+         stretched to fill exactly one screen. Every row after the card
+         shares the height, so a tile added later still gets a row.
+
+         The gaps between sections even out at ~144px (twice
+         --section-space). "Why Build?" keeps its title snug under the
+         horizon, so the room goes above the moon instead, and its bottom
+         pads the same; the astronaut lane under the quote stands in for
+         most of its bottom padding instead of adding to it. */
+      @media (max-width: 640px) {
+        .hero {
+          grid-template-rows: auto;
+          grid-auto-rows: minmax(120px, 1fr);
+          min-height: calc(100dvh - var(--nav-h));
+        }
+
+        .hero .tile:not(.tile-text) {
+          aspect-ratio: auto;
+        }
+
+        .hero .tile-extra {
+          display: none;
+        }
+
+        .moon-scene {
+          margin-top: 48px;
+        }
+
+        #why-build {
+          padding-bottom: var(--section-space);
+        }
+
+        .quote {
+          padding-bottom: 8px;
+        }
+
+        .quote-drift {
+          height: calc(var(--drift-size) * 2);
+          margin-top: 8px;
+        }
+      }
+
       /* phones and portrait tablets: one tile per row, still filling the screen */
       @media (max-width: 640px),
         (max-width: 1024px) and (orientation: portrait) {
         .stats {
           height: auto;
-          min-height: calc(100vh - var(--nav-h));
-          min-height: calc(100dvh - var(--nav-h));
+          min-height: calc(var(--stats-box) + 2 * var(--section-space));
           padding-inline: var(--edge);
         }
 
@@ -1794,7 +1899,6 @@
 
         .quote {
           --quote-inset: calc(var(--edge) * 2);
-          --quote-gap: var(--edge);
         }
 
         .quote figure {
@@ -1809,22 +1913,19 @@
       /* below laptop width the event panels stack and open downwards */
       @media (max-width: 1023px),
         (max-width: 1180px) and (orientation: portrait) {
-        .events-head {
-          grid-template-columns: minmax(0, 1fr);
-          align-items: start;
-          row-gap: clamp(16px, 4vw, 28px);
-        }
-
-        .next-meetup {
-          justify-self: start;
-        }
-
         .events h2 {
           font-size: clamp(28px, 7.4vw, 48px);
         }
 
         .events-head p {
           font-size: 15px;
+        }
+
+        /* keeps the pill on one line down to a 375px phone */
+        .events-head .next-meetup {
+          column-gap: 0.7em;
+          padding-inline: 0.9em 1.1em;
+          font-size: 13px;
         }
 
         .events-list {
@@ -1887,10 +1988,6 @@
 
       /* a phone is already on the site, so the code has nothing to offer */
       @media (max-width: 560px) {
-        .join {
-          min-height: 0;
-        }
-
         .join-qr {
           display: none;
         }
@@ -1938,10 +2035,7 @@
 
         .stats.is-armed .stat,
         .legacy.is-armed .legacy-intro > *,
-        .legacy.is-armed .reel,
-        .quote.is-armed .quote-line,
-        .quote.is-armed blockquote,
-        .quote.is-armed figcaption {
+        .legacy.is-armed .reel {
           opacity: 1;
           transform: none;
         }
@@ -1953,9 +2047,230 @@
           transition: none;
         }
       }
+
+      /* ---------- SPACE BACKDROP ---------- */
+
+      /* One starfield for the whole page: a fixed canvas behind every section
+         (js/starfield.js) with the faint nebula glow from "What do we do?".
+         The sections that used to paint their own sky are cleared so it
+         shows through. */
+      .site-stars {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 45% 40% at 85% 30%,
+            rgba(127, 156, 197, 0.14),
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 35% at 10% 85%,
+            rgba(184, 208, 218, 0.08),
+            transparent 70%
+          );
+      }
+
+      #what-do-we-do,
+      .moon-scene {
+        background: none;
+      }
+
+      /* Line these two up with the rest of the page: full-width grid on the
+         shared inset, content from the first column. (build-sections.css
+         keeps the centred 1280px grid for legacy-site.html.) */
+      #what-do-we-do .grid-12,
+      #why-build .grid-12 {
+        max-width: none;
+        padding-inline: var(--inset);
+      }
+
+      #what-do-we-do .wdwd-content {
+        grid-column: 1 / 7;
+      }
+
+      /* A light, playful list: modest type, a small numbered bubble per
+         item (the current one fills in blue) and dashed dividers. */
+      #what-do-we-do .wdwd-content {
+        counter-reset: wdwd;
+      }
+
+      #what-do-we-do .wdwd-title {
+        font-size: clamp(32px, 2.8vw, 44px);
+        margin-bottom: clamp(16px, 2.5vh, 32px);
+      }
+
+      #what-do-we-do .wdwd-item {
+        counter-increment: wdwd;
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        align-items: center;
+        max-width: 580px;
+        padding: clamp(16px, 2.5vh, 24px) 0;
+      }
+
+      #what-do-we-do .wdwd-item:not(:last-child) {
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+      }
+
+      #what-do-we-do .wdwd-item::before {
+        content: counter(wdwd);
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        font-family: 'Jost', sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        color: #ffffff;
+        transition:
+          background-color 0.4s ease,
+          border-color 0.4s ease,
+          transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      #what-do-we-do .wdwd-item.is-active::before {
+        background-color: #83a0da;
+        border-color: #83a0da;
+        color: #111111;
+        transform: rotate(-10deg) scale(1.1);
+      }
+
+      #what-do-we-do .wdwd-item h3 {
+        font-size: clamp(22px, 1.8vw, 30px);
+        margin-bottom: 0;
+      }
+
+      #what-do-we-do .wdwd-item p {
+        grid-column: 2;
+        margin-top: 8px;
+        font-size: clamp(17px, 1.3vw, 20px);
+      }
+
+      #what-do-we-do .wdwd-item.is-active h3 {
+        transform: none;
+      }
+
+      /* Centre the astronaut in the open space beside the list instead of
+         hugging the right side */
+      #what-do-we-do .wdwd-astronaut {
+        grid-column: 7 / 13;
+      }
+
+      /* Scaled up with the screen so he balances the list rather than
+         floating small in a wide empty half */
+      #what-do-we-do .wdwd-astronaut .wdwd-spaceman {
+        width: clamp(150px, 13vw, 230px);
+      }
+
+      /* Centre in the part of the screen the fixed nav doesn't cover */
+      #what-do-we-do .wdwd-pin {
+        padding: calc(var(--nav-h) + 24px) 0 24px;
+      }
+
+      /* Laid out like "What do we do?": a one-line title at the same size
+         and spacing, then one reading column down the left half (the
+         astronaut lands over the right): the lead line, the paragraph at
+         a readable measure, and the punchline on its own line to close.
+         Ragged-right, since justified text left big gaps between words. */
+      /* sits closer under the horizon */
+      #why-build {
+        padding-top: 24px;
+      }
+
+      #why-build .why-build-title {
+        grid-column: 1 / 7;
+        font-size: clamp(32px, 2.8vw, 44px);
+        line-height: 1.1;
+        margin-bottom: clamp(16px, 2.5vh, 32px);
+      }
+
+      #why-build .why-build-body {
+        grid-column: 1 / 7;
+        max-width: 600px;
+        padding-left: 0;
+      }
+
+      #why-build .why-build-body p {
+        text-align: left;
+        font-size: clamp(16px, 1.2vw, 18px);
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.72);
+        margin: 0;
+      }
+
+      #why-build .why-build-body p:first-child {
+        font-size: clamp(20px, 1.7vw, 26px);
+        line-height: 1.35;
+        color: #ffffff;
+        margin-bottom: 16px;
+      }
+
+      #why-build .why-build-body .why-build-punch {
+        margin-top: 20px;
+        font-size: clamp(18px, 1.4vw, 22px);
+        font-weight: 500;
+      }
+
+      /* The punchline gets the highlighter sweep */
+      #why-build mark {
+        padding: 1px 4px;
+        border-radius: 3px;
+        color: #ffffff;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 991px) {
+        #what-do-we-do .wdwd-content {
+          grid-column: 1 / -1;
+        }
+
+        #why-build .why-build-title,
+        #why-build .why-build-body {
+          grid-column: 1 / -1;
+        }
+      }
+
+      /* phones drop to the narrow edge, like the stats */
+      @media (max-width: 640px),
+        (max-width: 1024px) and (orientation: portrait) {
+        #what-do-we-do .grid-12,
+        #why-build .grid-12 {
+          padding-inline: var(--edge);
+        }
+
+        .events {
+          padding-inline: var(--edge);
+        }
+      }
+
+      /* Fade the planet out to show the stars, instead of into a solid
+         page colour */
+      #why-build::after {
+        display: none;
+      }
+
+      #why-build .planet {
+        -webkit-mask-image: linear-gradient(
+          #000 calc(100% - min(220px, 60%)),
+          transparent
+        );
+        mask-image: linear-gradient(
+          #000 calc(100% - min(220px, 60%)),
+          transparent
+        );
+      }
     </style>
   </head>
   <body>
+    <!-- Space backdrop behind the whole page (js/starfield.js) -->
+    <canvas class="site-stars" aria-hidden="true"></canvas>
+
     <nav class="site-nav" aria-label="Main">
       <a href="index.html" class="brand">
         <img src="images/brand/hackerspaceLogo.svg" alt="Hackerspace MMU logo" />
@@ -2006,25 +2321,25 @@
                 />
               </div>
             </figure>
-            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 55% 50%">
+            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 20% 50%">
               <div class="frame">
                 <img
-                  src="images/hero-section/PXL_20240908_112450591.MP.jpg"
+                  src="images/hero-section/A6703510.jpg"
                   srcset="
-                    images/hero-section/PXL_20240908_112450591.MP-480.webp 480w,
-                    images/hero-section/PXL_20240908_112450591.MP-800.webp 800w,
-                    images/hero-section/PXL_20240908_112450591.MP-1200.webp 1200w,
-                    images/hero-section/PXL_20240908_112450591.MP.jpg 1600w
+                    images/hero-section/A6703510-480.webp 480w,
+                    images/hero-section/A6703510-800.webp 800w,
+                    images/hero-section/A6703510-1200.webp 1200w,
+                    images/hero-section/A6703510.jpg 1600w
                   "
                   sizes="(max-width: 860px) 50vw, 40vw"
-                  alt="A member presenting a Pomato Timer app on a large screen"
+                  alt="A member pointing at a monitor while helping another with a 3D scene"
                 />
               </div>
             </figure>
           </div>
 
           <div class="hero-row" style="--grow: 318">
-            <figure class="tile tile-white" style="--grow: 394; --i: 3">
+            <figure class="tile tile-white tile-extra" style="--grow: 394; --i: 3">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20230530_125505518.jpg"
@@ -2074,7 +2389,7 @@
                 >
               </div>
             </section>
-            <figure class="tile tile-white" style="--grow: 450; --i: 6; --pos: 62% 50%">
+            <figure class="tile tile-white tile-extra" style="--grow: 450; --i: 6; --pos: 62% 50%">
               <div class="frame">
                 <img
                   src="images/hero-section/PXL_20260330_134259803.jpg"
@@ -2093,7 +2408,7 @@
         </div>
 
         <div class="hero-side">
-          <figure class="tile tile-blue" style="--grow: 631; --i: 2">
+          <figure class="tile tile-blue tile-extra" style="--grow: 631; --i: 2">
             <div class="frame">
               <img
                 src="images/hero-section/PXL_20250923_124703509.MP.jpg"
@@ -2108,18 +2423,18 @@
               />
             </div>
           </figure>
-          <figure class="tile tile-red" style="--grow: 505; --i: 7; --pos: 45% 50%">
+          <figure class="tile tile-red tile-extra" style="--grow: 505; --i: 7; --pos: 55% 50%">
             <div class="frame">
               <img
-                src="images/hero-section/A6703510.jpg"
+                src="images/hero-section/PXL_20240908_112450591.MP.jpg"
                 srcset="
-                  images/hero-section/A6703510-480.webp 480w,
-                  images/hero-section/A6703510-800.webp 800w,
-                  images/hero-section/A6703510-1200.webp 1200w,
-                  images/hero-section/A6703510.jpg 1600w
+                  images/hero-section/PXL_20240908_112450591.MP-480.webp 480w,
+                  images/hero-section/PXL_20240908_112450591.MP-800.webp 800w,
+                  images/hero-section/PXL_20240908_112450591.MP-1200.webp 1200w,
+                  images/hero-section/PXL_20240908_112450591.MP.jpg 1600w
                 "
                 sizes="(max-width: 860px) 50vw, 40vw"
-                alt="A member pointing at a monitor while helping another with a 3D scene"
+                alt="A member presenting a Pomato Timer app on a large screen"
               />
             </div>
           </figure>
@@ -2134,7 +2449,6 @@
       <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
       <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
       <div class="wdwd-pin">
-        <canvas class="wdwd-stars" aria-hidden="true"></canvas>
         <div class="grid-12">
           <div class="wdwd-content">
             <h2 class="wdwd-title">What do we do?</h2>
@@ -2174,11 +2488,11 @@
               <svg class="wdwd-gear" viewBox="0 0 282 458">
                 <g class="wdwd-acc wdwd-hat">
                   <image
-                    href="images/what-do-we-do-section/builder%20hat.svg"
-                    x="4"
-                    y="-28"
-                    width="250"
-                    height="83"
+                    href="images/what-do-we-do-section/builder%20hat.svg?v=2"
+                    x="0.5"
+                    y="-31.5"
+                    width="257"
+                    height="89.5"
                     transform="rotate(-6 130 30)"
                   />
                 </g>
@@ -2229,19 +2543,21 @@
       <span class="snap-stop" style="--at: 0vh" aria-hidden="true"></span>
       <span class="snap-stop" style="--at: 50vh" aria-hidden="true"></span>
       <section id="why-build">
-        <div class="planet-glow" aria-hidden="true"></div>
-        <div class="planet" aria-hidden="true">
-          <div class="planet-surface">
-            <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
-            <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
-            <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
-            <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
-            <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
-            <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
-            <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
-            <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
-            <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
-            <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
+        <div class="planet-clip" aria-hidden="true">
+          <div class="planet-glow"></div>
+          <div class="planet">
+            <div class="planet-surface">
+              <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
+              <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
+              <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
+              <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
+              <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
+              <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
+              <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
+            </div>
           </div>
         </div>
         <!-- The astronaut from "What do we do?" lands here (js/landing.js) -->
@@ -2254,26 +2570,27 @@
           </div>
         </div>
         <div class="grid-12">
-          <h2 class="why-build-title" data-aos="fade-up">Why<br />Build?</h2>
-          <div class="why-build-body" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="why-build-title">Why Build?</h2>
+          <div class="why-build-body">
             <p>
-              Your degree gives you the foundation, but building is where you put
-              it into practice.
+              Why spend time building projects when you're already taking
+              classes?
             </p>
             <p>
-              When you graduate, interviewers won't just ask what you've learned.
-              They'll ask what you've built. Knowing PHP is one thing. Building
-              with Laravel is another. Knowing Java is one thing. Building an app
-              is another.
+              Well your formal courses give you the foundation, but it barely
+              gets your feet wet. Your future job interviewer will want to see
+              what you've built (and they're not looking for assignments!) They
+              will ask if you know Laravel, not PHP. They will ask if you have
+              built an app, not if you know Java or C++.
             </p>
-            <p><mark>Don't just learn to code. Build.</mark></p>
+            <p class="why-build-punch"><mark>Don't just learn to code. Build.</mark></p>
           </div>
         </div>
       </section>
     </div>
 
     <section class="stats" aria-labelledby="stats-heading">
-      <h2 id="stats-heading">We have had...</h2>
+      <h2 id="stats-heading">Statistics</h2>
 
       <div class="stats-grid">
         <div class="stats-row">
@@ -2321,7 +2638,7 @@
                 ><span class="count" data-count="2179" data-endpoint="updates"
                   >2179</span
                 >
-                UPDATES</span
+                PROJECT UPDATES</span
               >
             </p>
             <img
@@ -2352,7 +2669,7 @@
 
     <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
       <div class="legacy-intro">
-        <h2 id="legacy-heading">Since 2011,<br />still building.</h2>
+        <h2 id="legacy-heading">Since 2011,<br />and still building.</h2>
         <p>
           Hackathons, weekly meetups, mamak runs and plenty of late nights.
           Here's every year of Hackerspace MMU so far.
@@ -2391,7 +2708,11 @@
 
       <!--
         One card per year; add more cards with the same data-year for extra
-        photos. To swap in a photo, replace the placeholder div with:
+        photos. The photos below are stand-ins from images/archive and
+        images/hero-section until each year has its own; swap the src (and
+        alt) to replace one. A card without a photo yet can use:
+          <div class="year-photo is-placeholder"><span>2011</span></div>
+        and a photo goes in as:
           <div class="year-photo">
             <img src="images/legacy-section/2011.jpg" alt="..." loading="lazy" />
           </div>
@@ -2405,68 +2726,100 @@
       >
         <div class="reel-track">
           <figure class="year-card" data-year="2011">
-            <div class="year-photo is-placeholder"><span>2011</span></div>
+            <div class="year-photo">
+              <img src="images/archive/HackathonOld.jpg" alt="Members hacking at laptops in a meeting room" loading="lazy" />
+            </div>
             <figcaption><b>2011</b> Where it all began</figcaption>
           </figure>
           <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2012</span></div>
-            <figcaption><b>2012</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/mamak-events.jpg" alt="Members at the mamak after a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2012</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2013">
-            <div class="year-photo is-placeholder"><span>2013</span></div>
-            <figcaption><b>2013</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/PhysicalSession_presentation.jpg" alt="A member presenting at a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2013</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2014">
-            <div class="year-photo is-placeholder"><span>2014</span></div>
-            <figcaption><b>2014</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/PhysicalSession_projectDemo.jpg" alt="A project demo at a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2014</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2015</span></div>
-            <figcaption><b>2015</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/Outing.jpg" alt="Members out for a meal together" loading="lazy" />
+            </div>
+            <figcaption><b>2015</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2016">
-            <div class="year-photo is-placeholder"><span>2016</span></div>
-            <figcaption><b>2016</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/200anniversary.jpg" alt="Members celebrating with a birthday cake" loading="lazy" />
+            </div>
+            <figcaption><b>2016</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2017">
-            <div class="year-photo is-placeholder"><span>2017</span></div>
-            <figcaption><b>2017</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/idea-talk-events.jpg" alt="A member giving a talk" loading="lazy" />
+            </div>
+            <figcaption><b>2017</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2018</span></div>
+            <div class="year-photo">
+              <img src="images/archive/Hackathon2018_selfie.jpg" alt="The 2018 hackathon crew" loading="lazy" />
+            </div>
             <figcaption><b>2018</b> Hackathon crew</figcaption>
           </figure>
           <figure class="year-card" data-year="2019">
-            <div class="year-photo is-placeholder"><span>2019</span></div>
+            <div class="year-photo">
+              <img src="images/archive/Hackathon2019.jpg" alt="The 2019 trimester hackathon" loading="lazy" />
+            </div>
             <figcaption><b>2019</b> Trimester hackathon</figcaption>
           </figure>
           <figure class="year-card" data-year="2020">
-            <div class="year-photo is-placeholder"><span>2020</span></div>
-            <figcaption><b>2020</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/VirtualSession_Game.jpg" alt="A virtual session game night" loading="lazy" />
+            </div>
+            <figcaption><b>2020</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2021</span></div>
+            <div class="year-photo">
+              <img src="images/archive/MeetAndGreet2021April.jpg" alt="The April 2021 meet and greet" loading="lazy" />
+            </div>
             <figcaption><b>2021</b> Meet &amp; greet</figcaption>
           </figure>
           <figure class="year-card" data-year="2022">
-            <div class="year-photo is-placeholder"><span>2022</span></div>
-            <figcaption><b>2022</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/archive/meetups-events.jpg" alt="Members working at a weekly meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2022</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2023">
-            <div class="year-photo is-placeholder"><span>2023</span></div>
-            <figcaption><b>2023</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20230530_125505518-800.webp" alt="A 2023 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2023</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
-            <div class="year-photo is-placeholder"><span>2024</span></div>
-            <figcaption><b>2024</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20240908_112450591.MP-800.webp" alt="A 2024 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2024</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2025">
-            <div class="year-photo is-placeholder"><span>2025</span></div>
-            <figcaption><b>2025</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20250923_124703509.MP-800.webp" alt="A 2025 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2025</b></figcaption>
           </figure>
           <figure class="year-card" data-year="2026">
-            <div class="year-photo is-placeholder"><span>2026</span></div>
-            <figcaption><b>2026</b> Coming soon</figcaption>
+            <div class="year-photo">
+              <img src="images/hero-section/PXL_20260330_134259803-800.webp" alt="A 2026 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2026</b></figcaption>
           </figure>
         </div>
       </div>
@@ -2474,12 +2827,11 @@
 
     <section class="quote" aria-label="Quote">
       <figure>
-        <span class="quote-line quote-line-red" aria-hidden="true"></span>
-        <span class="quote-line quote-line-blue" aria-hidden="true"></span>
         <blockquote>
           <p>
-            “I hear and I forget. I see and I remember. I do and I
-            understand.”
+            <span class="quote-step">“I hear and I forget.</span>
+            <span class="quote-step">I see and I remember.</span>
+            <span class="quote-step quote-step-do">I do and I understand.”</span>
           </p>
         </blockquote>
         <figcaption>
@@ -2489,6 +2841,13 @@
           >
         </figcaption>
       </figure>
+
+      <!-- An astronaut tumbling across, like an ejected crewmate -->
+      <div class="quote-drift" aria-hidden="true">
+        <div class="drift-x">
+          <img class="drift-spin" src="images/what-do-we-do-section/pngkey 13.png" alt="" />
+        </div>
+      </div>
     </section>
 
     <section
@@ -2497,19 +2856,32 @@
       aria-labelledby="events-heading"
     >
       <div class="events-head">
-        <div>
-          <h2 id="events-heading">What’s on?</h2>
-          <p>
-            A weekly meetup, a hackathon every trimester, and a few traditions
-            picked up along the way.
-          </p>
-        </div>
+        <h2 id="events-heading">What’s on?</h2>
+        <p>
+          A weekly meetup, a hackathon every trimester, and a few traditions
+          picked up along the way.
+        </p>
         <!-- JS swaps "Every Tuesday" for the actual next date -->
-        <div class="next-meetup">
-          <p class="next-label">Next meetup</p>
-          <p class="next-date">Every Tuesday</p>
-          <p class="next-time">8.00pm - 10.00pm</p>
-        </div>
+        <p class="next-meetup">
+          <span class="next-label">
+            <!-- a waving pennant with a half-moon cut from its hoist -->
+            <svg class="next-flag" viewBox="150 150 450 450" aria-hidden="true">
+              <path
+                d="M180 175L290 578"
+                stroke="currentColor"
+                stroke-width="26"
+                stroke-linecap="round"
+              />
+              <path
+                d="M205 218C250 205 290 172 340 178C380 183 395 215 415 235C440 255 520 245 585 225C560 300 520 375 440 395C400 405 385 395 380 375C377 358 360 357 335 365C300 375 275 395 255 408L245 368A58 58 0 0 0 218 255Z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>Next meetup</span>
+          </span>
+          <span class="next-sep" aria-hidden="true"></span>
+          <span><span class="next-date">Every Tuesday</span> 8.00pm - 10.00pm</span>
+        </p>
       </div>
 
       <!-- One panel per event; the first one starts open. Only events with a
@@ -2721,7 +3093,7 @@
       </dialog>
     </section>
 
-    <script src="js/config.js"></script>
+    <script src="js/config.js?v=5"></script>
     <script>
       const nav = document.querySelector('.site-nav');
       const toggle = nav.querySelector('.nav-toggle');
@@ -2838,30 +3210,53 @@
 
       const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
-        stats.classList.add('is-armed');
-        counters.forEach((el) => (el.textContent = '0'));
-
+      // Scroll reveal shared by the sections below: hides `section`'s
+      // content (.is-armed) and shows it (.is-in) as soon as `target`
+      // comes within 10% of a screen of the bottom edge, so it's already
+      // moving as it scrolls in, even on a fast scroll. If `target` comes
+      // in from the top instead (you scrolled past it and came back), it
+      // appears at once rather than animating. Returns false when there's
+      // no animation (reduced motion / no IntersectionObserver).
+      const reveal = (section, target, onIn) => {
+        if (reduceMotion.matches || !('IntersectionObserver' in window)) {
+          return false;
+        }
+        section.classList.add('is-armed');
         const io = new IntersectionObserver(
-          (entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
+          ([entry]) => {
+            if (!entry.isIntersecting) return;
             io.disconnect();
-            stats.classList.add('is-in');
-            // measure final widths only once the display font and the live
-            // numbers are in
-            const apiWait = new Promise((r) => setTimeout(r, API_WAIT_MS));
-            Promise.all([
-              document.fonts.ready,
-              Promise.race([liveCounts, apiWait]),
-            ]).then(() => {
-              countStarted = true;
-              showFinal();
-              counters.forEach(countUp);
-            });
+            if (entry.boundingClientRect.top < 0) {
+              section.classList.add('is-instant');
+              section.classList.add('is-in');
+              section.offsetHeight; // apply the end state without transitions
+              section.classList.remove('is-instant');
+            } else {
+              section.classList.add('is-in');
+            }
+            if (onIn) onIn();
           },
-          { threshold: 0.25 },
+          { rootMargin: '0px 0px 10% 0px' },
         );
-        io.observe(stats.querySelector('.stats-grid'));
+        io.observe(target);
+        return true;
+      };
+
+      const statsArmed = reveal(stats, stats.querySelector('.stats-grid'), () => {
+        // measure final widths only once the display font and the live
+        // numbers are in
+        const apiWait = new Promise((r) => setTimeout(r, API_WAIT_MS));
+        Promise.all([
+          document.fonts.ready,
+          Promise.race([liveCounts, apiWait]),
+        ]).then(() => {
+          countStarted = true;
+          showFinal();
+          counters.forEach(countUp);
+        });
+      });
+      if (statsArmed) {
+        counters.forEach((el) => (el.textContent = '0'));
       } else {
         liveCounts.then(showFinal);
       }
@@ -2876,6 +3271,7 @@
       const pauseBtn = legacy.querySelector('.timeline-pause');
 
       const DRIFT = 60; // px per second
+      const LOOP_DRIFT = 0.5; // share of DRIFT while the rocket jumps back
       const IDLE_MS = 1000; // how long drift waits after the user takes over
       const GLIDE_MS = 900;
 
@@ -2909,8 +3305,11 @@
       const trail = rail.querySelector('.timeline-trail');
       const yearOf = cards.map((card) => years.indexOf(card.dataset.year));
       const LEVEL = 31.7; // the artwork climbs at ~32°; this turns it to face right
-      const LAUNCH = 0.55; // share of the last-year → first-year gap spent lifting off
       let tickX = [];
+      // rail x of the invisible portals just outside the first and last
+      // years: the rocket flies into the right one and out of the left one
+      let portalL = 0;
+      let portalR = 0;
 
       // The track holds the real cards followed by enough inert copies to
       // cover the viewport, so wrapping the offset by one set's width is
@@ -2929,6 +3328,19 @@
 
         tickX = ticks.map((tick) => tick.offsetLeft + tick.offsetWidth / 2);
         trail.style.left = `${tickX[0]}px`;
+        // Clip the flight lane at the portals so the rocket vanishes into
+        // one and appears out of the other, with room either side for it to
+        // sit on the first and last years.
+        const lane = rail.querySelector('.timeline-flight');
+        const tilt = (LEVEL * Math.PI) / 180;
+        const halfW =
+          (rocket.offsetWidth * Math.cos(tilt) +
+            rocket.offsetHeight * Math.sin(tilt)) /
+            2 +
+          4;
+        portalL = tickX[0] - halfW;
+        portalR = tickX.at(-1) + halfW;
+        lane.style.clipPath = `inset(-100px ${lane.offsetWidth - portalR}px -100px ${portalL}px)`;
         trail.style.width = `${tickX.at(-1) - tickX[0]}px`;
 
         const copies = Math.ceil(reel.clientWidth / setW);
@@ -2961,8 +3373,6 @@
       const loopDelta = (a, b) => wrap(b - a + setW / 2) - setW / 2;
       const easeInOut = (t) =>
         t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
-      const easeOut = (t) => 1 - (1 - t) ** 3;
-      const clamp01 = (t) => Math.min(1, Math.max(0, t));
 
       const setActive = (pos) => {
         // the card whose left edge sits closest to the intro's left edge
@@ -2992,10 +3402,6 @@
         const end = tickX.at(-1);
 
         let rx;
-        let ry = 0;
-        let tilt = LEVEL;
-        let scale = 1;
-        let alpha = 1;
         let trailAlpha = 1;
 
         if (i < lefts.length - 1) {
@@ -3003,27 +3409,22 @@
           const a = tickX[yearOf[i]];
           const b = tickX[yearOf[i + 1]];
           rx = a + (b - a) * frac;
-        } else if (frac < LAUNCH) {
-          // past the last year: pitch up and blast off into the open space
-          const t = frac / LAUNCH;
-          const e = t * t;
-          rx = end + 320 * e;
-          ry = -260 * e;
-          tilt = LEVEL - 45 * easeOut(clamp01(t / 0.4));
-          scale = 1 - 0.35 * e;
-          alpha = 1 - clamp01((t - 0.6) / 0.4);
+        } else if (frac < 0.5) {
+          // past the last year: speed up straight through the right portal,
+          // the trail fading behind it
+          const t = frac / 0.5;
+          rx = end + (portalR + (portalR - end) - end) * t * t;
           trailAlpha = 1 - t;
         } else {
-          // back round to the start: glide in from the left onto the first year
-          const e = easeOut((frac - LAUNCH) / (1 - LAUNCH));
-          rx = start - 70 * (1 - e);
-          alpha = e;
+          // out of the left portal, easing onto the first year
+          const t = (frac - 0.5) / 0.5;
+          const from = portalL - (start - portalL);
+          rx = from + (start - from) * (1 - (1 - t) ** 2);
           trailAlpha = 0;
         }
 
-        rocket.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) rotate(${tilt}deg) scale(${scale})`;
-        rocket.style.opacity = alpha;
-        trail.style.transform = `scaleX(${(Math.min(rx, end) - start) / (end - start)})`;
+        rocket.style.transform = `translate(${rx}px, 0) translate(-50%, -50%) rotate(${LEVEL}deg)`;
+        trail.style.transform = `scaleX(${Math.max(0, Math.min(rx, end) - start) / (end - start)})`;
         trail.style.opacity = trailAlpha;
         ticks.forEach((tick, j) =>
           tick.classList.toggle(
@@ -3049,7 +3450,10 @@
           x = glide.from + (glide.to - glide.from) * easeInOut(t);
           if (t === 1) glide = null;
         } else if (!drag && !scrub && !paused && !hovered && now > holdUntil) {
-          x = wrap(x) + DRIFT * dt;
+          // slower while the rocket goes through the portals, so the jump
+          // back to the start isn't rushed
+          const loop = wrap(x) > lefts.at(-1) ? LOOP_DRIFT : 1;
+          x = wrap(x) + DRIFT * loop * dt;
         }
 
         render();
@@ -3070,7 +3474,7 @@
         const pos = wrap(x);
         const target = lefts[cards.findIndex((c) => c.dataset.year === year)];
         // Fly straight along the rail; only carry on round the loop when
-        // already mid-launch and heading back to the start.
+        // already through the portal and heading back to the start.
         let d = target - pos;
         if (pos > lefts.at(-1) && Math.abs(d + setW) < Math.abs(d)) d += setW;
         glide = {
@@ -3242,35 +3646,7 @@
         run();
       }).observe(reel);
 
-      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
-        legacy.classList.add('is-armed');
-        const legacyIo = new IntersectionObserver(
-          (entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
-            legacyIo.disconnect();
-            legacy.classList.add('is-in');
-          },
-          { threshold: 0.2 },
-        );
-        legacyIo.observe(legacy);
-      }
-
-      // ---------- QUOTE ----------
-
-      const quote = document.querySelector('.quote');
-
-      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
-        quote.classList.add('is-armed');
-        const quoteIo = new IntersectionObserver(
-          (entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
-            quoteIo.disconnect();
-            quote.classList.add('is-in');
-          },
-          { threshold: 0.5 },
-        );
-        quoteIo.observe(quote.querySelector('figure'));
-      }
+      reveal(legacy, legacy);
 
       // ---------- EVENTS ----------
 
@@ -3355,9 +3731,12 @@
       );
 
       if (daysAway === 0 && klHour >= 20) {
-        nextMeetup.querySelector('.next-label').textContent = 'Weekly meetup';
-        nextMeetup.querySelector('.next-date').textContent = 'On right now';
+        nextMeetup.querySelector('.next-label span').textContent =
+          'Weekly meetup';
+        nextMeetup.querySelector('.next-date').textContent = 'On now';
       } else {
+        // always a Tuesday, so the weekday is left off to keep the pill on
+        // one line on phones
         nextMeetup.querySelector('.next-date').textContent =
           daysAway === 0
             ? 'Tonight'
@@ -3365,24 +3744,12 @@
               ? 'Tomorrow'
               : meetupDate.toLocaleDateString('en-GB', {
                   timeZone: 'UTC',
-                  weekday: 'short',
                   day: 'numeric',
                   month: 'short',
                 });
       }
 
-      if (!reduceMotion.matches && 'IntersectionObserver' in window) {
-        events.classList.add('is-armed');
-        const eventsIo = new IntersectionObserver(
-          (entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
-            eventsIo.disconnect();
-            events.classList.add('is-in');
-          },
-          { threshold: 0.2 },
-        );
-        eventsIo.observe(events.querySelector('.events-list'));
-      }
+      reveal(events, events.querySelector('.events-list'));
 
       // ---------- JOIN ----------
 
@@ -3424,9 +3791,9 @@
       // a click anywhere, the Close button included, dismisses it
       qrDialog.addEventListener('click', () => qrDialog.close());
     </script>
-    <script src="js/what-we-do.js"></script>
-    <script src="js/starfield.js"></script>
-    <script src="js/landing.js"></script>
-    <script src="js/why-build.js"></script>
+    <script src="js/what-we-do.js?v=5"></script>
+    <script src="js/starfield.js?v=5"></script>
+    <script src="js/landing.js?v=5"></script>
+    <script src="js/why-build.js?v=5"></script>
   </body>
 </html>

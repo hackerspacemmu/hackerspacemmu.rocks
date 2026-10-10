@@ -1,10 +1,15 @@
-// Starfield behind "What do we do?": three depth layers of twinkling stars
-// that drift up as you scroll through the pinned section (parallax), lean a
-// little towards the mouse, and the occasional shooting star. Only animates
-// while the section is on screen; draws a single still frame for reduced motion.
+// Starfield: three depth layers of twinkling stars that drift up as you
+// scroll (parallax), lean a little towards the mouse, and the occasional
+// shooting star. Draws a single still frame for reduced motion.
+//
+// With a .site-stars canvas (index.html) it is a fixed backdrop for the whole
+// page, driven by page scroll. Otherwise it sits behind "What do we do?"
+// (legacy-site.html), driven by scroll through that section, and only
+// animates while the section is on screen.
 (function () {
-  const section = document.getElementById('what-do-we-do');
-  const canvas = section && section.querySelector('.wdwd-stars');
+  const pageSky = document.querySelector('.site-stars');
+  const section = pageSky ? null : document.getElementById('what-do-we-do');
+  const canvas = pageSky || (section && section.querySelector('.wdwd-stars'));
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
@@ -64,7 +69,7 @@
     canvas.height = Math.round(height);
 
     if (!stars) createStars(Math.min(240, Math.round((width * height) / 5500)));
-    if (!running) draw(performance.now());
+    draw(performance.now());
   }
 
   function wrap(value, max) {
@@ -111,18 +116,24 @@
   }
 
   function draw(now) {
+    // The first resize creates the stars; a frame can land before it.
+    if (!stars) return;
     const seconds = now / 1000;
     const still = reducedMotion.matches;
-    // How far into the section we've scrolled drives the parallax.
-    const sectionTop = section.getBoundingClientRect().top;
-    const scrolled = -sectionTop;
+    // How far down the page (or into the section) we've scrolled drives the
+    // parallax.
+    let scrolled = window.scrollY;
+    if (section) {
+      const sectionTop = section.getBoundingClientRect().top;
+      scrolled = -sectionTop;
 
-    // Keep the fade-in mask (CSS) on the section's top edge: it rides along
-    // with the canvas until the pin sticks, then scrolls up out of view.
-    const top = Math.round(sectionTop - canvas.getBoundingClientRect().top);
-    if (top !== skyTop) {
-      skyTop = top;
-      canvas.style.setProperty('--sky-top', `${top}px`);
+      // Keep the fade-in mask (CSS) on the section's top edge: it rides along
+      // with the canvas until the pin sticks, then scrolls up out of view.
+      const top = Math.round(sectionTop - canvas.getBoundingClientRect().top);
+      if (top !== skyTop) {
+        skyTop = top;
+        canvas.style.setProperty('--sky-top', `${top}px`);
+      }
     }
     leanX += (mouseX - leanX) * 0.05;
     leanY += (mouseY - leanY) * 0.05;
@@ -192,11 +203,17 @@
 
   new ResizeObserver(resize).observe(canvas);
 
-  new IntersectionObserver((entries) => {
-    visible = entries[0].isIntersecting;
-    if (visible) start();
-    else stop();
-  }).observe(section);
+  if (section) {
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible) start();
+      else stop();
+    }).observe(section);
+  } else {
+    // The page backdrop is always on screen.
+    visible = true;
+    start();
+  }
 
   reducedMotion.addEventListener('change', () => {
     stop();
