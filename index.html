@@ -21,15 +21,9 @@
       crossorigin
     />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&display=swap"
-      rel="stylesheet"
-    />
     <!-- Local CSS and JS share one ?v=: bump it on every change to any of
          them, so returning visitors don't mix cached and new files -->
-    <link href="css/build-sections.css?v=5" rel="stylesheet" />
+    <link href="css/build-sections.css?v=6" rel="stylesheet" />
 
     <style>
       @font-face {
@@ -48,6 +42,17 @@
           url('vendor/main-fonts/Jost-VariableFont_wght.woff2') format('woff2'),
           url('vendor/main-fonts/Jost-VariableFont_wght.ttf') format('truetype');
         font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      /* Static instance (width 125, weight 800), latin subset, from Google
+         Fonts */
+      @font-face {
+        font-family: 'Archivo';
+        src: url('vendor/main-fonts/Archivo-Expanded-ExtraBold.woff2') format('woff2');
+        font-weight: 800;
+        font-stretch: 125%;
         font-style: normal;
         font-display: swap;
       }
@@ -2597,6 +2602,13 @@
           <div class="stat stat-photo stat-members" style="--i: 0">
             <img
               src="images/statistic-section/active-members.jpg"
+              srcset="
+                images/statistic-section/active-members-480.webp 480w,
+                images/statistic-section/active-members-800.webp 800w,
+                images/statistic-section/active-members-1200.webp 1200w,
+                images/statistic-section/active-members.jpg 1600w
+              "
+              sizes="(max-width: 860px) 100vw, 50vw"
               alt="Members watching a talk"
               loading="lazy"
             />
@@ -2643,7 +2655,7 @@
             </p>
             <img
               class="stat-person"
-              src="images/statistic-section/project-updates.png"
+              src="images/statistic-section/project-updates.webp"
               alt="A member smiling behind a sticker-covered laptop"
               loading="lazy"
             />
@@ -2654,6 +2666,13 @@
           <div class="stat stat-photo stat-hackathons" style="--i: 4">
             <img
               src="images/statistic-section/hackathon.jpg"
+              srcset="
+                images/statistic-section/hackathon-480.webp 480w,
+                images/statistic-section/hackathon-800.webp 800w,
+                images/statistic-section/hackathon-1200.webp 1200w,
+                images/statistic-section/hackathon.jpg 1600w
+              "
+              sizes="min(100vw, 1680px)"
               alt="Members coding at laptops during a hackathon"
               loading="lazy"
             />
@@ -2887,6 +2906,11 @@
           <img
             class="event-photo"
             src="images/events-activities-section/weekly-meetup.jpg"
+            srcset="
+              images/events-activities-section/weekly-meetup-480.webp 480w,
+              images/events-activities-section/weekly-meetup-744.webp 744w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
             alt="Members with laptops around a long table at a weekly meetup"
             loading="lazy"
           />
@@ -2915,6 +2939,13 @@
           <img
             class="event-photo"
             src="images/events-activities-section/hackathon.jpg"
+            srcset="
+              images/events-activities-section/hackathon-480.webp 480w,
+              images/events-activities-section/hackathon-800.webp 800w,
+              images/events-activities-section/hackathon-1200.webp 1200w,
+              images/events-activities-section/hackathon.jpg 1600w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
             alt="A hackathon team coding on laptops around a shared table"
             loading="lazy"
           />
@@ -2943,6 +2974,11 @@
           <img
             class="event-photo"
             src="images/events-activities-section/code-presentation.jpg"
+            srcset="
+              images/events-activities-section/code-presentation-480.webp 480w,
+              images/events-activities-section/code-presentation-744.webp 744w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
             alt="A member pointing at code projected on a screen"
             loading="lazy"
           />
@@ -2970,6 +3006,13 @@
           <img
             class="event-photo"
             src="images/events-activities-section/mamak.jpg"
+            srcset="
+              images/events-activities-section/mamak-480.webp 480w,
+              images/events-activities-section/mamak-800.webp 800w,
+              images/events-activities-section/mamak-1200.webp 1200w,
+              images/events-activities-section/mamak.jpg 1600w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
             alt="A long table of members sharing food and drinks at a mamak after a meetup"
             loading="lazy"
           />
@@ -2995,6 +3038,13 @@
           <img
             class="event-photo"
             src="images/events-activities-section/board-game-night.jpg"
+            srcset="
+              images/events-activities-section/board-game-night-480.webp 480w,
+              images/events-activities-section/board-game-night-800.webp 800w,
+              images/events-activities-section/board-game-night-1200.webp 1200w,
+              images/events-activities-section/board-game-night.jpg 1600w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
             alt="Members gathered around a table playing a board game, with more tables of players behind them"
             loading="lazy"
           />
@@ -3089,7 +3139,7 @@
       </dialog>
     </section>
 
-    <script src="js/config.js?v=5"></script>
+    <script src="js/config.js?v=6"></script>
     <script>
       const nav = document.querySelector('.site-nav');
       const toggle = nav.querySelector('.nav-toggle');
@@ -3787,9 +3837,9 @@
       // a click anywhere, the Close button included, dismisses it
       qrDialog.addEventListener('click', () => qrDialog.close());
     </script>
-    <script src="js/what-we-do.js?v=5"></script>
-    <script src="js/starfield.js?v=5"></script>
-    <script src="js/landing.js?v=5"></script>
-    <script src="js/why-build.js?v=5"></script>
+    <script src="js/what-we-do.js?v=6"></script>
+    <script src="js/starfield.js?v=6"></script>
+    <script src="js/landing.js?v=6"></script>
+    <script src="js/why-build.js?v=6"></script>
   </body>
 </html>
