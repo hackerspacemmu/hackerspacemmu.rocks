@@ -1,0 +1,2244 @@
+@font-face {
+  font-family: 'Special Gothic Expanded One';
+  src:
+    url('../vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2') format('woff2'),
+    url('../vendor/main-fonts/SpecialGothicExpandedOne-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src:
+    url('../vendor/main-fonts/Jost-VariableFont_wght.woff2') format('woff2'),
+    url('../vendor/main-fonts/Jost-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Static instance (width 125, weight 800), latin subset, from Google
+   Fonts */
+@font-face {
+  font-family: 'Archivo';
+  src: url('../vendor/main-fonts/Archivo-Expanded-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-stretch: 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --page-bg: #111111;
+  --tile-bg: #333;
+  --text: #fff;
+  --text-muted: #dcdcdc;
+
+  --font-body: 'Jost', system-ui, sans-serif;
+  --font-display: 'Special Gothic Expanded One', 'Jost', sans-serif;
+
+  --edge: clamp(12px, 2vw, 40px);
+  /* the left/right inset section content lines up on, below the hero */
+  --inset: clamp(12px, 8.25vw, 170px);
+  /* the same space above and below every section, so the gaps between
+     them match */
+  --section-space: clamp(80px, 15vh, 180px);
+  --gap: clamp(8px, 1vw, 18px);
+  --tile-pad: clamp(5px, 0.55vw, 10px);
+  --tile-radius: clamp(10px, 0.8vw, 16px);
+  /* concentric with the tile corner across the coloured edge */
+  --img-radius: max(4px, calc(var(--tile-radius) - var(--tile-pad)));
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  /* gentle start, long glide in: no sudden snap */
+  --ease-soft: cubic-bezier(0.45, 0, 0.2, 1);
+  --stagger: 90ms;
+  /* scroll reveals: quick, so a section is in place even when you
+     scroll past it fast */
+  --reveal-dur: 0.45s;
+  --reveal-stagger: 50ms;
+
+  /* kept in sync with the sticky nav's real height by JS */
+  --nav-h: 64px;
+}
+
+/* Phones: the desktop spacing (15vh a side) leaves ~245px between
+   sections on a tall phone, so use a tighter, fixed rhythm instead */
+@media (max-width: 640px) {
+  :root {
+    --section-space: 72px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+html {
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+.hero-screen {
+  height: calc(100vh - var(--nav-h));
+  height: calc(100dvh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- NAV ---------- */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  /* frosted glass: page content blurs through as it scrolls underneath */
+  background: rgba(10, 10, 10, 0.55);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(10px, 1.6vh, 18px) var(--edge);
+  font-family: var(--font-body);
+  opacity: 0;
+  animation: fade-down 0.6s var(--ease-out) 0.05s forwards;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-nav {
+    background: rgba(10, 10, 10, 0.92);
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+/* Full-colour mark (black letters) on a white badge; the height is
+   the mark's, the padding adds the badge around it */
+.brand img {
+  box-sizing: content-box;
+  height: clamp(24px, 3.4vh, 34px);
+  width: auto;
+  display: block;
+  padding: clamp(4px, 0.6vh, 6px) clamp(7px, 1vh, 10px);
+  background: #fff;
+  border-radius: var(--img-radius);
+}
+
+.brand span {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.35vw, 22px);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 40px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(14px, 1vw, 17px);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 0.7;
+}
+
+.nav-links .nav-cta {
+  display: inline-block;
+  padding: 0.65em 1.5em;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.nav-links .nav-cta:hover {
+  background: #fff;
+  color: #000;
+  opacity: 1;
+}
+
+.nav-toggle {
+  display: none;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.nav-toggle svg {
+  display: block;
+  margin: auto;
+}
+
+/* ---------- HERO LAYOUT ---------- */
+
+.hero {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: var(--gap);
+  padding: 0 var(--edge) var(--edge);
+}
+
+.hero-main {
+  flex: 1153 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.hero-side {
+  flex: 615 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.hero-row {
+  flex: var(--grow) 1 0;
+  min-height: 0;
+  display: flex;
+  gap: var(--gap);
+}
+
+/* the text row may grow to fit its copy; photo rows absorb the difference */
+.hero-row.row-text {
+  min-height: auto;
+}
+
+.tile {
+  position: relative;
+  flex: var(--grow) 1 0;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  /* only the text tile keeps this; every photo tile starts as a red, blue
+     or white block that its photo then covers */
+  background: #222;
+  border-radius: var(--tile-radius);
+  opacity: 0;
+  transform: translateY(16px) scale(0.965);
+  animation: tile-in 0.7s var(--ease-out) forwards;
+  animation-delay: calc(150ms + var(--i) * var(--stagger));
+}
+
+/* accent colours in the stat/quote red and blue, seen while the photos
+   load in */
+.tile-red {
+  background: #c4291e;
+}
+.tile-blue {
+  background: #1d4ae0;
+}
+.tile-white {
+  background: #fff;
+}
+
+/* once the photo has covered it, drop the colour so it can't show as
+   a hairline round the rounded corners */
+.tile-red,
+.tile-blue,
+.tile-white {
+  transition: background-color 0.2s linear
+    calc(var(--reveal-delay, 0ms) + 2500ms);
+}
+
+.tile.is-loaded:is(.tile-red, .tile-blue, .tile-white) {
+  background-color: transparent;
+}
+
+/* ---------- PHOTO LOAD-IN ---------- */
+
+.tile::before {
+  content: '';
+  position: absolute;
+  inset: var(--tile-pad);
+  border-radius: var(--img-radius);
+  background: linear-gradient(
+      100deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 70%
+    )
+    #3b3b3b;
+  background-size: 250% 100%;
+  animation: shimmer 1.4s linear infinite;
+  transition: opacity 0.4s;
+}
+
+.tile.is-loaded::before {
+  opacity: 0;
+  animation: none;
+}
+
+.frame {
+  position: absolute;
+  inset: var(--tile-pad);
+  overflow: hidden;
+  border-radius: var(--img-radius);
+  clip-path: inset(100% 0 0 0 round var(--img-radius));
+  /* the wipe, then a slow, soft grow out over the coloured edge */
+  transition:
+    clip-path 1.1s var(--ease-in-out) var(--reveal-delay, 0ms),
+    inset 1.4s var(--ease-soft) calc(var(--reveal-delay, 0ms) + 1000ms),
+    border-radius 1.4s var(--ease-soft)
+      calc(var(--reveal-delay, 0ms) + 1000ms);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos, 50% 50%);
+  display: block;
+  transform: scale(1.18);
+  filter: brightness(1.6) saturate(0.4);
+  transition:
+    transform 2.4s var(--ease-out) var(--reveal-delay, 0ms),
+    filter 1.6s var(--ease-out) var(--reveal-delay, 0ms);
+}
+
+/* the photo wipes up over its colour block, then grows to cover the
+   thin coloured edge so no border is left */
+.tile.is-loaded .frame {
+  inset: 0;
+  border-radius: var(--tile-radius);
+  clip-path: inset(0 0 0 0 round var(--tile-radius));
+}
+
+.tile.is-loaded .frame img {
+  transform: none;
+  filter: none;
+}
+
+/* ---------- TEXT TILE ---------- */
+
+.tile-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(14px, 3vh, 44px) clamp(16px, 2.2vw, 44px);
+}
+
+.tile-text::before {
+  content: none;
+}
+
+.tile-text > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fade-up 0.7s var(--ease-out) forwards;
+}
+
+.tile-text > :nth-child(1) {
+  animation-delay: 0.75s;
+}
+.tile-text > :nth-child(2) {
+  animation-delay: 0.85s;
+}
+.tile-text > :nth-child(3) {
+  animation-delay: 0.95s;
+}
+
+.tile-text h1 {
+  margin: 0 0 clamp(8px, 1.6vh, 18px);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(20px, min(2.95vw, 5.4vh), 58px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.tile-text p {
+  margin: 0 0 clamp(12px, 2.6vh, 32px);
+  font-size: clamp(13px, min(1.24vw, 2.2vh), 23px);
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px clamp(14px, 1.3vw, 24px);
+}
+
+.btn-signup {
+  display: inline-block;
+  padding: 0.78em 2.9em;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  font-size: clamp(13px, min(1.08vw, 2vh), 21px);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.2s var(--ease-out),
+    background 0.2s;
+}
+
+.btn-signup:hover {
+  background: #e8e8e8;
+  transform: translateY(-1px);
+}
+
+.link-why {
+  font-size: clamp(13px, min(1.08vw, 2vh), 21px);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.link-why:hover {
+  color: var(--text-muted);
+}
+
+/* ---------- STATS ---------- */
+
+.stats {
+  --stat-blue: #1d4ae0;
+  --stat-red: #c4291e;
+
+  /* The tiles fill whatever height is left inside, so the shared
+     section spacing is added on top of the screen-sized box (less the
+     padding it used to have) rather than taken out of the tiles. */
+  --stats-box: calc(
+    100dvh - var(--nav-h) - clamp(20px, 4.5vh, 56px) - clamp(20px, 6vh, 90px)
+  );
+
+  height: calc(var(--stats-box) + 2 * var(--section-space));
+  min-height: calc(500px + 2 * var(--section-space));
+  display: flex;
+  flex-direction: column;
+  padding: var(--section-space) var(--inset);
+}
+
+.stats h2 {
+  flex: none;
+  margin: 0 0 clamp(16px, 5vh, 68px);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, min(2.9vw, 4.4vh), 60px);
+  line-height: 1.1;
+  text-align: center;
+}
+
+.stats-grid {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.stats-row {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  gap: var(--gap);
+}
+
+.stat {
+  position: relative;
+  flex: var(--grow, 1) 1 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tile-radius);
+  background: var(--tile-bg);
+  /* text inside sizes itself against the tile via cqw/cqh */
+  container-type: size;
+}
+
+.stat-text {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.stat-text > span {
+  display: block;
+}
+
+.count {
+  display: inline-block;
+  text-align: right;
+}
+
+/* Numbers that share a line with their label: digits here vary in width,
+   so mid-count values can be wider than the final one. rtl pins the right
+   edge so any overflow spills left, away from the word. */
+.stat-updates .count,
+.stat-hackathons .count {
+  direction: rtl;
+  margin-right: 0.15em;
+}
+
+/* photo tiles */
+.stat-photo {
+  overflow: hidden;
+}
+
+.stat-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos, 50% 50%);
+}
+
+.stat-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--shade, rgba(0, 0, 0, 0.42));
+}
+
+/* the numbers and labels are sized off each tile's mockup proportions */
+.stat-members {
+  --pos: 50% 42%;
+  --shade: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.25) 75%
+  );
+  align-items: flex-start;
+}
+
+.stat-members .stat-text {
+  padding-left: 11cqw;
+  text-align: left;
+  font-size: min(19.6cqh, 8cqw);
+}
+
+.stat-days {
+  background: #fff;
+  color: var(--stat-blue);
+}
+
+.stat-days .stat-text {
+  font-size: min(22.4cqh, 9.4cqw);
+}
+
+.stat-meetups {
+  background: var(--stat-blue);
+}
+
+.stat-meetups .stat-text {
+  font-size: min(19.7cqh, 13.4cqw);
+}
+
+/* the member cut-out pokes out over the top edge, so no clipping here */
+.stat-updates {
+  background: var(--stat-red);
+}
+
+/* centred across the whole tile, running over the cut-out */
+.stat-updates .stat-text {
+  /* the line is the number (--count-em, set by JS once it's known) plus
+     ~11.3em of gap and "PROJECT UPDATES"; scale it to fit the tile */
+  font-size: min(26.4cqh, calc(90cqw / (var(--count-em, 2.9) + 11.3)));
+}
+
+.stat-person {
+  position: absolute;
+  right: 1%;
+  bottom: 0;
+  z-index: 1;
+  height: 112%;
+  width: auto;
+  pointer-events: none;
+}
+
+.stat-hackathons {
+  --pos: 50% 44%;
+}
+
+.stat-hackathons .stat-text {
+  font-size: min(30cqh, 9.4cqw);
+}
+
+/* tiles rise in once the section scrolls into view (JS adds these) */
+.stats.is-armed .stat {
+  opacity: 0;
+  transform: translateY(16px) scale(0.965);
+}
+
+.stats.is-armed.is-in .stat {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--reveal-dur) var(--ease-out),
+    transform var(--reveal-dur) var(--ease-out);
+  transition-delay: calc(var(--i) * var(--reveal-stagger));
+}
+
+/* A section you've scrolled past (and come back up to) shows at once
+   rather than animating in (JS adds this for one frame) */
+.is-armed.is-instant,
+.is-armed.is-instant * {
+  transition: none !important;
+}
+
+/* ---------- LEGACY ---------- */
+
+.legacy {
+  --legacy-red: #c4291e;
+  --legacy-blue: #1d4ae0;
+  --legacy-inset: var(--inset);
+  --card-h: clamp(150px, 28vh, 340px);
+  --lane-h: 40px;
+  --rocket-w: clamp(56px, 4.4vw, 76px);
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 6vh, 72px);
+  padding: var(--section-space) 0;
+  overflow: hidden;
+}
+
+.legacy-intro {
+  padding-inline: var(--legacy-inset);
+}
+
+.legacy h2 {
+  margin: 0 0 clamp(12px, 2.4vh, 24px);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(28px, min(3.4vw, 6vh), 68px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.legacy-intro > p {
+  max-width: 40ch;
+  margin: 0 0 clamp(20px, 4vh, 44px);
+  font-size: clamp(14px, min(1.1vw, 2vh), 20px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: #a8a8a8;
+}
+
+/* year readout + one tick per year, so there are no gaps to explain */
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.6vw, 28px);
+  margin-bottom: 22px;
+  padding-top: var(--lane-h);
+}
+
+.timeline-now {
+  flex: none;
+  min-width: 4.6ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(20px, min(1.9vw, 3.4vh), 36px);
+  line-height: 1;
+  color: var(--now-accent, #fff);
+  transition: color 0.3s;
+}
+
+/* drag the rocket (or anywhere along the rail) to scrub through the
+   years; pan-y leaves vertical page scrolling to the browser */
+.timeline-rail {
+  position: relative;
+  flex: 0 1 clamp(200px, 26vw, 460px);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* the rocket flies in a lane above the ticks; JS positions it */
+.timeline-flight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: var(--lane-h);
+  cursor: grab;
+}
+
+.timeline-rail.is-scrubbing,
+.timeline-rail.is-scrubbing * {
+  cursor: grabbing;
+}
+
+.timeline-trail {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35) 40%,
+    var(--now-accent, #fff)
+  );
+  transform-origin: 0 50%;
+}
+
+.timeline-rocket {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--rocket-w);
+  height: auto;
+  display: block;
+  will-change: transform, opacity;
+  -webkit-user-drag: none;
+}
+
+.timeline-ticks {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tick {
+  position: relative;
+  display: block;
+  width: 14px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.tick::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 2px;
+  height: 10px;
+  border-radius: 1px;
+  background: #555;
+  translate: -50% 0;
+  transition:
+    height 0.3s var(--ease-out),
+    background 0.3s;
+}
+
+.tick.is-passed::before {
+  height: 14px;
+  background: #bdbdbd;
+}
+
+.tick:hover::before {
+  height: 15px;
+  background: #999;
+}
+
+.tick[aria-current='true']::before {
+  height: 26px;
+  background: var(--now-accent, #fff);
+}
+
+.tick:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.timeline-ends {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #8a8a8a;
+}
+
+.timeline-pause {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #555;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.timeline-pause:hover,
+.timeline-pause:focus-visible {
+  border-color: #fff;
+}
+
+.timeline-pause .icon-play,
+.legacy.is-paused .timeline-pause .icon-pause {
+  display: none;
+}
+
+.legacy.is-paused .timeline-pause .icon-play {
+  display: block;
+}
+
+/* the reel drifts on its own; JS moves the track and loops it */
+.reel {
+  --fade: clamp(24px, 6vw, 120px);
+
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--fade),
+    #000 calc(100% - var(--fade)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--fade),
+    #000 calc(100% - var(--fade)),
+    transparent
+  );
+}
+
+.reel.is-dragging {
+  cursor: grabbing;
+}
+
+.reel-track {
+  position: relative;
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  padding-left: var(--legacy-inset);
+  will-change: transform;
+}
+
+.year-card {
+  flex: none;
+  width: calc(var(--card-h) * var(--ar, 4 / 3));
+  margin: 0;
+}
+
+.year-photo {
+  height: var(--card-h);
+  overflow: hidden;
+  border-radius: var(--img-radius);
+  background: #262626;
+}
+
+.year-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--pos, 50% 50%);
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.year-photo.is-placeholder {
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(
+    135deg,
+    #242424 0 12px,
+    #292929 12px 24px
+  );
+}
+
+.year-photo.is-placeholder span {
+  font-family: var(--font-display);
+  font-size: calc(var(--card-h) * 0.2);
+  color: rgba(255, 255, 255, 0.07);
+}
+
+.year-card figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8em;
+  margin-top: 12px;
+  font-size: clamp(13px, 0.95vw, 16px);
+  letter-spacing: 0.02em;
+  color: #a8a8a8;
+}
+
+.year-card figcaption b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(16px, 1.35vw, 24px);
+  color: var(--accent, #fff);
+}
+
+.legacy.is-armed .legacy-intro > *,
+.legacy.is-armed .reel {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.legacy.is-armed.is-in .legacy-intro > *,
+.legacy.is-armed.is-in .reel {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--reveal-dur) var(--ease-out),
+    transform var(--reveal-dur) var(--ease-out);
+}
+
+.legacy.is-in .legacy-intro > :nth-child(2) {
+  transition-delay: 50ms;
+}
+.legacy.is-in .legacy-intro > :nth-child(3) {
+  transition-delay: 100ms;
+}
+.legacy.is-in .reel {
+  transition-delay: 150ms;
+}
+
+/* ---------- QUOTE ---------- */
+
+/* A plain section: all three lines showing, no pin or scroll steps */
+.quote {
+  --quote-inset: clamp(20px, 13.75vw, 280px);
+
+  position: relative;
+  padding-block: var(--section-space);
+  overflow-x: clip;
+}
+
+/* spans the full width so the lines can run off the page edges; its
+   font-size is the quote's, so the lines can sit in em */
+.quote figure {
+  position: relative;
+  margin: 0;
+  padding-inline: var(--quote-inset);
+  font-size: clamp(28px, min(4vw, 7.5vh), 80px);
+}
+
+.quote blockquote {
+  margin: 0;
+}
+
+.quote blockquote p {
+  margin: 0;
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+}
+
+/* one sentence per line, brightening towards "do" */
+.quote-step {
+  display: block;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* hang the opening quote mark so the words line up on the left */
+.quote-step:first-child {
+  text-indent: -0.42em;
+}
+
+.quote-step:nth-child(2) {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.quote-step-do {
+  color: #fff;
+}
+
+.quote figcaption {
+  position: relative;
+  margin-top: clamp(28px, 4.5vh, 56px);
+  font-size: clamp(14px, 1.05vw, 19px);
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* lighter than the line red so small text stays readable */
+.quote figcaption a {
+  color: #e5584b;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: color 0.2s;
+}
+
+.quote figcaption a:hover,
+.quote figcaption a:focus-visible {
+  color: #ff8a7f;
+}
+
+/* A lane under the quote: the astronaut drifts in from the left and
+   out past the right edge (.quote clips the overflow), rising a little
+   and slowly spinning. He stays centred in the lane, which is at least
+   twice his width, so even mid-spin he never reaches past the
+   section's edges (iOS Safari clips those vertically too). The
+   negative delay puts him mid-crossing when the page loads, so the
+   lane is rarely empty when you scroll to it. */
+.quote-drift {
+  --drift-size: clamp(56px, 6vw, 110px);
+
+  position: relative;
+  height: calc(var(--drift-size) * 2.4);
+  margin-top: clamp(24px, 5vh, 64px);
+  pointer-events: none;
+}
+
+.drift-x {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--drift-size);
+  animation: drift-across 22s linear -9s infinite;
+}
+
+.drift-spin {
+  display: block;
+  width: 100%;
+  animation: drift-spin 9s linear infinite;
+}
+
+@keyframes drift-across {
+  from {
+    transform: translate(-150%, -40%);
+  }
+  to {
+    transform: translate(calc(100vw + 50%), -60%);
+  }
+}
+
+@keyframes drift-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-x,
+  .drift-spin {
+    animation: none;
+  }
+
+  .drift-x {
+    left: auto;
+    right: var(--quote-inset);
+    transform: translateY(-50%) rotate(-20deg);
+  }
+}
+
+/* ---------- EVENTS ---------- */
+
+.events {
+  --events-blue: #1d4ae0;
+  /* the open panel's share of the row, against 1 per closed panel */
+  --open: 3.4;
+  --panel-pad: clamp(12px, 1.2vw, 22px);
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 4vh, 48px);
+  padding: var(--section-space) var(--inset);
+}
+
+.events h2 {
+  margin: 0 0 clamp(10px, 2vh, 20px);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(28px, min(3.4vw, 6vh), 68px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.events-head p {
+  max-width: 44ch;
+  margin: 0;
+  font-size: clamp(14px, min(1.1vw, 2vh), 20px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-wrap: pretty;
+  color: #a8a8a8;
+}
+
+/* a status line under the intro, not a card, so it can't outrank the
+   heading */
+.events-head .next-meetup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25em 0.85em;
+  max-width: none;
+  margin-top: clamp(16px, 2.8vh, 28px);
+  padding: 0.6em 1.3em 0.6em 1em;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  background: transparent;
+  /* about the subtitle's size, so the tag inside stays legible */
+  font-size: clamp(14px, min(1.05vw, 1.9vh), 19px);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #c4c4c4;
+}
+
+/* three tiers: a small tag, then the date, then the time */
+.next-meetup .next-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 500;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a8a8a8;
+}
+
+.next-meetup .next-flag {
+  flex: none;
+  width: 1.8em;
+  height: 1.8em;
+  color: #fff;
+}
+
+.next-meetup .next-sep {
+  align-self: stretch;
+  width: 1px;
+  margin-block: 0.15em;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.next-meetup .next-date {
+  margin-right: 0.4em;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Accordion: one panel open at a time. Photos are sized to the open
+   panel's width up front, so opening a panel only uncovers more of the
+   photo instead of rescaling it every frame. */
+.events-list {
+  --open-w: calc(
+    (100cqw - 4 * var(--gap)) * var(--open) / (var(--open) + 4)
+  );
+
+  container-type: inline-size;
+  display: flex;
+  gap: var(--gap);
+  height: clamp(360px, 54vh, 600px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.event {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--tile-radius);
+  background: var(--tile-bg);
+  transition: flex-grow 0.45s var(--ease-in-out);
+}
+
+.event.is-open {
+  flex-grow: var(--open);
+}
+
+/* below the dimmer and scrim (the panel isolates its own stacking) */
+.event-photo {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 50%;
+  width: max(100%, var(--open-w));
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: var(--pos, 50% 50%);
+  translate: -50% 0;
+}
+
+/* closed panels sit dimmed; the scrim keeps text readable on any photo */
+.event::before,
+.event::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.event::before {
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.5s var(--ease-out);
+}
+
+.event:hover::before {
+  opacity: 0.55;
+}
+
+.event.is-open::before {
+  opacity: 0;
+}
+
+.event::after {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.45) 38%,
+    transparent 64%
+  );
+}
+
+.event-toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.event.is-open .event-toggle {
+  cursor: default;
+}
+
+.event-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -4px;
+}
+
+.event-label {
+  position: absolute;
+  left: var(--panel-pad);
+  right: var(--panel-pad);
+  bottom: var(--panel-pad);
+  font-weight: 500;
+  font-size: clamp(12px, 1vw, 16px);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  text-align: left;
+  transition: opacity 0.3s var(--ease-out) 0.25s;
+}
+
+.event.is-open .event-label {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+/* fixed to the open width so the copy never reflows mid-animation */
+.event-body {
+  position: absolute;
+  z-index: 1;
+  left: var(--panel-pad);
+  bottom: var(--panel-pad);
+  width: calc(var(--open-w) - 2 * var(--panel-pad));
+  opacity: 0;
+  translate: 0 12px;
+  pointer-events: none;
+  transition:
+    opacity 0.3s var(--ease-out),
+    translate 0.3s var(--ease-out);
+}
+
+.event.is-open .event-body {
+  opacity: 1;
+  translate: none;
+  transition-duration: 0.4s;
+  transition-delay: 0.15s;
+}
+
+.event-body h3 {
+  margin: 0 0 0.45em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(22px, min(2vw, 3.6vh), 38px);
+  line-height: 1.1;
+}
+
+.event-when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em 1.2em;
+  margin: 0 0 0.7em;
+  font-weight: 500;
+  font-size: clamp(13px, 0.95vw, 17px);
+  letter-spacing: 0.02em;
+}
+
+.event-when span + span {
+  color: #bdbdbd;
+}
+
+.event-desc {
+  max-width: 40ch;
+  margin: 0;
+  font-size: clamp(14px, 1vw, 18px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-wrap: pretty;
+  color: var(--text-muted);
+}
+
+.events.is-armed .events-head > *,
+.events.is-armed .event {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.events.is-armed .event-photo {
+  scale: 1.12;
+}
+
+.events.is-armed.is-in .events-head > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--reveal-dur) var(--ease-out),
+    transform var(--reveal-dur) var(--ease-out);
+}
+
+.events.is-in .events-head > :nth-child(2) {
+  transition-delay: 50ms;
+}
+
+.events.is-in .events-head > :nth-child(3) {
+  transition-delay: 100ms;
+}
+
+/* restates the open/close transitions, which this rule would override */
+.events.is-armed.is-in .event {
+  --delay: calc(100ms + var(--i) * var(--reveal-stagger));
+
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--reveal-dur) var(--ease-out) var(--delay),
+    transform var(--reveal-dur) var(--ease-out) var(--delay),
+    flex-grow 0.45s var(--ease-in-out),
+    height 0.7s var(--ease-in-out);
+}
+
+.events.is-armed.is-in .event-photo {
+  scale: 1;
+  transition: scale 0.8s var(--ease-out) var(--delay);
+}
+
+/* ---------- JOIN ---------- */
+
+/* Shown on a projector as often as on a laptop, so the QR is sized off
+   the viewport height and kept on a plain light card with a full quiet
+   zone. Controls are pills like the nav CTA; the QR card is an image. */
+.join {
+  --join-blue: #1d4ae0;
+  --join-focus: #93a5ff;
+  --join-error: #ff8a7f;
+  /* outer size of the light card the code sits on */
+  --qr-size: clamp(220px, min(48vh, 34vw), 580px);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(32px, 6vw, 120px);
+  padding: var(--section-space) var(--inset);
+}
+
+.join h2 {
+  max-width: 8.5em;
+  margin: 0 0 0.4em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, min(4.8vw, 8.5vh), 104px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.join-lede {
+  max-width: 36ch;
+  margin: 0 0 clamp(24px, 5vh, 56px);
+  font-size: clamp(15px, min(1.25vw, 2.3vh), 22px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-wrap: pretty;
+  color: #a8a8a8;
+}
+
+.join-form {
+  max-width: 560px;
+}
+
+.join-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: clamp(13px, 0.9vw, 16px);
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+.join-field {
+  display: flex;
+  gap: 10px;
+}
+
+.join-field input,
+.join-field button {
+  height: clamp(48px, 6vh, 60px);
+  border-radius: 999px;
+  font: inherit;
+  font-size: clamp(15px, 1.05vw, 18px);
+}
+
+.join-field input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 1.3em;
+  border: 1px solid #555;
+  background: #262626;
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.join-field input::placeholder {
+  color: #999;
+}
+
+.join-field input:hover {
+  border-color: #777;
+}
+
+.join-field input:focus-visible {
+  outline: 2px solid var(--join-focus);
+  outline-offset: 2px;
+  border-color: var(--join-focus);
+}
+
+.join-field input[aria-invalid='true'] {
+  border-color: var(--join-error);
+}
+
+.join-field button {
+  flex: none;
+  padding: 0 1.6em;
+  border: 0;
+  background: var(--join-blue);
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.15s var(--ease-out);
+}
+
+.join-field button:hover {
+  background: #3060f5;
+}
+
+.join-field button:active {
+  transform: scale(0.98);
+}
+
+.join-field button:focus-visible {
+  outline: 2px solid var(--join-focus);
+  outline-offset: 3px;
+}
+
+.join-hint,
+.join-error {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.join-hint {
+  color: #a8a8a8;
+}
+
+/* space is held for the message so the QR tile doesn't jump */
+.join-error {
+  min-height: 1.4em;
+  margin-top: 6px;
+  color: var(--join-error);
+}
+
+.join-qr {
+  display: grid;
+  gap: clamp(14px, 2.2vh, 26px);
+  margin: 0;
+  padding: clamp(14px, 1.4vw, 26px);
+  border-radius: var(--tile-radius);
+  background: var(--join-blue);
+}
+
+.qr-card {
+  width: var(--qr-size);
+  aspect-ratio: 1;
+  /* ≥ 4 modules of quiet zone around the 29-module code */
+  padding: calc(var(--qr-size) * 0.11);
+  border-radius: var(--img-radius);
+  background: #f4f4f4;
+  cursor: zoom-in;
+}
+
+.qr-card img,
+.qr-dialog img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.join-qr figcaption {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-inline: 4px;
+}
+
+.qr-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(20px, min(1.9vw, 3.4vh), 36px);
+  line-height: 1.1;
+}
+
+.qr-url {
+  display: block;
+  margin-top: 0.3em;
+  font-size: clamp(14px, 1vw, 18px);
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.qr-enlarge,
+.qr-close {
+  flex: none;
+  padding: 0.55em 1.3em;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-weight: 500;
+  font-size: clamp(13px, 0.9vw, 16px);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.qr-enlarge:hover,
+.qr-close:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #141414;
+}
+
+.qr-enlarge:focus-visible,
+.qr-close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* fills the screen so the code reads from the back of a lecture hall */
+.qr-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 4vmin;
+  border: 0;
+  background: var(--page-bg);
+  color: var(--text);
+}
+
+.qr-dialog[open] {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 3vh;
+}
+
+.qr-dialog .qr-card {
+  --qr-size: min(80vh, 88vw);
+  cursor: zoom-out;
+}
+
+.qr-dialog p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3.4vh, 44px);
+}
+
+.qr-close {
+  position: absolute;
+  top: clamp(12px, 3vmin, 32px);
+  right: clamp(12px, 3vmin, 32px);
+}
+
+html:has(.qr-dialog[open]) {
+  overflow: hidden;
+}
+
+/* ---------- KEYFRAMES ---------- */
+
+@keyframes tile-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-down {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+/* ---------- SMALL SCREENS: stack & scroll ---------- */
+
+@media (max-width: 860px) {
+  .hero-screen {
+    height: auto;
+    min-height: calc(100dvh - var(--nav-h));
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: var(--edge);
+    right: var(--edge);
+    z-index: 10;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 10px;
+    background: #262626;
+    border: 1px solid #3d3d3d;
+    border-radius: var(--tile-radius);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    display: none;
+  }
+
+  .site-nav.is-open .nav-links {
+    display: flex;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+
+  .nav-links .nav-cta {
+    display: block;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row dense;
+    align-content: start;
+  }
+
+  .hero-main,
+  .hero-side,
+  .hero-row {
+    display: contents;
+  }
+
+  .tile {
+    aspect-ratio: 4 / 3;
+  }
+
+  .tile-text {
+    order: -1;
+    grid-column: 1 / -1;
+    aspect-ratio: auto;
+  }
+
+  .tile-wide {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 7;
+  }
+
+  .tile-text h1 {
+    font-size: clamp(24px, 6.4vw, 40px);
+  }
+
+  .tile-text p {
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .btn-signup,
+  .link-why {
+    font-size: 15px;
+  }
+}
+
+/* phones: the intro card plus three photos (a pair over the panorama),
+   stretched to fill exactly one screen. Every row after the card
+   shares the height, so a tile added later still gets a row.
+
+   The gaps between sections even out at ~144px (twice
+   --section-space). "Why Build?" keeps its title snug under the
+   horizon, so the room goes above the moon instead, and its bottom
+   pads the same; the astronaut lane under the quote stands in for
+   most of its bottom padding instead of adding to it. */
+@media (max-width: 640px) {
+  .hero {
+    grid-template-rows: auto;
+    grid-auto-rows: minmax(120px, 1fr);
+    min-height: calc(100dvh - var(--nav-h));
+  }
+
+  .hero .tile:not(.tile-text) {
+    aspect-ratio: auto;
+  }
+
+  .hero .tile-extra {
+    display: none;
+  }
+
+  .moon-scene {
+    margin-top: 48px;
+  }
+
+  #why-build {
+    padding-bottom: var(--section-space);
+  }
+
+  .quote {
+    padding-bottom: 8px;
+  }
+
+  .quote-drift {
+    height: calc(var(--drift-size) * 2);
+    margin-top: 8px;
+  }
+}
+
+/* phones and portrait tablets: one tile per row, still filling the screen */
+@media (max-width: 640px),
+  (max-width: 1024px) and (orientation: portrait) {
+  .stats {
+    height: auto;
+    min-height: calc(var(--stats-box) + 2 * var(--section-space));
+    padding-inline: var(--edge);
+  }
+
+  .stats h2 {
+    font-size: clamp(24px, 6.4vw, 44px);
+  }
+
+  .stats-row {
+    display: contents;
+  }
+
+  .stat {
+    flex: 1 0 0;
+    min-height: clamp(96px, 13vh, 180px);
+  }
+
+  .legacy {
+    --legacy-inset: var(--edge);
+    --card-h: clamp(170px, 48vw, 300px);
+  }
+
+  .legacy h2 {
+    font-size: clamp(28px, 7.4vw, 48px);
+  }
+
+  .legacy-intro > p {
+    font-size: 15px;
+  }
+
+  .timeline-rail {
+    flex: 1 1 auto;
+  }
+
+  .reel {
+    --fade: 16px;
+  }
+
+  .quote {
+    --quote-inset: calc(var(--edge) * 2);
+  }
+
+  .quote figure {
+    font-size: clamp(24px, 7vw, 40px);
+  }
+
+  .quote figcaption {
+    font-size: 14px;
+  }
+}
+
+/* below laptop width the event panels stack and open downwards */
+@media (max-width: 1023px),
+  (max-width: 1180px) and (orientation: portrait) {
+  .events h2 {
+    font-size: clamp(28px, 7.4vw, 48px);
+  }
+
+  .events-head p {
+    font-size: 15px;
+  }
+
+  /* keeps the pill on one line down to a 375px phone */
+  .events-head .next-meetup {
+    column-gap: 0.7em;
+    padding-inline: 0.9em 1.1em;
+    font-size: 13px;
+  }
+
+  .events-list {
+    --open-h: clamp(300px, 88vw, 460px);
+
+    flex-direction: column;
+    height: auto;
+  }
+
+  .event {
+    flex: none;
+    height: clamp(64px, 9vw, 80px);
+    transition: height 0.7s var(--ease-in-out);
+  }
+
+  .event.is-open {
+    height: var(--open-h);
+  }
+
+  .event-photo {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: var(--open-h);
+    translate: 0 -50%;
+  }
+
+  .event-label {
+    top: 0;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+
+  .event-body {
+    right: var(--panel-pad);
+    width: auto;
+  }
+}
+
+/* copy on top, QR tile underneath */
+@media (max-width: 1023px),
+  (max-width: 1180px) and (orientation: portrait) {
+  .join {
+    --qr-size: clamp(200px, 52vw, 400px);
+
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    padding-inline: var(--edge);
+  }
+
+  .join h2 {
+    font-size: clamp(32px, 8vw, 64px);
+  }
+
+  .join-qr {
+    justify-self: start;
+  }
+}
+
+/* a phone is already on the site, so the code has nothing to offer */
+@media (max-width: 560px) {
+  .join-qr {
+    display: none;
+  }
+
+  .join-field {
+    flex-direction: column;
+  }
+
+  .join-field input {
+    flex: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav,
+  .tile,
+  .tile-text > *,
+  .tile::before {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .frame,
+  .frame img {
+    clip-path: none;
+    transform: none;
+    filter: none;
+  }
+
+  .frame {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tile.is-loaded .frame {
+    opacity: 1;
+  }
+
+  .stats.is-armed .stat,
+  .legacy.is-armed .legacy-intro > *,
+  .legacy.is-armed .reel {
+    opacity: 1;
+    transform: none;
+  }
+
+  .event,
+  .event::before,
+  .event-label,
+  .event-body {
+    transition: none;
+  }
+}
+
+/* ---------- SPACE BACKDROP ---------- */
+
+/* One starfield for the whole page: a fixed canvas behind every section
+   (js/starfield.js) with the faint nebula glow from "What do we do?".
+   The sections that used to paint their own sky are cleared so it
+   shows through. */
+.site-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 45% 40% at 85% 30%,
+      rgba(127, 156, 197, 0.14),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 10% 85%,
+      rgba(184, 208, 218, 0.08),
+      transparent 70%
+    );
+}
+
+#what-do-we-do,
+.moon-scene {
+  background: none;
+}
+
+/* Line these two up with the rest of the page: full-width grid on the
+   shared inset, content from the first column. (build-sections.css
+   keeps the centred 1280px grid for legacy-site.html.) */
+#what-do-we-do .grid-12,
+#why-build .grid-12 {
+  max-width: none;
+  padding-inline: var(--inset);
+}
+
+#what-do-we-do .wdwd-content {
+  grid-column: 1 / 7;
+}
+
+/* A light, playful list: modest type, a small numbered bubble per
+   item (the current one fills in blue) and dashed dividers. */
+#what-do-we-do .wdwd-content {
+  counter-reset: wdwd;
+}
+
+#what-do-we-do .wdwd-title {
+  font-size: clamp(32px, 2.8vw, 44px);
+  margin-bottom: clamp(16px, 2.5vh, 32px);
+}
+
+#what-do-we-do .wdwd-item {
+  counter-increment: wdwd;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  max-width: 580px;
+  padding: clamp(16px, 2.5vh, 24px) 0;
+}
+
+#what-do-we-do .wdwd-item:not(:last-child) {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+}
+
+#what-do-we-do .wdwd-item::before {
+  content: counter(wdwd);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  color: #ffffff;
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#what-do-we-do .wdwd-item.is-active::before {
+  background-color: #83a0da;
+  border-color: #83a0da;
+  color: #111111;
+  transform: rotate(-10deg) scale(1.1);
+}
+
+#what-do-we-do .wdwd-item h3 {
+  font-size: clamp(22px, 1.8vw, 30px);
+  margin-bottom: 0;
+}
+
+#what-do-we-do .wdwd-item p {
+  grid-column: 2;
+  margin-top: 8px;
+  font-size: clamp(17px, 1.3vw, 20px);
+}
+
+#what-do-we-do .wdwd-item.is-active h3 {
+  transform: none;
+}
+
+/* Centre the astronaut in the open space beside the list instead of
+   hugging the right side */
+#what-do-we-do .wdwd-astronaut {
+  grid-column: 7 / 13;
+}
+
+/* Scaled up with the screen so he balances the list rather than
+   floating small in a wide empty half */
+#what-do-we-do .wdwd-astronaut .wdwd-spaceman {
+  width: clamp(150px, 13vw, 230px);
+}
+
+/* Centre in the part of the screen the fixed nav doesn't cover */
+#what-do-we-do .wdwd-pin {
+  padding: calc(var(--nav-h) + 24px) 0 24px;
+}
+
+/* Laid out like "What do we do?": a one-line title at the same size
+   and spacing, then one reading column down the left half (the
+   astronaut lands over the right): the lead line, the paragraph at
+   a readable measure, and the punchline on its own line to close.
+   Ragged-right, since justified text left big gaps between words. */
+/* sits closer under the horizon */
+#why-build {
+  padding-top: 24px;
+}
+
+#why-build .why-build-title {
+  grid-column: 1 / 7;
+  font-size: clamp(32px, 2.8vw, 44px);
+  line-height: 1.1;
+  margin-bottom: clamp(16px, 2.5vh, 32px);
+}
+
+#why-build .why-build-body {
+  grid-column: 1 / 7;
+  max-width: 600px;
+  padding-left: 0;
+}
+
+#why-build .why-build-body p {
+  text-align: left;
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+}
+
+#why-build .why-build-body p:first-child {
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.35;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+#why-build .why-build-body .why-build-punch {
+  margin-top: 20px;
+  font-size: clamp(18px, 1.4vw, 22px);
+  font-weight: 500;
+}
+
+/* The punchline gets the highlighter sweep */
+#why-build mark {
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+  #what-do-we-do .wdwd-content {
+    grid-column: 1 / -1;
+  }
+
+  #why-build .why-build-title,
+  #why-build .why-build-body {
+    grid-column: 1 / -1;
+  }
+}
+
+/* phones drop to the narrow edge, like the stats */
+@media (max-width: 640px),
+  (max-width: 1024px) and (orientation: portrait) {
+  #what-do-we-do .grid-12,
+  #why-build .grid-12 {
+    padding-inline: var(--edge);
+  }
+
+  .events {
+    padding-inline: var(--edge);
+  }
+}
+
+/* Fade the planet out to show the stars, instead of into a solid
+   page colour */
+#why-build::after {
+  display: none;
+}
+
+#why-build .planet {
+  -webkit-mask-image: linear-gradient(
+    #000 calc(100% - min(220px, 60%)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    #000 calc(100% - min(220px, 60%)),
+    transparent
+  );
+}

@@ -2,667 +2,902 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-      crossorigin="anonymous"
-    />
-
     <title>Hackerspace MMU</title>
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="images/hsm_logo_ver_3.png"
-    />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="images/brand/hackerspace-logo-96.png" />
 
     <link
-      href="https://fonts.googleapis.com/css?family=Ubuntu"
-      rel="stylesheet"
+      rel="preload"
+      href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <link
-      href="https://fonts.googleapis.com/css?family=Prompt"
-      rel="stylesheet"
+      rel="preload"
+      href="vendor/main-fonts/Jost-VariableFont_wght.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
-    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
+    <!-- Local CSS and JS share one ?v=: bump it on every change to any of
+         them, so returning visitors don't mix cached and new files -->
+    <link href="css/build-sections.css?v=7" rel="stylesheet" />
+    <link href="css/index.css?v=7" rel="stylesheet" />
   </head>
   <body>
-    <header>
-      <div
-        id="above-the-fold"
-        class="d-flex flex-column justify-content-center min-vh-100"
+    <!-- Space backdrop behind the whole page (js/starfield.js) -->
+    <canvas class="site-stars" aria-hidden="true"></canvas>
+
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html" class="brand">
+        <img src="images/brand/hackerspace-logo.svg" alt="Hackerspace MMU logo" />
+        <span>Hackerspace MMU</span>
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-controls="nav-links"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <nav id="header-nav" class="navbar navbar-expand-lg w-100">
-          <div class="container-fluid nav-container d-flex align-items-center">
-            <a href="index.html" class="navbar-brand d-flex align-items-center">
-              <img
-                src="images/hsm_logo_ver_3.png"
-                width="85"
-                alt="Hackerspace Logo"
-              />
-              <span class="nav-logo-text">Hackerspace MMU</span>
-            </a>
+        <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+          <path
+            d="M1 1h20M1 8h20M1 15h20"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
 
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span
-                class="navbar-toggler-icon"
-                style="
-                  background-image: url(&quot;data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E&quot;);
-                "
-              ></span>
-            </button>
-            <div
-              class="collapse navbar-collapse flex-row-reverse"
-              id="navbarSupportedContent"
-            >
-              <ul id="nav-list" class="navbar-nav">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#about-us"> ABOUT US</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#events-and-activities">
-                    EVENTS & ACTIVITIES</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link action-button" href="#registration-form">
-                    JOIN US NOW
-                  </a>
-                </li>
-              </ul>
-            </div>
+      <ul id="nav-links" class="nav-links">
+        <li><a href="#what-do-we-do">About Us</a></li>
+        <li><a href="#legacy">History</a></li>
+        <li><a href="#events-and-activities">Events &amp; Activities</a></li>
+        <li><a class="nav-cta" href="#registration">Join Us Now</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-screen">
+      <main class="hero">
+        <div class="hero-main">
+          <div class="hero-row" style="--grow: 433">
+            <figure class="tile tile-blue" style="--grow: 674; --i: 0">
+              <div class="frame">
+                <img
+                  src="images/hero-section/hero-2023-06-06.jpg"
+                  srcset="
+                    images/hero-section/hero-2023-06-06-480.webp 480w,
+                    images/hero-section/hero-2023-06-06-800.webp 800w,
+                    images/hero-section/hero-2023-06-06-1200.webp 1200w,
+                    images/hero-section/hero-2023-06-06.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="Members working on laptops around a long table"
+                />
+              </div>
+            </figure>
+            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 20% 50%">
+              <div class="frame">
+                <img
+                  src="images/hero-section/hero-members-at-pc.jpg"
+                  srcset="
+                    images/hero-section/hero-members-at-pc-480.webp 480w,
+                    images/hero-section/hero-members-at-pc-800.webp 800w,
+                    images/hero-section/hero-members-at-pc-1200.webp 1200w,
+                    images/hero-section/hero-members-at-pc.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="A member pointing at a monitor while helping another with a 3D scene"
+                />
+              </div>
+            </figure>
           </div>
-        </nav>
 
-        <div
-          id="header-container"
-          class="container-fluid position-relative d-flex flex-row justify-content-center align-items-center flex-grow-1"
-        >
-          <div class="row w-100 align-items-center pr-0">
-            <div
-              id="header-side"
-              data-aos="fade-right"
-              data-aos-delay="300"
-              class="col-12 col-lg-6"
-            >
-              <h1 id="header-title">
-                Grow with <br /><span>Hackerspace MMU</span>
-              </h1>
-              <p id="header-content">
-                We're a bunch of coders building things together. Not
-                (necessarily) hacking into things. Find a community to support
-                your learning and learn from what others share!
+          <div class="hero-row" style="--grow: 318">
+            <figure class="tile tile-white tile-extra" style="--grow: 394; --i: 3">
+              <div class="frame">
+                <img
+                  src="images/hero-section/hero-2023-05-30.jpg"
+                  srcset="
+                    images/hero-section/hero-2023-05-30-480.webp 480w,
+                    images/hero-section/hero-2023-05-30-800.webp 800w,
+                    images/hero-section/hero-2023-05-30-1200.webp 1200w,
+                    images/hero-section/hero-2023-05-30.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="Members gathered around tables in a seminar room"
+                />
+              </div>
+            </figure>
+            <figure class="tile tile-wide tile-blue" style="--grow: 742; --i: 4">
+              <div class="frame">
+                <img
+                  src="images/hero-section/hero-2026-03-30-pano.jpg"
+                  srcset="
+                    images/hero-section/hero-2026-03-30-pano-480.webp 480w,
+                    images/hero-section/hero-2026-03-30-pano-800.webp 800w,
+                    images/hero-section/hero-2026-03-30-pano-1200.webp 1200w,
+                    images/hero-section/hero-2026-03-30-pano-1600.webp 1600w,
+                    images/hero-section/hero-2026-03-30-pano.jpg 2200w
+                  "
+                  sizes="(max-width: 860px) 145vw, 45vw"
+                  alt="Panorama of a full room of members celebrating with cakes"
+                />
+              </div>
+            </figure>
+          </div>
+
+          <div class="hero-row row-text" style="--grow: 379">
+            <section class="tile tile-text" style="--grow: 684; --i: 5">
+              <h1>Hackerspace MMU</h1>
+              <p>
+                We're a bunch of problem solvers building things together. Not
+                (necessarily) hacking into things. We support each other’s
+                learning and learn from what others share!
               </p>
-              <br />
-              <div class="btn-grp d-flex flex-column flex-sm-row gap-2">
-                <a
-                  class="join-us-btn d-flex flex-row align-items-center justify-content-center gap-2"
-                  href="#registration-form"
+              <div class="actions">
+                <a class="btn-signup" href="#registration-form"
+                  >Sign Up</a
                 >
-                  <span>Join Us</span>
-                  <img class="join-us-btn-icon" src="/icon/right-arrow.svg" />
-                </a>
-                <a class="why-btn" href="#what-do-we-do">Why should I join?</a>
+                <a class="link-why" href="legacy-site.html#about-us"
+                  >Why should I join?</a
+                >
               </div>
-            </div>
-            <div
-              id="header-img"
-              data-aos="fade-left"
-              data-aos-delay="300"
-              class="col-12 col-lg-6 d-none d-lg-flex justify-self-end w-50 h-100"
-            >
-              <img src="images/hsm_logo_ver_3.png" alt="Hackerspace Logo" />
-            </div>
+            </section>
+            <figure class="tile tile-white tile-extra" style="--grow: 450; --i: 6; --pos: 62% 50%">
+              <div class="frame">
+                <img
+                  src="images/hero-section/hero-2026-03-30.jpg"
+                  srcset="
+                    images/hero-section/hero-2026-03-30-480.webp 480w,
+                    images/hero-section/hero-2026-03-30-800.webp 800w,
+                    images/hero-section/hero-2026-03-30-1200.webp 1200w,
+                    images/hero-section/hero-2026-03-30.jpg 1600w
+                  "
+                  sizes="(max-width: 860px) 50vw, 40vw"
+                  alt="A member presenting slides to the audience"
+                />
+              </div>
+            </figure>
           </div>
         </div>
-      </div>
-    </header>
 
-    <div id="about-us">
-      <div class="container-fluid">
-        <div class="row">
-          <div data-aos="zoom-in" data-aos-delay="100" class="col-12 col-lg-4">
-            <span>Achieve more with us </span>
-            <h1 class="achievement-title">
-              Open and endless <br />conversations about <br />tech and more
-            </h1>
-          </div>
-          <div
-            class="col-12 col-lg-8 d-flex flex-column flex-md-row mt-4 mt-lg-0"
-          >
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="150"
-              class="col-12 col-md-6 d-flex flex-row align-items-start"
-            >
-              <div class="icon left-icon col-auto">
-                <img src="/icon/user 6.svg" />
-              </div>
-              <div class="content col">
-                <h1 class="content-title">Take the first step</h1>
-                <p>
-                  If you're taking your baby steps, there's a lot of peer
-                  experience you can draw on. We're all self-learners, but we
-                  can point you in the right direction. It's a lot easier to
-                  walk the path when you know it's not one you have to walk
-                  alone!
-                </p>
-              </div>
+        <div class="hero-side">
+          <figure class="tile tile-blue tile-extra" style="--grow: 631; --i: 2">
+            <div class="frame">
+              <img
+                src="images/hero-section/hero-2025-09-23.jpg"
+                srcset="
+                  images/hero-section/hero-2025-09-23-480.webp 480w,
+                  images/hero-section/hero-2025-09-23-800.webp 800w,
+                  images/hero-section/hero-2025-09-23-1200.webp 1200w,
+                  images/hero-section/hero-2025-09-23.jpg 1600w
+                "
+                sizes="(max-width: 860px) 50vw, 40vw"
+                alt="Members coding together at a hackathon"
+              />
             </div>
-
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="200"
-              class="col-12 col-md-6 d-flex flex-row align-items-start"
-            >
-              <div class="icon right-icon col-auto">
-                <img src="/icon/user 6.svg" />
-              </div>
-              <div class="content col">
-                <h1 class="content-title">Reach the next level</h1>
-                <p>
-                  If you're already taking freelance projects and contributing
-                  to open source projects, then we're a community who can
-                  appreciate your work and provide you both the peer pressure
-                  you need to keep it up, and the peer support to get you to the
-                  next level!
-                </p>
-              </div>
+          </figure>
+          <figure class="tile tile-red tile-extra" style="--grow: 505; --i: 7; --pos: 55% 50%">
+            <div class="frame">
+              <img
+                src="images/hero-section/hero-2024-09-08.jpg"
+                srcset="
+                  images/hero-section/hero-2024-09-08-480.webp 480w,
+                  images/hero-section/hero-2024-09-08-800.webp 800w,
+                  images/hero-section/hero-2024-09-08-1200.webp 1200w,
+                  images/hero-section/hero-2024-09-08.jpg 1600w
+                "
+                sizes="(max-width: 860px) 50vw, 40vw"
+                alt="A member presenting a Pomato Timer app on a large screen"
+              />
             </div>
-          </div>
+          </figure>
         </div>
-      </div>
+      </main>
     </div>
 
-    <div id="what-do-we-do">
-      <div class="container-fluid">
-        <div class="title" data-aos="fade-up">
-          <div class="top-title">
-            <div class="top-line"></div>
-            <h1
-              class="text-center ml-4 w-full d-flex align-items-center justify-content-center"
-            >
-              WHAT DO WE DO?
-            </h1>
-            <div class="bottom-line"></div>
-          </div>
-          <p>
-            A hackerspace/makerspace is a community where people with common
-            interests (like in coding, tech, art, etc) meet, socialise as well!
-            And we all definitely started as one.though we mostly self-learn,
-            but we do ask one another for some guidance esp when starting on
-            something.
-          </p>
-        </div>
-        <div class="d-flex flex-column flex-lg-row">
-          <div class="col side-content">
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="300"
-              class="box-content d-flex"
-            >
-              <div class="icon icon-1">
-                <img src="icon/trophy-cup-silhouette 7.svg" alt="" />
-              </div>
-              <div class="box-body">
-                <h2 class="sub-title">Projects</h2>
-                <p>
-                  We declare a project and work towards it. That's our mode of
-                  learning. It ranges from "I'll follow this PHP tutorial and
-                  try to build a personal website" to "I'll create a drag and
-                  drop library for Javascript in React."
-                </p>
-              </div>
+    <section id="what-do-we-do">
+      <!-- Scroll stops: one in the middle of each item's stretch of scroll
+           (matches where clicking an item scrolls to) -->
+      <span class="snap-stop" style="--at: 30vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
+      <div class="wdwd-pin">
+        <div class="grid-12">
+          <div class="wdwd-content">
+            <h2 class="wdwd-title">What do we do?</h2>
+
+            <div class="wdwd-item is-active" role="button" tabindex="0" aria-current="true">
+              <h3>Build Projects</h3>
+              <p>
+                Declare a project &rarr; Build it &rarr; Learn as you go<br />
+                Anything from a first PHP website to your own React
+                drag-and-drop library.
+              </p>
             </div>
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="350"
-              class="box-content d-flex"
-            >
-              <div class="icon icon-2">
-                <img src="icon/trophy-cup-silhouette 7.svg" alt="" />
-              </div>
-              <div class="box-body">
-                <h2 class="sub-title">Tech News</h2>
-                <p>
-                  We're all geeks, and some of us can't stop talking, so you
-                  can't help but be up to date on all the tech news. Especially
-                  on AMD's latest chip *cough* Shaun *cough*.
-                </p>
-              </div>
+
+            <div class="wdwd-item" role="button" tabindex="0">
+              <h3>Geek Out</h3>
+              <p>
+                Chat about the latest in tech.<br />
+                You can be sure someone will admire your custom mechanical
+                keyboard or your VIM terminal setup.
+              </p>
             </div>
-            <div
-              data-aos="zoom-in"
-              data-aos-delay="400"
-              class="box-content d-flex"
-            >
-              <div class="icon icon-3">
-                <img src="icon/trophy-cup-silhouette 7.svg" alt="" />
-              </div>
-              <div class="box-body">
-                <h2 class="sub-title">Feedback</h2>
-                <p>
-                  Sometimes, hearing your friends tell you something you built
-                  is awesome is enough. Sometimes, you need ideas on what else
-                  to add. Sometimes, a bit of code refuses to compile and you
-                  just want to scream and someone needs to point out that you
-                  forgot a semi-colon. With love. ❤
-                </p>
-              </div>
+
+            <div class="wdwd-item" role="button" tabindex="0">
+              <h3>Give Feedback</h3>
+              <p>
+                The hype when you need it. Some ideas when you're stuck.
+                Someone to spot the missing semicolon.<br />
+                With love &lt;3
+              </p>
             </div>
           </div>
 
-          <div
-            data-aos="fade-left"
-            data-aos-delay="350"
-            class="col image-physical-session"
-          >
+          <div class="wdwd-astronaut" aria-hidden="true">
+            <div class="wdwd-spaceman" data-gear="hat">
+              <img src="images/what-do-we-do-section/astronaut.png" alt="" />
+              <!-- Gear drawn in the image's own coordinates (282 x 458) -->
+              <svg class="wdwd-gear" viewBox="0 0 282 458">
+                <g class="wdwd-acc wdwd-hat">
+                  <image
+                    href="images/what-do-we-do-section/builder-hat.svg?v=2"
+                    x="0.5"
+                    y="-31.5"
+                    width="257"
+                    height="89.5"
+                    transform="rotate(-6 130 30)"
+                  />
+                </g>
+
+                <g class="wdwd-acc wdwd-glasses">
+                  <image
+                    href="images/what-do-we-do-section/glasses.svg"
+                    x="33"
+                    y="143"
+                    width="169"
+                    height="80"
+                  />
+                </g>
+
+                <g class="wdwd-acc wdwd-megaphone">
+                  <g transform="rotate(-24 185 300)">
+                    <image
+                      href="images/what-do-we-do-section/speaker.svg"
+                      x="159"
+                      y="209"
+                      width="180"
+                      height="178"
+                    />
+                    <g
+                      class="wdwd-waves"
+                      fill="none"
+                      stroke="#dcdcdc"
+                      stroke-width="7"
+                      stroke-linecap="round"
+                    >
+                      <path d="M306 274 Q322 300 306 326" />
+                      <path d="M326 258 Q350 300 326 342" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Moon scene: "Why Build?" pins with the horizon halfway down the screen
+         while you scroll through three stops: arrive, land (js/landing.js),
+         hold. Then the page carries on. -->
+    <div class="moon-scene">
+      <span class="snap-stop" style="--at: -50vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 0vh" aria-hidden="true"></span>
+      <span class="snap-stop" style="--at: 50vh" aria-hidden="true"></span>
+      <section id="why-build">
+        <div class="planet-clip" aria-hidden="true">
+          <div class="planet-glow"></div>
+          <div class="planet">
+            <div class="planet-surface">
+              <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
+              <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
+              <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
+              <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
+              <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
+              <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
+              <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
+              <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
+            </div>
+          </div>
+        </div>
+        <!-- The astronaut from "What do we do?" lands here (js/landing.js) -->
+        <div class="landing" aria-hidden="true">
+          <div class="grid-12">
+            <div class="landing-spot">
+              <span class="landing-dust"></span>
+              <img class="landing-flag" src="images/why-build-section/flag.svg" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="grid-12">
+          <h2 class="why-build-title">Why Build?</h2>
+          <div class="why-build-body">
+            <p>
+              Why spend time building projects when you're already taking
+              classes?
+            </p>
+            <p>
+              Well your formal courses give you the foundation, but it barely
+              gets your feet wet. Your future job interviewer will want to see
+              what you've built (and they're not looking for assignments!) They
+              will ask if you know Laravel, not PHP. They will ask if you have
+              built an app, not if you know Java or C++.
+            </p>
+            <p class="why-build-punch"><mark>Don't just learn to code. Build.</mark></p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="stats" aria-labelledby="stats-heading">
+      <h2 id="stats-heading">Statistics</h2>
+
+      <div class="stats-grid">
+        <div class="stats-row">
+          <div class="stat stat-photo stat-members" style="--i: 0">
             <img
-              class="physical-session"
-              src="images/PhysicalSession.jpg"
-              alt="physical-session"
+              src="images/statistic-section/active-members.jpg"
+              srcset="
+                images/statistic-section/active-members-480.webp 480w,
+                images/statistic-section/active-members-800.webp 800w,
+                images/statistic-section/active-members-1200.webp 1200w,
+                images/statistic-section/active-members.jpg 1600w
+              "
+              sizes="(max-width: 860px) 100vw, 50vw"
+              alt="Members watching a talk"
+              loading="lazy"
+            />
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="73" data-endpoint="members"
+                  >73</span
+                ></span
+              >
+              <span>Active Members</span>
+            </p>
+          </div>
+          <div class="stat stat-days" style="--i: 1">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="5574" data-since="2011-06-09"
+                  >5574</span
+                ></span
+              >
+              <span>DAYS ACTIVE</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat stat-meetups" style="--grow: 508; --i: 2">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="539" data-endpoint="meetups"
+                  >539</span
+                ></span
+              >
+              <span>MEETUPS</span>
+            </p>
+          </div>
+          <div class="stat stat-updates" style="--grow: 1135; --i: 3">
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="2179" data-endpoint="updates"
+                  >2179</span
+                >
+                PROJECT UPDATES</span
+              >
+            </p>
+            <img
+              class="stat-person"
+              src="images/statistic-section/project-updates.webp"
+              alt="A member smiling behind a sticker-covered laptop"
+              loading="lazy"
             />
           </div>
         </div>
-      </div>
-    </div>
 
-    <div id="separator-2">
-      <div class="container-fluid">
-        <div data-aos="zoom-in" class="sep-2-title">
-          <h1 class="text-center">WHY HACK THOUGH?</h1>
-        </div>
-        <div data-aos="fade-up" class="sep-2-content">
-          <h5 class="text-center">
-            Especially if you're already in a degree program learning about
-            coding, right? Well your formal courses give you the foundation, but
-            it barely gets your feet wet. Your future job interviewer will want
-            to see what you've built (and they're not looking for assignments!)
-            They will ask if you know Laravel, not PHP. They will ask if you
-            have built an app, not if you know Java or C++. Coding is a language
-            you speak, not alphabets you memorize.
-          </h5>
-        </div>
-      </div>
-    </div>
-
-    <div id="statistics">
-      <div class="container-fluid">
-        <div class="top-title" data-aos="fade-up">
-          <div class="top-line"></div>
-          <h1 class="text-center">STATISTICS</h1>
-          <div class="bottom-line"></div>
-        </div>
-        <br />
-        <div class="row text-center">
-          <div
-            data-aos="flip-left"
-            data-aos-delay="500"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/checked-thicker 1.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="days-active"></div>
-              <div class="card-body">Days Active</div>
-            </div>
-          </div>
-          <div
-            data-aos="flip-left"
-            data-aos-delay="300"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/user 6.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="active-members"></div>
-              <div class="card-body">Active Members</div>
-            </div>
-          </div>
-          <div
-            data-aos="flip-left"
-            data-aos-delay="600"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/Vector.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="meetups"></div>
-              <div class="card-body">Meetups</div>
-            </div>
-          </div>
-          <div
-            data-aos="flip-left"
-            data-aos-delay="400"
-            class="mx-auto col-md-3 col-sm-6 col-sx-12 card-container"
-          >
-            <div class="card">
-              <div class="icon">
-                <img src="icon/Group.svg" alt="user-icon" />
-              </div>
-              <div class="span" id="project-updates"></div>
-              <div class="card-body">Project Updates</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="separator-3" class="text-center">
-      <div class="container-fluid">
-        <div class="sep-3-container" data-aos="fade-up">
-          <h4>
-            "I hear and I forget. I see and I remember. I do and I understand."
-          </h4>
-          <p>
-            -
-            <a
-              href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
-              >Not</a
-            >
-            Confucius
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div id="events-and-activities">
-      <div
-        class="container-fluid d-flex flex-column w-full justify-content-center align-items-center"
-      >
-        <div class="top-title" data-aos="fade-up">
-          <div class="top-line"></div>
-          <h1 class="text-center">EVENTS AND ACTIVITIES</h1>
-          <div class="bottom-line"></div>
-        </div>
-
-        <div
-          class="row g-4 d-flex flex-column flex-sm-row justify-content-center align-items-center"
-        >
-          <div data-aos="zoom-in" class="mx-auto col-lg-4 col-sm-6 col-12">
-            <div class="card h-100">
-              <img
-                class="card-img-top"
-                src="images/meetups-events.jpg"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Weekly Meetups</h5>
-                <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />Every
-                  Tuesday<br />
-                  <img class="events-icon" src="/icon/time.svg" />8.00pm -
-                  10.00pm
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            data-aos="zoom-in"
-            data-aos-delay="300"
-            class="mx-auto col-lg-4 col-sm-6 col-12"
-          >
-            <div class="card h-100">
-              <img
-                src="images/hackathon-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Hackathon</h5>
-                <p class="card-text">
-                  <img class="events-icon" src="/icon/date.svg" />Every
-                  Trimester<br />
-                  <img class="events-icon" src="/icon/time.svg" />9am - 10pm
-                </p>
-              </div>
-            </div>
-          </div>
-          <div data-aos="zoom-in" class="mx-auto col-lg-4 col-sm-6 col-12">
-            <div class="card h-100">
-              <img
-                src="images/idea-talk-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Idea Talk</h5>
-              </div>
-            </div>
-          </div>
-          <div data-aos="zoom-in" class="mx-auto col-lg-4 col-sm-6 col-12">
-            <div class="card h-100">
-              <img
-                src="images/presentation-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Progress Presentation</h5>
-              </div>
-            </div>
-          </div>
-
-          <div
-            data-aos="zoom-in"
-            data-aos-delay="300"
-            class="mx-auto col-lg-4 col-sm-6 col-12"
-          >
-            <div class="card h-100">
-              <img
-                src="images/anniversary-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">200th Meetup Anniversary</h5>
-              </div>
-            </div>
-          </div>
-          <div
-            data-aos="zoom-in"
-            data-aos-delay="300"
-            class="mx-auto col-lg-4 col-sm-6 col-12"
-          >
-            <div class="card h-100">
-              <img
-                src="images/mamak-events.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">Mamak Session</h5>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="registration">
-      <div id="footer">
-        <div class="qrcode-and-form">
-          <div class="qr-code">
-            <h1 style="font-weight: bold; text-align: center">Scan here!</h1>
-            <img src="./images/hackerspace_qr.png" alt="QR Code" />
-          </div>
-          <form
-            id="registration-form"
-            action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
-            target="_blank"
-          >
-            <div class="form-title"><h1>REGISTER HERE</h1></div>
-            <br />
-            <div class="row">
-              <input
-                type="email"
-                class="form-control mb-4 rounded"
-                id="mmuEmail"
-                placeholder="Enter your MMU email address."
-              />
-              <button
-                type="submit"
-                id="registration-submit-button"
-                class="submit-button btn"
+        <div class="stats-row">
+          <div class="stat stat-photo stat-hackathons" style="--i: 4">
+            <img
+              src="images/statistic-section/hackathon.jpg"
+              srcset="
+                images/statistic-section/hackathon-480.webp 480w,
+                images/statistic-section/hackathon-800.webp 800w,
+                images/statistic-section/hackathon-1200.webp 1200w,
+                images/statistic-section/hackathon.jpg 1600w
+              "
+              sizes="min(100vw, 1680px)"
+              alt="Members coding at laptops during a hackathon"
+              loading="lazy"
+            />
+            <p class="stat-text">
+              <span
+                ><span class="count" data-count="67">67</span> Hackathons</span
               >
-                Submit
-              </button>
-            </div>
-            <br />
-            <div id="emailHelp" class="form-text">
-              *Please use your MMU email to get registration form. <br />
-              Hackerspace MMU is only open for MMU student and staff.
-            </div>
-          </form>
-        </div>
-
-        <div class="space-img">
-          <img src="images/pngkey 13.png" alt="" />
-        </div>
-        <div
-          class="footer-links d-flex flex-column w-full justify-content-center align-items-center"
-        >
-          <p class="welcome-word welcome-word-title">
-            Welcome aboard, explorer
-          </p>
-          <p class="welcome-word">
-            Join us, and explore your creativity like never before!
-          </p>
-          <br />
-          <br />
-          <br />
-          <div
-            class="social-media-wrapper d-flex flex-column w-100 justify-content-center align-items-center"
-          >
-            <div
-              class="social-media-container d-flex flex-row w-100 justify-content-center align-items-center"
-            >
-              <div class="social-media-info d-flex flex-row w-100">
-                <div class="footer-icon-wrapper">
-                  <img class="footer-icon" src="/icon/location.svg" alt="" />
-                </div>
-                Multimedia University Cyberjaya
-              </div>
-            </div>
-
-            <div
-              class="social-media-container d-flex flex-row w-100 justify-content-center align-items-center"
-            >
-              <div class="social-media-info d-flex flex-row w-100">
-                <div class="footer-icon-wrapper">
-                  <img class="footer-icon" src="/icon/github.svg" alt="" />
-                </div>
-                <a
-                  href="https://github.com/hackerspacemmu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-white text-decoration-none"
-                  title="Check out our GitHub"
-                  >github.com/hackerspacemmu</a
-                >
-              </div>
-            </div>
-
-            <div
-              class="social-media-container d-flex flex-row w-100 justify-content-center align-items-center"
-            >
-              <div class="social-media-info d-flex flex-row w-100">
-                <div class="footer-icon-wrapper">
-                  <img class="footer-icon" src="/icon/email2.svg" alt="" />
-                </div>
-                hackerspacemmu@gmail.com
-              </div>
-            </div>
+            </p>
           </div>
         </div>
       </div>
-    </div>
-
-    <section class="animation">
-      <div class="content-box-1">Take your coding skills</div>
-      <div class="content-box-2"><p>To the next level</p></div>
-      <img class="rocket" src="images/rocket.png" alt="rocket" />
     </section>
 
-    <div class="black-bar sticky-bottom">
-      <p>© Copyright Hackerspace MMU</p>
-    </div>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.js"
-      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-      crossorigin="anonymous"
-    ></script>
+    <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
+      <div class="legacy-intro">
+        <h2 id="legacy-heading">Since 2011,<br />and still building.</h2>
+        <p>
+          Hackathons, weekly meetups, mamak runs and plenty of late nights.
+          Here's every year of Hackerspace MMU so far.
+        </p>
+        <div class="timeline">
+          <p class="timeline-now" aria-hidden="true">2011</p>
+          <div class="timeline-rail">
+            <div class="timeline-flight" aria-hidden="true">
+              <span class="timeline-trail"></span>
+              <img
+                class="timeline-rocket"
+                src="images/legacy-section/rocket.svg"
+                alt=""
+                draggable="false"
+              />
+            </div>
+            <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
+            <div class="timeline-ends" aria-hidden="true">
+              <span></span><span></span>
+            </div>
+          </div>
+          <button
+            class="timeline-pause"
+            type="button"
+            aria-label="Pause slideshow"
+          >
+            <svg class="icon-pause" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor" />
+            </svg>
+            <svg class="icon-play" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2.5 1v10l8.5-5z" fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+      <!--
+        One card per year, each showing images/legacy-section/legacy-<year>.jpg.
+        To swap a photo, replace that file (see images/legacy-section/README.md)
+        and update the alt text below. Add more cards with the same data-year
+        for extra photos. A card without a photo yet can use:
+          <div class="year-photo is-placeholder"><span>2011</span></div>
+        Cards are 4:3 by default; set --ar (e.g. 3 / 2) to change the shape.
+      -->
+      <div
+        class="reel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Hackerspace MMU photos by year"
+      >
+        <div class="reel-track">
+          <figure class="year-card" data-year="2011">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2011.jpg" alt="Members hacking at laptops in a meeting room" loading="lazy" />
+            </div>
+            <figcaption><b>2011</b> Where it all began</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2012.jpg" alt="Members at the mamak after a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2012</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2013">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2013.jpg" alt="A member presenting at a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2013</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2014">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2014.jpg" alt="A project demo at a meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2014</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2015.jpg" alt="Members out for a meal together" loading="lazy" />
+            </div>
+            <figcaption><b>2015</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2016">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2016.jpg" alt="Members celebrating with a birthday cake" loading="lazy" />
+            </div>
+            <figcaption><b>2016</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2017">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2017.jpg" alt="A member giving a talk" loading="lazy" />
+            </div>
+            <figcaption><b>2017</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2018.jpg" alt="The 2018 hackathon crew" loading="lazy" />
+            </div>
+            <figcaption><b>2018</b> Hackathon crew</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2019">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2019.jpg" alt="The 2019 trimester hackathon" loading="lazy" />
+            </div>
+            <figcaption><b>2019</b> Trimester hackathon</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2020">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2020.jpg" alt="A virtual session game night" loading="lazy" />
+            </div>
+            <figcaption><b>2020</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2021.jpg" alt="The April 2021 meet and greet" loading="lazy" />
+            </div>
+            <figcaption><b>2021</b> Meet &amp; greet</figcaption>
+          </figure>
+          <figure class="year-card" data-year="2022">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2022.jpg" alt="Members working at a weekly meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2022</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2023">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2023.jpg" alt="A 2023 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2023</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2024.jpg" alt="A 2024 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2024</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2025">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2025.jpg" alt="A 2025 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2025</b></figcaption>
+          </figure>
+          <figure class="year-card" data-year="2026">
+            <div class="year-photo">
+              <img src="images/legacy-section/legacy-2026.jpg" alt="A 2026 meetup" loading="lazy" />
+            </div>
+            <figcaption><b>2026</b></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-      AOS.init();
-    </script>
+    <section class="quote" aria-label="Quote">
+      <figure>
+        <blockquote>
+          <p>
+            <span class="quote-step">“I hear and I forget.</span>
+            <span class="quote-step">I see and I remember.</span>
+            <span class="quote-step quote-step-do">I do and I understand.”</span>
+          </p>
+        </blockquote>
+        <figcaption>
+          <a
+            href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
+            >Not Confucius</a
+          >
+        </figcaption>
+      </figure>
 
-    <script src="/js/config.js"></script>
-    <script src="/js/script.js"></script>
+      <!-- An astronaut tumbling across, like an ejected crewmate -->
+      <div class="quote-drift" aria-hidden="true">
+        <div class="drift-x">
+          <img class="drift-spin" src="images/what-do-we-do-section/astronaut.png" alt="" />
+        </div>
+      </div>
+    </section>
 
-    <script src="/js/email-validation.js"></script>
+    <section
+      id="events-and-activities"
+      class="events"
+      aria-labelledby="events-heading"
+    >
+      <div class="events-head">
+        <h2 id="events-heading">What’s on?</h2>
+        <p>
+          A weekly meetup, a hackathon every trimester, and a few traditions
+          picked up along the way.
+        </p>
+        <!-- JS swaps "Every Tuesday" for the actual next date -->
+        <p class="next-meetup">
+          <span class="next-label">
+            <!-- a waving pennant with a half-moon cut from its hoist -->
+            <svg class="next-flag" viewBox="150 150 450 450" aria-hidden="true">
+              <path
+                d="M180 175L290 578"
+                stroke="currentColor"
+                stroke-width="26"
+                stroke-linecap="round"
+              />
+              <path
+                d="M205 218C250 205 290 172 340 178C380 183 395 215 415 235C440 255 520 245 585 225C560 300 520 375 440 395C400 405 385 395 380 375C377 358 360 357 335 365C300 375 275 395 255 408L245 368A58 58 0 0 0 218 255Z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>Next meetup</span>
+          </span>
+          <span class="next-sep" aria-hidden="true"></span>
+          <span><span class="next-date">Every Tuesday</span> 8.00pm - 10.00pm</span>
+        </p>
+      </div>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"
-      integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/debug.addIndicators.min.js"
-      integrity="sha512-RvUydNGlqYJapy0t4AH8hDv/It+zKsv4wOQGb+iOnEfa6NnF2fzjXgRy+FDjSpMfC3sjokNUzsfYZaZ8QAwIxg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"
-      integrity="sha512-5/OHwmQzDSBS0Ous4/hlYoWLHd06/d2r7LdKZQVBXOA6PvOqWVXtdboiLTU7lQTGyVoKVTNkwi0ol4gHGlw5ww=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenLite.min.js"
-      integrity="sha512-pvDW4tehKKsohH97164HwKwRGFpzayEFWTVbk8HuUoLIQ7Jp+WLN5XYokVuoCj2aT6dy8ihbW8SRTG1k0W4mSQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TimelineLite.min.js"
-      integrity="sha512-tSIDeirKC6suYILHqqPuZH3s0MvD4a5vCHXhBIcdmq4gQXZ2IB3fEYA5x2f3D2p/CbSqzKEvuTEVbS5VZ2u+ew=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/CSSPlugin.min.js"
-      integrity="sha512-ocsFo48WU8Xq6Y1Lwi7psXRAujG9E4TKNR4q1DbrKzaaxOMTEoao/a+mDoB+cYzY4lwbyxvqjkp/ZA1/MNlfsg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/BezierPlugin.min.js"
-      integrity="sha512-plyexAULVlTExvDn2yUZFJV9F8q+53MC/GpU9dEuNGXmrrI3J8Rcffjvxg3OOBALBvF+UILPLIBEoCeF2maqTQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="js/rocket.js"></script>
+      <!-- One panel per event; the first one starts open. Only events with a
+           fixed schedule get an .event-when line. -->
+      <ul class="events-list">
+        <li class="event is-open" style="--i: 0">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/weekly-meetup.jpg"
+            srcset="
+              images/events-activities-section/weekly-meetup-480.webp 480w,
+              images/events-activities-section/weekly-meetup-744.webp 744w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            alt="Members with laptops around a long table at a weekly meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="event-meetups"
+            aria-labelledby="event-meetups-title"
+          >
+            <span class="event-label" aria-hidden="true">Weekly Meetups</span>
+          </button>
+          <div class="event-body" id="event-meetups">
+            <h3 id="event-meetups-title">Weekly Meetups</h3>
+            <p class="event-when">
+              <span>Every Tuesday</span><span>8.00pm - 10.00pm</span>
+            </p>
+            <p class="event-desc">
+              Bring your laptop and whatever you’re working on. Share progress,
+              get unstuck and catch up on tech news.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 1; --pos: 50% 45%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/hackathon.jpg"
+            srcset="
+              images/events-activities-section/hackathon-480.webp 480w,
+              images/events-activities-section/hackathon-800.webp 800w,
+              images/events-activities-section/hackathon-1200.webp 1200w,
+              images/events-activities-section/hackathon.jpg 1600w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            alt="A hackathon team coding on laptops around a shared table"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-hackathons"
+            aria-labelledby="event-hackathons-title"
+          >
+            <span class="event-label" aria-hidden="true">Hackathons</span>
+          </button>
+          <div class="event-body" id="event-hackathons">
+            <h3 id="event-hackathons-title">Hackathons</h3>
+            <p class="event-when">
+              <span>Every trimester</span><span>9.00am - 10.00pm</span>
+            </p>
+            <p class="event-desc">
+              One long day of building something from scratch. Start with an
+              idea in the morning, demo it by night.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 2; --pos: 40% 50%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/code-presentation.jpg"
+            srcset="
+              images/events-activities-section/code-presentation-480.webp 480w,
+              images/events-activities-section/code-presentation-744.webp 744w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            alt="A member pointing at code projected on a screen"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-progress"
+            aria-labelledby="event-progress-title"
+          >
+            <span class="event-label" aria-hidden="true"
+              >Progress Presentations</span
+            >
+          </button>
+          <div class="event-body" id="event-progress">
+            <h3 id="event-progress-title">Progress Presentations</h3>
+            <p class="event-desc">
+              Show the room what you’ve built since your last update. Wins, bugs
+              and all.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 3; --pos: 35% 50%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/mamak.jpg"
+            srcset="
+              images/events-activities-section/mamak-480.webp 480w,
+              images/events-activities-section/mamak-800.webp 800w,
+              images/events-activities-section/mamak-1200.webp 1200w,
+              images/events-activities-section/mamak.jpg 1600w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            alt="A long table of members sharing food and drinks at a mamak after a meetup"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-mamak"
+            aria-labelledby="event-mamak-title"
+          >
+            <span class="event-label" aria-hidden="true">Mamak Sessions</span>
+          </button>
+          <div class="event-body" id="event-mamak">
+            <h3 id="event-mamak-title">Mamak Sessions</h3>
+            <p class="event-desc">
+              When the meetup wraps up, the conversation carries on over teh
+              tarik at the mamak.
+            </p>
+          </div>
+        </li>
+
+        <li class="event" style="--i: 4; --pos: 60% 55%">
+          <img
+            class="event-photo"
+            src="images/events-activities-section/board-game-night.jpg"
+            srcset="
+              images/events-activities-section/board-game-night-480.webp 480w,
+              images/events-activities-section/board-game-night-800.webp 800w,
+              images/events-activities-section/board-game-night-1200.webp 1200w,
+              images/events-activities-section/board-game-night.jpg 1600w
+            "
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            alt="Members gathered around a table playing a board game, with more tables of players behind them"
+            loading="lazy"
+          />
+          <button
+            class="event-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="event-games"
+            aria-labelledby="event-games-title"
+          >
+            <span class="event-label" aria-hidden="true">Game Nights</span>
+          </button>
+          <div class="event-body" id="event-games">
+            <h3 id="event-games-title">Game Nights</h3>
+            <p class="event-desc">
+              When study week hits, we trade keyboards for dice and board games
+              to take a break before the finals.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="registration" class="join" aria-labelledby="join-heading">
+      <div class="join-copy">
+        <h2 id="join-heading">Come build with us.</h2>
+        <p class="join-lede">
+          Open to every MMU student and staff member. Enter your MMU email and
+          we’ll take you to the sign-up form.
+        </p>
+        <!-- validated in the script below before the Google Form opens -->
+        <form
+          id="registration-form"
+          class="join-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
+          target="_blank"
+          novalidate
+        >
+          <label for="mmuEmail">MMU email</label>
+          <div class="join-field">
+            <input
+              id="mmuEmail"
+              type="email"
+              autocomplete="email"
+              spellcheck="false"
+              placeholder="you@student.mmu.edu.my"
+              aria-describedby="join-hint join-error"
+            />
+            <button id="registration-submit-button" type="submit">
+              Join Us Now
+            </button>
+          </div>
+          <p id="join-hint" class="join-hint">
+            Student and staff addresses ending in mmu.edu.my.
+          </p>
+          <p id="join-error" class="join-error" role="alert"></p>
+        </form>
+      </div>
+
+      <figure class="join-qr">
+        <!-- the Enlarge button is the keyboard route to the same dialog -->
+        <div class="qr-card">
+          <img
+            src="images/join-section/join-qr.svg"
+            alt="QR code linking to hackerspacemmu.rocks"
+            width="29"
+            height="29"
+          />
+        </div>
+        <figcaption>
+          <div>
+            <span class="qr-title">Scan to join</span>
+            <span class="qr-url">hackerspacemmu.rocks</span>
+          </div>
+          <button class="qr-enlarge" type="button" aria-haspopup="dialog">
+            Enlarge
+          </button>
+        </figcaption>
+      </figure>
+
+      <dialog class="qr-dialog" aria-label="QR code, enlarged">
+        <div class="qr-card">
+          <img
+            src="images/join-section/join-qr.svg"
+            alt="QR code linking to hackerspacemmu.rocks"
+            width="29"
+            height="29"
+          />
+        </div>
+        <p>hackerspacemmu.rocks</p>
+        <button class="qr-close" type="button">Close</button>
+      </dialog>
+    </section>
+
+    <script src="js/config.js?v=7"></script>
+    <script src="js/index.js?v=7"></script>
+    <script src="js/what-we-do.js?v=7"></script>
+    <script src="js/starfield.js?v=7"></script>
+    <script src="js/landing.js?v=7"></script>
+    <script src="js/why-build.js?v=7"></script>
   </body>
 </html>
