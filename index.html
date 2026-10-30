@@ -1,485 +1,364 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hackerspace MMU</title>
-    <link rel="icon" type="image/png" href="images/brand/hackerspace-logo-96.png" />
 
-    <link
-      rel="preload"
-      href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="vendor/main-fonts/Jost-VariableFont_wght.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hackerspace MMU</title>
+  <link rel="icon" type="image/png" href="images/brand/hackerspace-logo-96.png" />
 
-    <!-- Local CSS and JS share one ?v=: bump it on every change to any of
+  <link rel="preload" href="vendor/main-fonts/SpecialGothicExpandedOne-Regular.woff2" as="font" type="font/woff2"
+    crossorigin />
+  <link rel="preload" href="vendor/main-fonts/Jost-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Local CSS and JS share one ?v=: bump it on every change to any of
          them, so returning visitors don't mix cached and new files -->
-    <link href="css/build-sections.css?v=7" rel="stylesheet" />
-    <link href="css/index.css?v=7" rel="stylesheet" />
-  </head>
-  <body>
-    <!-- Space backdrop behind the whole page (js/starfield.js) -->
-    <canvas class="site-stars" aria-hidden="true"></canvas>
+  <link href="css/build-sections.css?v=7" rel="stylesheet" />
+  <link href="css/index.css?v=7" rel="stylesheet" />
+</head>
 
-    <nav class="site-nav" aria-label="Main">
-      <a href="index.html" class="brand">
-        <img src="images/brand/hackerspace-logo.svg" alt="Hackerspace MMU logo" />
-        <span>Hackerspace MMU</span>
-      </a>
+<body>
+  <!-- Space backdrop behind the whole page (js/starfield.js) -->
+  <canvas class="site-stars" aria-hidden="true"></canvas>
 
-      <button
-        class="nav-toggle"
-        type="button"
-        aria-controls="nav-links"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
-          <path
-            d="M1 1h20M1 8h20M1 15h20"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-        </svg>
-      </button>
+  <nav class="site-nav" aria-label="Main">
+    <a href="index.html" class="brand">
+      <img src="images/brand/hackerspace-logo.svg" alt="Hackerspace MMU logo" />
+      <span>Hackerspace MMU</span>
+    </a>
 
-      <ul id="nav-links" class="nav-links">
-        <li><a href="#what-do-we-do">About Us</a></li>
-        <li><a href="#legacy">History</a></li>
-        <li><a href="#events-and-activities">Events &amp; Activities</a></li>
-        <li><a class="nav-cta" href="#registration">Join Us Now</a></li>
-      </ul>
-    </nav>
+    <button class="nav-toggle" type="button" aria-controls="nav-links" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+        <path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
 
-    <div class="hero-screen">
-      <main class="hero">
-        <div class="hero-main">
-          <div class="hero-row" style="--grow: 433">
-            <figure class="tile tile-blue" style="--grow: 674; --i: 0">
-              <div class="frame">
-                <img
-                  src="images/hero-section/hero-2023-06-06.jpg"
-                  srcset="
+    <ul id="nav-links" class="nav-links">
+      <li><a href="#what-do-we-do">About Us</a></li>
+      <li><a href="#legacy">History</a></li>
+      <li><a href="#events-and-activities">Events &amp; Activities</a></li>
+      <li><a class="nav-cta" href="#registration">Join Us Now</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-screen">
+    <main class="hero">
+      <div class="hero-main">
+        <div class="hero-row" style="--grow: 433">
+          <figure class="tile tile-blue" style="--grow: 674; --i: 0">
+            <div class="frame">
+              <img src="images/hero-section/hero-2023-06-06.jpg" srcset="
                     images/hero-section/hero-2023-06-06-480.webp 480w,
                     images/hero-section/hero-2023-06-06-800.webp 800w,
                     images/hero-section/hero-2023-06-06-1200.webp 1200w,
                     images/hero-section/hero-2023-06-06.jpg 1600w
-                  "
-                  sizes="(max-width: 860px) 50vw, 40vw"
-                  alt="Members working on laptops around a long table"
-                />
-              </div>
-            </figure>
-            <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 20% 50%">
-              <div class="frame">
-                <img
-                  src="images/hero-section/hero-members-at-pc.jpg"
-                  srcset="
+                  " sizes="(max-width: 860px) 50vw, 40vw" alt="Members working on laptops around a long table" />
+            </div>
+          </figure>
+          <figure class="tile tile-red" style="--grow: 461; --i: 1; --pos: 20% 50%">
+            <div class="frame">
+              <img src="images/hero-section/hero-members-at-pc.jpg" srcset="
                     images/hero-section/hero-members-at-pc-480.webp 480w,
                     images/hero-section/hero-members-at-pc-800.webp 800w,
                     images/hero-section/hero-members-at-pc-1200.webp 1200w,
                     images/hero-section/hero-members-at-pc.jpg 1600w
-                  "
-                  sizes="(max-width: 860px) 50vw, 40vw"
-                  alt="A member pointing at a monitor while helping another with a 3D scene"
-                />
-              </div>
-            </figure>
-          </div>
+                  " sizes="(max-width: 860px) 50vw, 40vw"
+                alt="A member pointing at a monitor while helping another with a 3D scene" />
+            </div>
+          </figure>
+        </div>
 
-          <div class="hero-row" style="--grow: 318">
-            <figure class="tile tile-white tile-extra" style="--grow: 394; --i: 3">
-              <div class="frame">
-                <img
-                  src="images/hero-section/hero-2023-05-30.jpg"
-                  srcset="
+        <div class="hero-row" style="--grow: 318">
+          <figure class="tile tile-white tile-extra" style="--grow: 394; --i: 3">
+            <div class="frame">
+              <img src="images/hero-section/hero-2023-05-30.jpg" srcset="
                     images/hero-section/hero-2023-05-30-480.webp 480w,
                     images/hero-section/hero-2023-05-30-800.webp 800w,
                     images/hero-section/hero-2023-05-30-1200.webp 1200w,
                     images/hero-section/hero-2023-05-30.jpg 1600w
-                  "
-                  sizes="(max-width: 860px) 50vw, 40vw"
-                  alt="Members gathered around tables in a seminar room"
-                />
-              </div>
-            </figure>
-            <figure class="tile tile-wide tile-blue" style="--grow: 742; --i: 4">
-              <div class="frame">
-                <img
-                  src="images/hero-section/hero-2026-03-30-pano.jpg"
-                  srcset="
+                  " sizes="(max-width: 860px) 50vw, 40vw" alt="Members gathered around tables in a seminar room" />
+            </div>
+          </figure>
+          <figure class="tile tile-wide tile-blue" style="--grow: 742; --i: 4">
+            <div class="frame">
+              <img src="images/hero-section/hero-2026-03-30-pano.jpg" srcset="
                     images/hero-section/hero-2026-03-30-pano-480.webp 480w,
                     images/hero-section/hero-2026-03-30-pano-800.webp 800w,
                     images/hero-section/hero-2026-03-30-pano-1200.webp 1200w,
                     images/hero-section/hero-2026-03-30-pano-1600.webp 1600w,
                     images/hero-section/hero-2026-03-30-pano.jpg 2200w
-                  "
-                  sizes="(max-width: 860px) 145vw, 45vw"
-                  alt="Panorama of a full room of members celebrating with cakes"
-                />
-              </div>
-            </figure>
-          </div>
+                  " sizes="(max-width: 860px) 145vw, 45vw"
+                alt="Panorama of a full room of members celebrating with cakes" />
+            </div>
+          </figure>
+        </div>
 
-          <div class="hero-row row-text" style="--grow: 379">
-            <section class="tile tile-text" style="--grow: 684; --i: 5">
-              <h1>Hackerspace MMU</h1>
-              <p>
-                We're a bunch of problem solvers building things together. Not
-                (necessarily) hacking into things. We support each other’s
-                learning and learn from what others share!
-              </p>
-              <div class="actions">
-                <a class="btn-signup" href="#registration-form"
-                  >Sign Up</a
-                >
-                <a class="link-why" href="legacy-site.html#about-us"
-                  >Why should I join?</a
-                >
-              </div>
-            </section>
-            <figure class="tile tile-white tile-extra" style="--grow: 450; --i: 6; --pos: 62% 50%">
-              <div class="frame">
-                <img
-                  src="images/hero-section/hero-2026-03-30.jpg"
-                  srcset="
+        <div class="hero-row row-text" style="--grow: 379">
+          <section class="tile tile-text" style="--grow: 684; --i: 5">
+            <h1>Hackerspace MMU</h1>
+            <p>
+              We're a bunch of problem solvers building things together. Not
+              (necessarily) hacking into things. We support each other’s
+              learning and learn from what others share!
+            </p>
+            <div class="actions">
+              <a class="btn-signup" href="#registration-form">Sign Up</a>
+              <a class="link-why" href="legacy-site.html#about-us">Why should I join?</a>
+            </div>
+          </section>
+          <figure class="tile tile-white tile-extra" style="--grow: 450; --i: 6; --pos: 62% 50%">
+            <div class="frame">
+              <img src="images/hero-section/hero-2026-03-30.jpg" srcset="
                     images/hero-section/hero-2026-03-30-480.webp 480w,
                     images/hero-section/hero-2026-03-30-800.webp 800w,
                     images/hero-section/hero-2026-03-30-1200.webp 1200w,
                     images/hero-section/hero-2026-03-30.jpg 1600w
-                  "
-                  sizes="(max-width: 860px) 50vw, 40vw"
-                  alt="A member presenting slides to the audience"
-                />
-              </div>
-            </figure>
-          </div>
+                  " sizes="(max-width: 860px) 50vw, 40vw" alt="A member presenting slides to the audience" />
+            </div>
+          </figure>
         </div>
+      </div>
 
-        <div class="hero-side">
-          <figure class="tile tile-blue tile-extra" style="--grow: 631; --i: 2">
-            <div class="frame">
-              <img
-                src="images/hero-section/hero-2025-09-23.jpg"
-                srcset="
+      <div class="hero-side">
+        <figure class="tile tile-blue tile-extra" style="--grow: 631; --i: 2">
+          <div class="frame">
+            <img src="images/hero-section/hero-2025-09-23.jpg" srcset="
                   images/hero-section/hero-2025-09-23-480.webp 480w,
                   images/hero-section/hero-2025-09-23-800.webp 800w,
                   images/hero-section/hero-2025-09-23-1200.webp 1200w,
                   images/hero-section/hero-2025-09-23.jpg 1600w
-                "
-                sizes="(max-width: 860px) 50vw, 40vw"
-                alt="Members coding together at a hackathon"
-              />
-            </div>
-          </figure>
-          <figure class="tile tile-red tile-extra" style="--grow: 505; --i: 7; --pos: 55% 50%">
-            <div class="frame">
-              <img
-                src="images/hero-section/hero-2024-09-08.jpg"
-                srcset="
+                " sizes="(max-width: 860px) 50vw, 40vw" alt="Members coding together at a hackathon" />
+          </div>
+        </figure>
+        <figure class="tile tile-red tile-extra" style="--grow: 505; --i: 7; --pos: 55% 50%">
+          <div class="frame">
+            <img src="images/hero-section/hero-2024-09-08.jpg" srcset="
                   images/hero-section/hero-2024-09-08-480.webp 480w,
                   images/hero-section/hero-2024-09-08-800.webp 800w,
                   images/hero-section/hero-2024-09-08-1200.webp 1200w,
                   images/hero-section/hero-2024-09-08.jpg 1600w
-                "
-                sizes="(max-width: 860px) 50vw, 40vw"
-                alt="A member presenting a Pomato Timer app on a large screen"
-              />
-            </div>
-          </figure>
-        </div>
-      </main>
-    </div>
+                " sizes="(max-width: 860px) 50vw, 40vw"
+              alt="A member presenting a Pomato Timer app on a large screen" />
+          </div>
+        </figure>
+      </div>
+    </main>
+  </div>
 
-    <section id="what-do-we-do">
-      <!-- Scroll stops: one in the middle of each item's stretch of scroll
+  <section id="what-do-we-do">
+    <!-- Scroll stops: one in the middle of each item's stretch of scroll
            (matches where clicking an item scrolls to) -->
-      <span class="snap-stop" style="--at: 30vh" aria-hidden="true"></span>
-      <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
-      <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
-      <div class="wdwd-pin">
-        <div class="grid-12">
-          <div class="wdwd-content">
-            <h2 class="wdwd-title">What do we do?</h2>
+    <span class="snap-stop" style="--at: 30vh" aria-hidden="true"></span>
+    <span class="snap-stop" style="--at: 90vh" aria-hidden="true"></span>
+    <span class="snap-stop" style="--at: 150vh" aria-hidden="true"></span>
+    <div class="wdwd-pin">
+      <div class="grid-12">
+        <div class="wdwd-content">
+          <h2 class="wdwd-title">What do we do?</h2>
 
-            <div class="wdwd-item is-active" role="button" tabindex="0" aria-current="true">
-              <h3>Build Projects</h3>
-              <p>
-                Declare a project &rarr; Build it &rarr; Learn as you go<br />
-                Anything from a first PHP website to your own React
-                drag-and-drop library.
-              </p>
-            </div>
-
-            <div class="wdwd-item" role="button" tabindex="0">
-              <h3>Geek Out</h3>
-              <p>
-                Chat about the latest in tech.<br />
-                You can be sure someone will admire your custom mechanical
-                keyboard or your VIM terminal setup.
-              </p>
-            </div>
-
-            <div class="wdwd-item" role="button" tabindex="0">
-              <h3>Give Feedback</h3>
-              <p>
-                The hype when you need it. Some ideas when you're stuck.
-                Someone to spot the missing semicolon.<br />
-                With love &lt;3
-              </p>
-            </div>
+          <div class="wdwd-item is-active" role="button" tabindex="0" aria-current="true">
+            <h3>Build Projects</h3>
+            <p>
+              Declare a project &rarr; Build it &rarr; Learn as you go<br />
+              Anything from a first PHP website to your own React
+              drag-and-drop library.
+            </p>
           </div>
 
-          <div class="wdwd-astronaut" aria-hidden="true">
-            <div class="wdwd-spaceman" data-gear="hat">
-              <img src="images/what-do-we-do-section/astronaut.png" alt="" />
-              <!-- Gear drawn in the image's own coordinates (282 x 458) -->
-              <svg class="wdwd-gear" viewBox="0 0 282 458">
-                <g class="wdwd-acc wdwd-hat">
-                  <image
-                    href="images/what-do-we-do-section/builder-hat.svg?v=2"
-                    x="0.5"
-                    y="-31.5"
-                    width="257"
-                    height="89.5"
-                    transform="rotate(-6 130 30)"
-                  />
-                </g>
+          <div class="wdwd-item" role="button" tabindex="0">
+            <h3>Geek Out</h3>
+            <p>
+              Chat about the latest in tech.<br />
+              You can be sure someone will admire your custom mechanical
+              keyboard or your VIM terminal setup.
+            </p>
+          </div>
 
-                <g class="wdwd-acc wdwd-glasses">
-                  <image
-                    href="images/what-do-we-do-section/glasses.svg"
-                    x="33"
-                    y="143"
-                    width="169"
-                    height="80"
-                  />
-                </g>
+          <div class="wdwd-item" role="button" tabindex="0">
+            <h3>Give Feedback</h3>
+            <p>
+              The hype when you need it. Some ideas when you're stuck.
+              Someone to spot the missing semicolon.<br />
+              With love &lt;3
+            </p>
+          </div>
+        </div>
 
-                <g class="wdwd-acc wdwd-megaphone">
-                  <g transform="rotate(-24 185 300)">
-                    <image
-                      href="images/what-do-we-do-section/speaker.svg"
-                      x="159"
-                      y="209"
-                      width="180"
-                      height="178"
-                    />
-                    <g
-                      class="wdwd-waves"
-                      fill="none"
-                      stroke="#dcdcdc"
-                      stroke-width="7"
-                      stroke-linecap="round"
-                    >
-                      <path d="M306 274 Q322 300 306 326" />
-                      <path d="M326 258 Q350 300 326 342" />
-                    </g>
+        <div class="wdwd-astronaut" aria-hidden="true">
+          <div class="wdwd-spaceman" data-gear="hat">
+            <img src="images/what-do-we-do-section/astronaut.png" alt="" />
+            <!-- Gear drawn in the image's own coordinates (282 x 458) -->
+            <svg class="wdwd-gear" viewBox="0 0 282 458">
+              <g class="wdwd-acc wdwd-hat">
+                <image href="images/what-do-we-do-section/builder-hat.svg?v=2" x="0.5" y="-31.5" width="257"
+                  height="89.5" transform="rotate(-6 130 30)" />
+              </g>
+
+              <g class="wdwd-acc wdwd-glasses">
+                <image href="images/what-do-we-do-section/glasses.svg" x="33" y="143" width="169" height="80" />
+              </g>
+
+              <g class="wdwd-acc wdwd-megaphone">
+                <g transform="rotate(-24 185 300)">
+                  <image href="images/what-do-we-do-section/speaker.svg" x="159" y="209" width="180" height="178" />
+                  <g class="wdwd-waves" fill="none" stroke="#dcdcdc" stroke-width="7" stroke-linecap="round">
+                    <path d="M306 274 Q322 300 306 326" />
+                    <path d="M326 258 Q350 300 326 342" />
                   </g>
                 </g>
-              </svg>
-            </div>
+              </g>
+            </svg>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Moon scene: "Why Build?" pins with the horizon halfway down the screen
+  <!-- Moon scene: "Why Build?" pins with the horizon halfway down the screen
          while you scroll through three stops: arrive, land (js/landing.js),
          hold. Then the page carries on. -->
-    <div class="moon-scene">
-      <span class="snap-stop" style="--at: -50vh" aria-hidden="true"></span>
-      <span class="snap-stop" style="--at: 0vh" aria-hidden="true"></span>
-      <span class="snap-stop" style="--at: 50vh" aria-hidden="true"></span>
-      <section id="why-build">
-        <div class="planet-clip" aria-hidden="true">
-          <div class="planet-glow"></div>
-          <div class="planet">
-            <div class="planet-surface">
-              <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
-              <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
-              <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
-              <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
-              <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
-              <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
-              <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
-              <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
-              <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
-              <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
-            </div>
+  <div class="moon-scene">
+    <span class="snap-stop" style="--at: -50vh" aria-hidden="true"></span>
+    <span class="snap-stop" style="--at: 0vh" aria-hidden="true"></span>
+    <span class="snap-stop" style="--at: 50vh" aria-hidden="true"></span>
+    <section id="why-build">
+      <div class="planet-clip" aria-hidden="true">
+        <div class="planet-glow"></div>
+        <div class="planet">
+          <div class="planet-surface">
+            <span class="crater" style="--x: 18%; --y: 52px; --s: 34px; --squash: 0.4"></span>
+            <span class="crater" style="--x: 41%; --y: 34px; --s: 22px; --squash: 0.4"></span>
+            <span class="crater" style="--x: 63%; --y: 60px; --s: 44px; --squash: 0.4"></span>
+            <span class="crater" style="--x: 84%; --y: 52px; --s: 26px; --squash: 0.45"></span>
+            <span class="crater" style="--x: 3%; --y: 58%; --s: 60px; --squash: 0.8"></span>
+            <span class="crater" style="--x: 8%; --y: 86%; --s: 24px; --squash: 0.85"></span>
+            <span class="crater" style="--x: 94%; --y: 42%; --s: 48px; --squash: 0.8"></span>
+            <span class="crater" style="--x: 89%; --y: 82%; --s: 30px; --squash: 0.85"></span>
+            <span class="crater" style="--x: 56%; --y: 93%; --s: 26px; --squash: 0.6"></span>
+            <span class="crater" style="--x: 30%; --y: 91%; --s: 18px; --squash: 0.65"></span>
           </div>
         </div>
-        <!-- The astronaut from "What do we do?" lands here (js/landing.js) -->
-        <div class="landing" aria-hidden="true">
-          <div class="grid-12">
-            <div class="landing-spot">
-              <span class="landing-dust"></span>
-              <img class="landing-flag" src="images/why-build-section/flag.svg" alt="" />
-            </div>
-          </div>
-        </div>
+      </div>
+      <!-- The astronaut from "What do we do?" lands here (js/landing.js) -->
+      <div class="landing" aria-hidden="true">
         <div class="grid-12">
-          <h2 class="why-build-title">Why Build?</h2>
-          <div class="why-build-body">
-            <p>
-              Why spend time building projects when you're already taking
-              classes?
-            </p>
-            <p>
-              Well your formal courses give you the foundation, but it barely
-              gets your feet wet. Your future job interviewer will want to see
-              what you've built (and they're not looking for assignments!) They
-              will ask if you know Laravel, not PHP. They will ask if you have
-              built an app, not if you know Java or C++.
-            </p>
-            <p class="why-build-punch"><mark>Don't just learn to code. Build.</mark></p>
+          <div class="landing-spot">
+            <span class="landing-dust"></span>
+            <img class="landing-flag" src="images/why-build-section/flag.svg" alt="" />
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+      <div class="grid-12">
+        <h2 class="why-build-title">Why Build?</h2>
+        <div class="why-build-body">
+          <p>
+            Why spend time building projects when you're already taking
+            classes?
+          </p>
+          <p>
+            Well your formal courses give you the foundation, but it barely
+            gets your feet wet. Your future job interviewer will want to see
+            what you've built (and they're not looking for assignments!) And
+            now in the age of AI, every graduate have three 'projects' they
+            vibe coded yesterday. Want to stand out? Solve a real problem.
+            Deploy and maintain something with real users.
+          </p>
+          <p class="why-build-punch"><mark>Don't just learn to code. Build.</mark></p>
+        </div>
+      </div>
+    </section>
+  </div>
 
-    <section class="stats" aria-labelledby="stats-heading">
-      <h2 id="stats-heading">Statistics</h2>
+  <section class="stats" aria-labelledby="stats-heading">
+    <h2 id="stats-heading">Statistics</h2>
 
-      <div class="stats-grid">
-        <div class="stats-row">
-          <div class="stat stat-photo stat-members" style="--i: 0">
-            <img
-              src="images/statistic-section/active-members.jpg"
-              srcset="
+    <div class="stats-grid">
+      <div class="stats-row">
+        <div class="stat stat-photo stat-members" style="--i: 0">
+          <img src="images/statistic-section/active-members.jpg" srcset="
                 images/statistic-section/active-members-480.webp 480w,
                 images/statistic-section/active-members-800.webp 800w,
                 images/statistic-section/active-members-1200.webp 1200w,
                 images/statistic-section/active-members.jpg 1600w
-              "
-              sizes="(max-width: 860px) 100vw, 50vw"
-              alt="Members watching a talk"
-              loading="lazy"
-            />
-            <p class="stat-text">
-              <span
-                ><span class="count" data-count="73" data-endpoint="members"
-                  >73</span
-                ></span
-              >
-              <span>Active Members</span>
-            </p>
-          </div>
-          <div class="stat stat-days" style="--i: 1">
-            <p class="stat-text">
-              <span
-                ><span class="count" data-count="5574" data-since="2011-06-09"
-                  >5574</span
-                ></span
-              >
-              <span>DAYS ACTIVE</span>
-            </p>
-          </div>
+              " sizes="(max-width: 860px) 100vw, 50vw" alt="Members watching a talk" loading="lazy" />
+          <p class="stat-text">
+            <span><span class="count" data-count="73" data-endpoint="members">73</span></span>
+            <span>Active Members</span>
+          </p>
         </div>
-
-        <div class="stats-row">
-          <div class="stat stat-meetups" style="--grow: 508; --i: 2">
-            <p class="stat-text">
-              <span
-                ><span class="count" data-count="539" data-endpoint="meetups"
-                  >539</span
-                ></span
-              >
-              <span>MEETUPS</span>
-            </p>
-          </div>
-          <div class="stat stat-updates" style="--grow: 1135; --i: 3">
-            <p class="stat-text">
-              <span
-                ><span class="count" data-count="2179" data-endpoint="updates"
-                  >2179</span
-                >
-                PROJECT UPDATES</span
-              >
-            </p>
-            <img
-              class="stat-person"
-              src="images/statistic-section/project-updates.webp"
-              alt="A member smiling behind a sticker-covered laptop"
-              loading="lazy"
-            />
-          </div>
+        <div class="stat stat-days" style="--i: 1">
+          <p class="stat-text">
+            <span><span class="count" data-count="5574" data-since="2011-06-09">5574</span></span>
+            <span>DAYS ACTIVE</span>
+          </p>
         </div>
+      </div>
 
-        <div class="stats-row">
-          <div class="stat stat-photo stat-hackathons" style="--i: 4">
-            <img
-              src="images/statistic-section/hackathon.jpg"
-              srcset="
+      <div class="stats-row">
+        <div class="stat stat-meetups" style="--grow: 508; --i: 2">
+          <p class="stat-text">
+            <span><span class="count" data-count="539" data-endpoint="meetups">539</span></span>
+            <span>MEETUPS</span>
+          </p>
+        </div>
+        <div class="stat stat-updates" style="--grow: 1135; --i: 3">
+          <p class="stat-text">
+            <span><span class="count" data-count="2179" data-endpoint="updates">2179</span>
+              PROJECT UPDATES</span>
+          </p>
+          <img class="stat-person" src="images/statistic-section/project-updates.webp"
+            alt="A member smiling behind a sticker-covered laptop" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat stat-photo stat-hackathons" style="--i: 4">
+          <img src="images/statistic-section/hackathon.jpg" srcset="
                 images/statistic-section/hackathon-480.webp 480w,
                 images/statistic-section/hackathon-800.webp 800w,
                 images/statistic-section/hackathon-1200.webp 1200w,
                 images/statistic-section/hackathon.jpg 1600w
-              "
-              sizes="min(100vw, 1680px)"
-              alt="Members coding at laptops during a hackathon"
-              loading="lazy"
-            />
-            <p class="stat-text">
-              <span
-                ><span class="count" data-count="67">67</span> Hackathons</span
-              >
-            </p>
-          </div>
+              " sizes="min(100vw, 1680px)" alt="Members coding at laptops during a hackathon" loading="lazy" />
+          <p class="stat-text">
+            <span><span class="count" data-count="67">67</span> Hackathons</span>
+          </p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
-      <div class="legacy-intro">
-        <h2 id="legacy-heading">Since 2011,<br />and still building.</h2>
-        <p>
-          Hackathons, weekly meetups, mamak runs and plenty of late nights.
-          Here's every year of Hackerspace MMU so far.
-        </p>
-        <div class="timeline">
-          <p class="timeline-now" aria-hidden="true">2011</p>
-          <div class="timeline-rail">
-            <div class="timeline-flight" aria-hidden="true">
-              <span class="timeline-trail"></span>
-              <img
-                class="timeline-rocket"
-                src="images/legacy-section/rocket.svg"
-                alt=""
-                draggable="false"
-              />
-            </div>
-            <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
-            <div class="timeline-ends" aria-hidden="true">
-              <span></span><span></span>
-            </div>
+  <section id="legacy" class="legacy" aria-labelledby="legacy-heading">
+    <div class="legacy-intro">
+      <h2 id="legacy-heading">Since 2011,<br />and still building.</h2>
+      <p>
+        Hackathons, weekly meetups, mamak runs and plenty of late nights.
+        Here's every year of Hackerspace MMU so far.
+      </p>
+      <div class="timeline">
+        <p class="timeline-now" aria-hidden="true">2011</p>
+        <div class="timeline-rail">
+          <div class="timeline-flight" aria-hidden="true">
+            <span class="timeline-trail"></span>
+            <img class="timeline-rocket" src="images/legacy-section/rocket.svg" alt="" draggable="false" />
           </div>
-          <button
-            class="timeline-pause"
-            type="button"
-            aria-label="Pause slideshow"
-          >
-            <svg class="icon-pause" width="12" height="12" viewBox="0 0 12 12">
-              <path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor" />
-            </svg>
-            <svg class="icon-play" width="12" height="12" viewBox="0 0 12 12">
-              <path d="M2.5 1v10l8.5-5z" fill="currentColor" />
-            </svg>
-          </button>
+          <ol class="timeline-ticks" aria-label="Jump to a year"></ol>
+          <div class="timeline-ends" aria-hidden="true">
+            <span></span><span></span>
+          </div>
         </div>
+        <button class="timeline-pause" type="button" aria-label="Pause slideshow">
+          <svg class="icon-pause" width="12" height="12" viewBox="0 0 12 12">
+            <path d="M2 1h3v10H2zM7 1h3v10H7z" fill="currentColor" />
+          </svg>
+          <svg class="icon-play" width="12" height="12" viewBox="0 0 12 12">
+            <path d="M2.5 1v10l8.5-5z" fill="currentColor" />
+          </svg>
+        </button>
       </div>
+    </div>
 
-      <!--
+    <!--
         One card per year, each showing images/legacy-section/legacy-<year>.jpg.
         To swap a photo, replace that file (see images/legacy-section/README.md)
         and update the alt text below. Add more cards with the same data-year
@@ -487,417 +366,330 @@
           <div class="year-photo is-placeholder"><span>2011</span></div>
         Cards are 4:3 by default; set --ar (e.g. 3 / 2) to change the shape.
       -->
-      <div
-        class="reel"
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Hackerspace MMU photos by year"
-      >
-        <div class="reel-track">
-          <figure class="year-card" data-year="2011">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2011.jpg" alt="Members hacking at laptops in a meeting room" loading="lazy" />
-            </div>
-            <figcaption><b>2011</b> Where it all began</figcaption>
-          </figure>
-          <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2012.jpg" alt="Members at the mamak after a meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2012</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2013">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2013.jpg" alt="A member presenting at a meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2013</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2014">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2014.jpg" alt="A project demo at a meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2014</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2015.jpg" alt="Members out for a meal together" loading="lazy" />
-            </div>
-            <figcaption><b>2015</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2016">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2016.jpg" alt="Members celebrating with a birthday cake" loading="lazy" />
-            </div>
-            <figcaption><b>2016</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2017">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2017.jpg" alt="A member giving a talk" loading="lazy" />
-            </div>
-            <figcaption><b>2017</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2018.jpg" alt="The 2018 hackathon crew" loading="lazy" />
-            </div>
-            <figcaption><b>2018</b> Hackathon crew</figcaption>
-          </figure>
-          <figure class="year-card" data-year="2019">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2019.jpg" alt="The 2019 trimester hackathon" loading="lazy" />
-            </div>
-            <figcaption><b>2019</b> Trimester hackathon</figcaption>
-          </figure>
-          <figure class="year-card" data-year="2020">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2020.jpg" alt="A virtual session game night" loading="lazy" />
-            </div>
-            <figcaption><b>2020</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2021.jpg" alt="The April 2021 meet and greet" loading="lazy" />
-            </div>
-            <figcaption><b>2021</b> Meet &amp; greet</figcaption>
-          </figure>
-          <figure class="year-card" data-year="2022">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2022.jpg" alt="Members working at a weekly meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2022</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2023">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2023.jpg" alt="A 2023 meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2023</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2024.jpg" alt="A 2024 meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2024</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2025">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2025.jpg" alt="A 2025 meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2025</b></figcaption>
-          </figure>
-          <figure class="year-card" data-year="2026">
-            <div class="year-photo">
-              <img src="images/legacy-section/legacy-2026.jpg" alt="A 2026 meetup" loading="lazy" />
-            </div>
-            <figcaption><b>2026</b></figcaption>
-          </figure>
-        </div>
+    <div class="reel" role="region" aria-roledescription="carousel" aria-label="Hackerspace MMU photos by year">
+      <div class="reel-track">
+        <figure class="year-card" data-year="2011">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2011.jpg" alt="Members hacking at laptops in a meeting room"
+              loading="lazy" />
+          </div>
+          <figcaption><b>2011</b> Where it all began</figcaption>
+        </figure>
+        <figure class="year-card" data-year="2012" style="--ar: 3 / 2">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2012.jpg" alt="Members at the mamak after a meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2012</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2013">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2013.jpg" alt="A member presenting at a meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2013</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2014">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2014.jpg" alt="A project demo at a meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2014</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2015" style="--ar: 3 / 2">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2015.jpg" alt="Members out for a meal together" loading="lazy" />
+          </div>
+          <figcaption><b>2015</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2016">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2016.jpg" alt="Members celebrating with a birthday cake"
+              loading="lazy" />
+          </div>
+          <figcaption><b>2016</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2017">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2017.jpg" alt="A member giving a talk" loading="lazy" />
+          </div>
+          <figcaption><b>2017</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2018" style="--ar: 3 / 2">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2018.jpg" alt="The 2018 hackathon crew" loading="lazy" />
+          </div>
+          <figcaption><b>2018</b> Hackathon crew</figcaption>
+        </figure>
+        <figure class="year-card" data-year="2019">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2019.jpg" alt="The 2019 trimester hackathon" loading="lazy" />
+          </div>
+          <figcaption><b>2019</b> Trimester hackathon</figcaption>
+        </figure>
+        <figure class="year-card" data-year="2020">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2020.jpg" alt="A virtual session game night" loading="lazy" />
+          </div>
+          <figcaption><b>2020</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2021" style="--ar: 3 / 2">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2021.jpg" alt="The April 2021 meet and greet" loading="lazy" />
+          </div>
+          <figcaption><b>2021</b> Meet &amp; greet</figcaption>
+        </figure>
+        <figure class="year-card" data-year="2022">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2022.jpg" alt="Members working at a weekly meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2022</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2023">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2023.jpg" alt="A 2023 meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2023</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2024" style="--ar: 3 / 2">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2024.jpg" alt="A 2024 meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2024</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2025">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2025.jpg" alt="A 2025 meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2025</b></figcaption>
+        </figure>
+        <figure class="year-card" data-year="2026">
+          <div class="year-photo">
+            <img src="images/legacy-section/legacy-2026.jpg" alt="A 2026 meetup" loading="lazy" />
+          </div>
+          <figcaption><b>2026</b></figcaption>
+        </figure>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="quote" aria-label="Quote">
-      <figure>
-        <blockquote>
-          <p>
-            <span class="quote-step">“I hear and I forget.</span>
-            <span class="quote-step">I see and I remember.</span>
-            <span class="quote-step quote-step-do">I do and I understand.”</span>
-          </p>
-        </blockquote>
-        <figcaption>
-          <a
-            href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand"
-            >Not Confucius</a
-          >
-        </figcaption>
-      </figure>
-
-      <!-- An astronaut tumbling across, like an ejected crewmate -->
-      <div class="quote-drift" aria-hidden="true">
-        <div class="drift-x">
-          <img class="drift-spin" src="images/what-do-we-do-section/astronaut.png" alt="" />
-        </div>
-      </div>
-    </section>
-
-    <section
-      id="events-and-activities"
-      class="events"
-      aria-labelledby="events-heading"
-    >
-      <div class="events-head">
-        <h2 id="events-heading">What’s on?</h2>
+  <section class="quote" aria-label="Quote">
+    <figure>
+      <blockquote>
         <p>
-          A weekly meetup, a hackathon every trimester, and a few traditions
-          picked up along the way.
+          <span class="quote-step">“I hear and I forget.</span>
+          <span class="quote-step">I see and I remember.</span>
+          <span class="quote-step quote-step-do">I do and I understand.”</span>
         </p>
-        <!-- JS swaps "Every Tuesday" for the actual next date -->
-        <p class="next-meetup">
-          <span class="next-label">
-            <!-- a waving pennant with a half-moon cut from its hoist -->
-            <svg class="next-flag" viewBox="150 150 450 450" aria-hidden="true">
-              <path
-                d="M180 175L290 578"
-                stroke="currentColor"
-                stroke-width="26"
-                stroke-linecap="round"
-              />
-              <path
-                d="M205 218C250 205 290 172 340 178C380 183 395 215 415 235C440 255 520 245 585 225C560 300 520 375 440 395C400 405 385 395 380 375C377 358 360 357 335 365C300 375 275 395 255 408L245 368A58 58 0 0 0 218 255Z"
-                fill="currentColor"
-              />
-            </svg>
-            <span>Next meetup</span>
-          </span>
-          <span class="next-sep" aria-hidden="true"></span>
-          <span><span class="next-date">Every Tuesday</span> 8.00pm - 10.00pm</span>
-        </p>
-      </div>
+      </blockquote>
+      <figcaption>
+        <a
+          href="https://english.stackexchange.com/questions/226886/origin-of-i-hear-and-i-forget-i-see-and-i-remember-i-do-and-i-understand">Not
+          Confucius</a>
+      </figcaption>
+    </figure>
 
-      <!-- One panel per event; the first one starts open. Only events with a
+    <!-- An astronaut tumbling across, like an ejected crewmate -->
+    <div class="quote-drift" aria-hidden="true">
+      <div class="drift-x">
+        <img class="drift-spin" src="images/what-do-we-do-section/astronaut.png" alt="" />
+      </div>
+    </div>
+  </section>
+
+  <section id="events-and-activities" class="events" aria-labelledby="events-heading">
+    <div class="events-head">
+      <h2 id="events-heading">What’s on?</h2>
+      <p>
+        A weekly meetup, a hackathon every trimester, and a few traditions
+        picked up along the way.
+      </p>
+      <!-- JS swaps "Every Tuesday" for the actual next date -->
+      <p class="next-meetup">
+        <span class="next-label">
+          <!-- a waving pennant with a half-moon cut from its hoist -->
+          <svg class="next-flag" viewBox="150 150 450 450" aria-hidden="true">
+            <path d="M180 175L290 578" stroke="currentColor" stroke-width="26" stroke-linecap="round" />
+            <path
+              d="M205 218C250 205 290 172 340 178C380 183 395 215 415 235C440 255 520 245 585 225C560 300 520 375 440 395C400 405 385 395 380 375C377 358 360 357 335 365C300 375 275 395 255 408L245 368A58 58 0 0 0 218 255Z"
+              fill="currentColor" />
+          </svg>
+          <span>Next meetup</span>
+        </span>
+        <span class="next-sep" aria-hidden="true"></span>
+        <span><span class="next-date">Every Tuesday</span> 8.00pm - 10.00pm</span>
+      </p>
+    </div>
+
+    <!-- One panel per event; the first one starts open. Only events with a
            fixed schedule get an .event-when line. -->
-      <ul class="events-list">
-        <li class="event is-open" style="--i: 0">
-          <img
-            class="event-photo"
-            src="images/events-activities-section/weekly-meetup.jpg"
-            srcset="
+    <ul class="events-list">
+      <li class="event is-open" style="--i: 0">
+        <img class="event-photo" src="images/events-activities-section/weekly-meetup.jpg" srcset="
               images/events-activities-section/weekly-meetup-480.webp 480w,
               images/events-activities-section/weekly-meetup-744.webp 744w
-            "
-            sizes="(max-width: 1023px) 100vw, 50vw"
-            alt="Members with laptops around a long table at a weekly meetup"
-            loading="lazy"
-          />
-          <button
-            class="event-toggle"
-            type="button"
-            aria-expanded="true"
-            aria-controls="event-meetups"
-            aria-labelledby="event-meetups-title"
-          >
-            <span class="event-label" aria-hidden="true">Weekly Meetups</span>
-          </button>
-          <div class="event-body" id="event-meetups">
-            <h3 id="event-meetups-title">Weekly Meetups</h3>
-            <p class="event-when">
-              <span>Every Tuesday</span><span>8.00pm - 10.00pm</span>
-            </p>
-            <p class="event-desc">
-              Bring your laptop and whatever you’re working on. Share progress,
-              get unstuck and catch up on tech news.
-            </p>
-          </div>
-        </li>
+            " sizes="(max-width: 1023px) 100vw, 50vw" alt="Members with laptops around a long table at a weekly meetup"
+          loading="lazy" />
+        <button class="event-toggle" type="button" aria-expanded="true" aria-controls="event-meetups"
+          aria-labelledby="event-meetups-title">
+          <span class="event-label" aria-hidden="true">Weekly Meetups</span>
+        </button>
+        <div class="event-body" id="event-meetups">
+          <h3 id="event-meetups-title">Weekly Meetups</h3>
+          <p class="event-when">
+            <span>Every Tuesday</span><span>8.00pm - 10.00pm</span>
+          </p>
+          <p class="event-desc">
+            Bring your laptop and whatever you’re working on. Share progress,
+            get unstuck and catch up on tech news.
+          </p>
+        </div>
+      </li>
 
-        <li class="event" style="--i: 1; --pos: 50% 45%">
-          <img
-            class="event-photo"
-            src="images/events-activities-section/hackathon.jpg"
-            srcset="
+      <li class="event" style="--i: 1; --pos: 50% 45%">
+        <img class="event-photo" src="images/events-activities-section/hackathon.jpg" srcset="
               images/events-activities-section/hackathon-480.webp 480w,
               images/events-activities-section/hackathon-800.webp 800w,
               images/events-activities-section/hackathon-1200.webp 1200w,
               images/events-activities-section/hackathon.jpg 1600w
-            "
-            sizes="(max-width: 1023px) 100vw, 50vw"
-            alt="A hackathon team coding on laptops around a shared table"
-            loading="lazy"
-          />
-          <button
-            class="event-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="event-hackathons"
-            aria-labelledby="event-hackathons-title"
-          >
-            <span class="event-label" aria-hidden="true">Hackathons</span>
-          </button>
-          <div class="event-body" id="event-hackathons">
-            <h3 id="event-hackathons-title">Hackathons</h3>
-            <p class="event-when">
-              <span>Every trimester</span><span>9.00am - 10.00pm</span>
-            </p>
-            <p class="event-desc">
-              One long day of building something from scratch. Start with an
-              idea in the morning, demo it by night.
-            </p>
-          </div>
-        </li>
+            " sizes="(max-width: 1023px) 100vw, 50vw" alt="A hackathon team coding on laptops around a shared table"
+          loading="lazy" />
+        <button class="event-toggle" type="button" aria-expanded="false" aria-controls="event-hackathons"
+          aria-labelledby="event-hackathons-title">
+          <span class="event-label" aria-hidden="true">Hackathons</span>
+        </button>
+        <div class="event-body" id="event-hackathons">
+          <h3 id="event-hackathons-title">Hackathons</h3>
+          <p class="event-when">
+            <span>Every trimester</span><span>9.00am - 10.00pm</span>
+          </p>
+          <p class="event-desc">
+            One long day of building something from scratch. Start with an
+            idea in the morning, demo it by night.
+          </p>
+        </div>
+      </li>
 
-        <li class="event" style="--i: 2; --pos: 40% 50%">
-          <img
-            class="event-photo"
-            src="images/events-activities-section/code-presentation.jpg"
-            srcset="
+      <li class="event" style="--i: 2; --pos: 40% 50%">
+        <img class="event-photo" src="images/events-activities-section/code-presentation.jpg" srcset="
               images/events-activities-section/code-presentation-480.webp 480w,
               images/events-activities-section/code-presentation-744.webp 744w
-            "
-            sizes="(max-width: 1023px) 100vw, 50vw"
-            alt="A member pointing at code projected on a screen"
-            loading="lazy"
-          />
-          <button
-            class="event-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="event-progress"
-            aria-labelledby="event-progress-title"
-          >
-            <span class="event-label" aria-hidden="true"
-              >Progress Presentations</span
-            >
-          </button>
-          <div class="event-body" id="event-progress">
-            <h3 id="event-progress-title">Progress Presentations</h3>
-            <p class="event-desc">
-              Show the room what you’ve built since your last update. Wins, bugs
-              and all.
-            </p>
-          </div>
-        </li>
+            " sizes="(max-width: 1023px) 100vw, 50vw" alt="A member pointing at code projected on a screen"
+          loading="lazy" />
+        <button class="event-toggle" type="button" aria-expanded="false" aria-controls="event-progress"
+          aria-labelledby="event-progress-title">
+          <span class="event-label" aria-hidden="true">Progress Presentations</span>
+        </button>
+        <div class="event-body" id="event-progress">
+          <h3 id="event-progress-title">Progress Presentations</h3>
+          <p class="event-desc">
+            Show the room what you’ve built since your last update. Wins, bugs
+            and all.
+          </p>
+        </div>
+      </li>
 
-        <li class="event" style="--i: 3; --pos: 35% 50%">
-          <img
-            class="event-photo"
-            src="images/events-activities-section/mamak.jpg"
-            srcset="
+      <li class="event" style="--i: 3; --pos: 35% 50%">
+        <img class="event-photo" src="images/events-activities-section/mamak.jpg" srcset="
               images/events-activities-section/mamak-480.webp 480w,
               images/events-activities-section/mamak-800.webp 800w,
               images/events-activities-section/mamak-1200.webp 1200w,
               images/events-activities-section/mamak.jpg 1600w
-            "
-            sizes="(max-width: 1023px) 100vw, 50vw"
-            alt="A long table of members sharing food and drinks at a mamak after a meetup"
-            loading="lazy"
-          />
-          <button
-            class="event-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="event-mamak"
-            aria-labelledby="event-mamak-title"
-          >
-            <span class="event-label" aria-hidden="true">Mamak Sessions</span>
-          </button>
-          <div class="event-body" id="event-mamak">
-            <h3 id="event-mamak-title">Mamak Sessions</h3>
-            <p class="event-desc">
-              When the meetup wraps up, the conversation carries on over teh
-              tarik at the mamak.
-            </p>
-          </div>
-        </li>
+            " sizes="(max-width: 1023px) 100vw, 50vw"
+          alt="A long table of members sharing food and drinks at a mamak after a meetup" loading="lazy" />
+        <button class="event-toggle" type="button" aria-expanded="false" aria-controls="event-mamak"
+          aria-labelledby="event-mamak-title">
+          <span class="event-label" aria-hidden="true">Mamak Sessions</span>
+        </button>
+        <div class="event-body" id="event-mamak">
+          <h3 id="event-mamak-title">Mamak Sessions</h3>
+          <p class="event-desc">
+            When the meetup wraps up, the conversation carries on over teh
+            tarik at the mamak.
+          </p>
+        </div>
+      </li>
 
-        <li class="event" style="--i: 4; --pos: 60% 55%">
-          <img
-            class="event-photo"
-            src="images/events-activities-section/board-game-night.jpg"
-            srcset="
+      <li class="event" style="--i: 4; --pos: 60% 55%">
+        <img class="event-photo" src="images/events-activities-section/board-game-night.jpg" srcset="
               images/events-activities-section/board-game-night-480.webp 480w,
               images/events-activities-section/board-game-night-800.webp 800w,
               images/events-activities-section/board-game-night-1200.webp 1200w,
               images/events-activities-section/board-game-night.jpg 1600w
-            "
-            sizes="(max-width: 1023px) 100vw, 50vw"
-            alt="Members gathered around a table playing a board game, with more tables of players behind them"
-            loading="lazy"
-          />
-          <button
-            class="event-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="event-games"
-            aria-labelledby="event-games-title"
-          >
-            <span class="event-label" aria-hidden="true">Game Nights</span>
-          </button>
-          <div class="event-body" id="event-games">
-            <h3 id="event-games-title">Game Nights</h3>
-            <p class="event-desc">
-              When study week hits, we trade keyboards for dice and board games
-              to take a break before the finals.
-            </p>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <section id="registration" class="join" aria-labelledby="join-heading">
-      <div class="join-copy">
-        <h2 id="join-heading">Come build with us.</h2>
-        <p class="join-lede">
-          Open to every MMU student and staff member. Enter your MMU email and
-          we’ll take you to the sign-up form.
-        </p>
-        <!-- validated in the script below before the Google Form opens -->
-        <form
-          id="registration-form"
-          class="join-form"
-          action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
-          target="_blank"
-          novalidate
-        >
-          <label for="mmuEmail">MMU email</label>
-          <div class="join-field">
-            <input
-              id="mmuEmail"
-              type="email"
-              autocomplete="email"
-              spellcheck="false"
-              placeholder="you@student.mmu.edu.my"
-              aria-describedby="join-hint join-error"
-            />
-            <button id="registration-submit-button" type="submit">
-              Join Us Now
-            </button>
-          </div>
-          <p id="join-hint" class="join-hint">
-            Student and staff addresses ending in mmu.edu.my.
+            " sizes="(max-width: 1023px) 100vw, 50vw"
+          alt="Members gathered around a table playing a board game, with more tables of players behind them"
+          loading="lazy" />
+        <button class="event-toggle" type="button" aria-expanded="false" aria-controls="event-games"
+          aria-labelledby="event-games-title">
+          <span class="event-label" aria-hidden="true">Game Nights</span>
+        </button>
+        <div class="event-body" id="event-games">
+          <h3 id="event-games-title">Game Nights</h3>
+          <p class="event-desc">
+            When study week hits, we trade keyboards for dice and board games
+            to take a break before the finals.
           </p>
-          <p id="join-error" class="join-error" role="alert"></p>
-        </form>
-      </div>
-
-      <figure class="join-qr">
-        <!-- the Enlarge button is the keyboard route to the same dialog -->
-        <div class="qr-card">
-          <img
-            src="images/join-section/join-qr.svg"
-            alt="QR code linking to hackerspacemmu.rocks"
-            width="29"
-            height="29"
-          />
         </div>
-        <figcaption>
-          <div>
-            <span class="qr-title">Scan to join</span>
-            <span class="qr-url">hackerspacemmu.rocks</span>
-          </div>
-          <button class="qr-enlarge" type="button" aria-haspopup="dialog">
-            Enlarge
+      </li>
+    </ul>
+  </section>
+
+  <section id="registration" class="join" aria-labelledby="join-heading">
+    <div class="join-copy">
+      <h2 id="join-heading">Come build with us.</h2>
+      <p class="join-lede">
+        Open to every MMU student and staff member. Enter your MMU email and
+        we’ll take you to the sign-up form.
+      </p>
+      <!-- validated in the script below before the Google Form opens -->
+      <form id="registration-form" class="join-form"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSe40ADAwZ5uOBTcAChoG3lZtPWw4G02TzyKdtQrq2GZgC9Qeg/viewform?formkey=dEY2T0l1eDFHdGl2WXRxTWFLZVNlZXc6MQ"
+        target="_blank" novalidate>
+        <label for="mmuEmail">MMU email</label>
+        <div class="join-field">
+          <input id="mmuEmail" type="email" autocomplete="email" spellcheck="false" placeholder="you@student.mmu.edu.my"
+            aria-describedby="join-hint join-error" />
+          <button id="registration-submit-button" type="submit">
+            Join Us Now
           </button>
-        </figcaption>
-      </figure>
-
-      <dialog class="qr-dialog" aria-label="QR code, enlarged">
-        <div class="qr-card">
-          <img
-            src="images/join-section/join-qr.svg"
-            alt="QR code linking to hackerspacemmu.rocks"
-            width="29"
-            height="29"
-          />
         </div>
-        <p>hackerspacemmu.rocks</p>
-        <button class="qr-close" type="button">Close</button>
-      </dialog>
-    </section>
+        <p id="join-hint" class="join-hint">
+          Student and staff addresses ending in mmu.edu.my.
+        </p>
+        <p id="join-error" class="join-error" role="alert"></p>
+      </form>
+    </div>
 
-    <script src="js/config.js?v=7"></script>
-    <script src="js/index.js?v=7"></script>
-    <script src="js/what-we-do.js?v=7"></script>
-    <script src="js/starfield.js?v=7"></script>
-    <script src="js/landing.js?v=7"></script>
-    <script src="js/why-build.js?v=7"></script>
-  </body>
+    <figure class="join-qr">
+      <!-- the Enlarge button is the keyboard route to the same dialog -->
+      <div class="qr-card">
+        <img src="images/join-section/join-qr.svg" alt="QR code linking to hackerspacemmu.rocks" width="29"
+          height="29" />
+      </div>
+      <figcaption>
+        <div>
+          <span class="qr-title">Scan to join</span>
+          <span class="qr-url">hackerspacemmu.rocks</span>
+        </div>
+        <button class="qr-enlarge" type="button" aria-haspopup="dialog">
+          Enlarge
+        </button>
+      </figcaption>
+    </figure>
+
+    <dialog class="qr-dialog" aria-label="QR code, enlarged">
+      <div class="qr-card">
+        <img src="images/join-section/join-qr.svg" alt="QR code linking to hackerspacemmu.rocks" width="29"
+          height="29" />
+      </div>
+      <p>hackerspacemmu.rocks</p>
+      <button class="qr-close" type="button">Close</button>
+    </dialog>
+  </section>
+
+  <script src="js/config.js?v=7"></script>
+  <script src="js/index.js?v=7"></script>
+  <script src="js/what-we-do.js?v=7"></script>
+  <script src="js/starfield.js?v=7"></script>
+  <script src="js/landing.js?v=7"></script>
+  <script src="js/why-build.js?v=7"></script>
+</body>
+
 </html>
