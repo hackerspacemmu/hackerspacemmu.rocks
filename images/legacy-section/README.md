@@ -23,9 +23,8 @@ Tips:
 - **Format:** use `.jpg`. A `.png` or `.jpeg` won't show up unless the HTML
   is changed as well.
 - **Size:** about 1200px wide is plenty. Larger photos only slow the page down.
-- **Shape:** each photo is cropped to fit its card. Most cards are 4:3. The
-  cards for 2012, 2015, 2018, 2021 and 2024 are 3:2 (wider). Keep the
-  important part of the photo near the centre.
+- **Shape:** each photo is cropped to fit its card. Most cards are 4:3. Wider
+  cards use style="--ar: 3 / 2" override in the HTML.
 - **Caption (optional):** each photo has a short description for screen
   readers (its `alt` text). If a new photo shows something different, update
   the `alt="..."` next to its filename in `index.html`, or send the
