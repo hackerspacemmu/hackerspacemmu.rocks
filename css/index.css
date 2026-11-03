@@ -1666,6 +1666,96 @@ html:has(.qr-dialog[open]) {
   overflow: hidden;
 }
 
+/* ---------- FOOTER ---------- */
+
+/* Brand on the left, socials on the right; they wrap into one column
+   when there isn't room. The rule on top sits on the same inset as the
+   join section above it. */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(28px, 4vh, 44px) 48px;
+  margin-inline: var(--inset);
+  padding-block: clamp(36px, 6vh, 64px) clamp(24px, 4vh, 40px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-brand p {
+  max-width: 34ch;
+  margin: 16px 0 0;
+  font-size: clamp(14px, 1vw, 17px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: #a8a8a8;
+}
+
+.footer-social {
+  display: grid;
+  gap: 12px;
+}
+
+.footer-label,
+.footer-copy {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #8a8a8a;
+}
+
+.footer-label {
+  text-transform: uppercase;
+}
+
+.footer-social ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* pills like the nav CTA */
+.footer-social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.65em 1.3em;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  font-size: clamp(14px, 1vw, 17px);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.footer-social a:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #141414;
+}
+
+.footer-social a:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.footer-social svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+  fill: currentColor;
+}
+
+.footer-copy {
+  flex-basis: 100%;
+}
+
 /* ---------- KEYFRAMES ---------- */
 
 @keyframes tile-in {
@@ -1961,6 +2051,10 @@ html:has(.qr-dialog[open]) {
   .join-qr {
     justify-self: start;
   }
+
+  .site-footer {
+    margin-inline: var(--edge);
+  }
 }
 
 /* a phone is already on the site, so the code has nothing to offer */
@@ -1979,7 +2073,7 @@ html:has(.qr-dialog[open]) {
 }
 
 @media (max-width: 480px) {
-  .brand span {
+  .site-nav .brand span {
     display: none;
   }
 }

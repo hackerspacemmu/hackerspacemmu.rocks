@@ -179,6 +179,9 @@
   const LOOP_DRIFT = 0.5; // share of DRIFT while the rocket jumps back
   const IDLE_MS = 1000; // how long drift waits after the user takes over
   const GLIDE_MS = 900;
+  // seconds for the reel's speed to ease most of the way to its target:
+  // how far a flick coasts, and how gently drift stops and starts
+  const COAST = 0.45;
 
   const accentFor = (year) => `var(--legacy-${year % 2 ? 'blue' : 'red'})`;
   cards.forEach((card) =>
@@ -262,6 +265,7 @@
   };
 
   let x = 0; // track offset in px; may run past setW, wrapped on render
+  let v = 0; // px per second: a flick's momentum, easing into drift
   let glide = null;
   let drag = null;
   let scrub = null; // dragging the rocket along the timeline
@@ -354,11 +358,17 @@
       const t = Math.min(1, (now - glide.start) / glide.dur);
       x = glide.from + (glide.to - glide.from) * easeInOut(t);
       if (t === 1) glide = null;
-    } else if (!drag && !scrub && !paused && !hovered && now > holdUntil) {
+      v = 0;
+    } else if (!drag && !scrub) {
       // slower while the rocket goes through the portals, so the jump
       // back to the start isn't rushed
       const loop = wrap(x) > lefts.at(-1) ? LOOP_DRIFT : 1;
-      x = wrap(x) + DRIFT * loop * dt;
+      const target =
+        paused || hovered || now < holdUntil ? 0 : DRIFT * loop;
+      // a flick coasts down to the drift speed (or a stop) instead of
+      // halting when the finger lifts
+      v = target + (v - target) * Math.exp(-dt / COAST);
+      x = wrap(x) + v * dt;
     }
 
     render();
@@ -500,8 +510,15 @@
   // scrolling to the browser.
   reel.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
-    drag = { id: e.pointerId, startX: e.clientX, from: x, moved: false };
+    drag = {
+      id: e.pointerId,
+      startX: e.clientX,
+      from: x,
+      moved: false,
+      trail: [], // recent pointer moves, for the flick's speed on release
+    };
     glide = null;
+    v = 0; // touching a coasting reel stops it, like a native scroller
   });
 
   reel.addEventListener('pointermove', (e) => {
@@ -512,11 +529,22 @@
       reel.setPointerCapture(e.pointerId);
       reel.classList.add('is-dragging');
     }
-    if (drag.moved) x = drag.from - dx;
+    if (!drag.moved) return;
+    x = drag.from - dx;
+    drag.trail.push({ t: e.timeStamp, x: e.clientX });
+    if (drag.trail.length > 8) drag.trail.shift();
   });
 
   const endDrag = (e) => {
     if (!drag || e.pointerId !== drag.id) return;
+    // speed over the last ~100ms; a finger that stopped before lifting
+    // (or a cancelled gesture) leaves no momentum
+    const recent = drag.trail.filter((p) => p.t > e.timeStamp - 100);
+    const first = recent[0];
+    const last = recent.at(-1);
+    if (e.type === 'pointerup' && recent.length > 1 && last.t > first.t) {
+      v = ((first.x - last.x) / (last.t - first.t)) * 1000;
+    }
     drag = null;
     reel.classList.remove('is-dragging');
     hold();
@@ -531,6 +559,7 @@
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
       glide = null;
+      v = 0;
       x += e.deltaX;
       hold();
     },
